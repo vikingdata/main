@@ -7,7 +7,7 @@ https://www.git-tower.com/blog/git-cheat-sheet
 
 git clone SITE
 cd SITE
-
+--------------------------------------
 git checkout master
 git pull
 
@@ -15,7 +15,7 @@ git checkout -b TEMPBRANCH
 git add FILE
 git commit
 
-git push --set-upstream origin master
+git push origin -u TEMPBRANCH
 
 1. goto website
 2. accept push
