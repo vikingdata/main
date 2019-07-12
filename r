@@ -15,6 +15,7 @@ git checkout -b TEMPBRANCH
 git add FILE
 git commit
 
+git push origin master
 git push --set-upstream origin master
 
 1. goto website
