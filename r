@@ -21,3 +21,8 @@ git push --set-upstream origin master
 1. goto website
 2. accept push
 3. delete branch
+
+then just stay in the same brach or
+ git checkout master
+ git branch -d TEMPBRANCH
+ 
