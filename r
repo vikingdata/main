@@ -24,8 +24,14 @@ git push origin master
 git push --set-upstream origin master
 
 1. goto website
-2. accept push
-3. delete branch
+2. Click on branches
+3. Click on new pull request
+4. Create pul request
+5. merge pusll request
+6. confirm merge
+7. delete branch
+# do not delete the local branch. 
+
 
 then just stay in the same brach or
  git checkout master
