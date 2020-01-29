@@ -32,7 +32,7 @@ git push --set-upstream origin master
 7. delete branch
 # do not delete the local branch. 
 
-
+# ----- ignore below
 then just stay in the same brach or
  git checkout master
  git branch -d TEMPBRANCH
@@ -42,3 +42,7 @@ then just stay in the same brach or
 git fetch origin
 git reset --hard origin/master
 git clean -f -d
+
+
+fast commit for this file
+git add r; git commit -m NA ;  git push origin -u TEMPBRANCH
