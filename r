@@ -8,6 +8,9 @@ https://www.git-tower.com/blog/git-cheat-sheet
 git clone SITE
 cd SITE
 
+
+# The above was one time. 
+
 git checkout master
 git pull
 
@@ -27,4 +30,9 @@ git push --set-upstream origin master
 then just stay in the same brach or
  git checkout master
  git branch -d TEMPBRANCH
- 
+
+# to sync, delete all, reget download, delete branches on website
+# OR --- but it may not be want you want
+git fetch origin
+git reset --hard origin/master
+git clean -f -d
