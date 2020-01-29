@@ -14,6 +14,8 @@ git pull
 git checkout -b TEMPBRANCH
 git add FILE
 git commit
+  # It should say a file has changed.
+  #Or later the website won't say there are diferences in branches.
 
 git push origin master
 git push --set-upstream origin master
