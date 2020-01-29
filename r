@@ -21,3 +21,10 @@ git push --set-upstream origin master
 1. goto website
 2. accept push
 3. delete branch
+
+
+# Later you can do this, but not recommened.
+# Just checkout TEMPBRANCH each time instead of deleting.
+# Unless you want to tie it to a JIRA ticket.
+ git checkout master
+ git branch -d TEMPBRANCH
