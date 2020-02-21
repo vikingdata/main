@@ -23,8 +23,13 @@ git commit
 
 git push origin -u TEMPBRANCH
 
-1. goto website
+  1. goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH
 
-2. accept push
+  2. accept push
 
-3. delete branch
+  3. delete branch
+
+git checkout master
+git branch -d TEMPBRANCH
+
+REPEAT
