@@ -30,6 +30,7 @@ git push origin -u TEMPBRANCH
   3. delete branch
 
 git checkout master
+
 git branch -d TEMPBRANCH
 
 REPEAT
