@@ -1,0 +1,4 @@
+
+openssl req -newkey rsa:2048 -new -x509  -nodes -out mongodb-cert.crt -keyout /tmp/mongodb-cert.key
+
+cat /tmp/mongodb-cert.key /tmp/mongodb-cert.crt > /tmp/mongodb.pem

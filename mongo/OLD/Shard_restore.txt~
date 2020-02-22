@@ -1,0 +1,131 @@
+
+
+  # I assume the 2 shard is running from Shard.txt
+  # and Shard.txt is finished. 
+
+  # We take liberties knowing no data is being written
+  # and the shards are not in replicaa sets. 
+  # This deals with the hardest part of 
+  # retoring the shards. With replica sets for
+  # shards it gets more complicated but this deal with
+  # the theory if you get in a mess. 
+
+  # You can take note of the shard setup if you wish and need to turn off balancer
+mongo --quiet --eval 'sh.setBalancerState(false)'
+mongo --quiet --eval 'sh.status()' | egrep '\-\->>|state|host' > /tmp/shard_setup.log1
+
+  # Take backups
+
+rm -rf /tmp/mogno_temp_backups
+mkdir -p /tmp/mongo_temp_backups/config
+mkdir -p /tmp/mogno_temp_backups/s1
+mkdir -p /tmp/mogno_temp_backups/s2
+
+mongodump --port 27019 -o /tmp/mongo_temp_backups/config
+mongodump --port 27018 -o /tmp/mongo_temp_backups/s1
+mongodump --port 4000  -o /tmp/mongo_temp_backups/s2
+
+killall mongod
+killall mongos
+sleep 2
+
+  # You shouldn't have any mongo stuff running
+ps auxw | grep mongo
+jobs
+
+  # Make the new data servers and mongo config server. 
+mkdir -p mongo/e1 mongo/e2 mongo/e3
+
+  # Lets make the data servers and config servers start
+mongod --shardsvr --dbpath mongo/e1 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5001 > mongo/logs/e1.log 2>&1  &
+   #Now add a 2nd shard. 
+mongod --shardsvr --dbpath mongo/e2 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5002 > mongo/logs/e2.log 2>&1  &
+  # Start a mongo config server --- in the Sharding2 document, we will
+  # have 3 in a replica set. 
+mongod --configsvr --replSet z --dbpath mongo/e3 --smallfiles --oplogSize 10  --bind_ip 127.0.0.1 --port 5003 > mongo/logs/e3.log 2>&1  &
+  # Stupid but single config server still has to be in a replica set. 
+sleep 2
+mongo --port 5003 --eval "rs.initiate({ _id: 'z', version: 1, members: [ {_id :0, host: 'localhost:5003' } ] })"
+sleep 3
+
+  # Start a mongos -- this connects to the mongod, since the default for a config server is 5003
+mongos --configdb "z/127.0.0.1:5003" --bind_ip 127.0.0.1 > mongo/logs/ms_2.log 2>&1  &
+sleep 5
+
+  # Turn off the balaner.
+mongo --quiet --eval 'sh.setBalancerState(false)'
+
+  # Restore the datam remember, the data servers know nothing about eech other. 
+mongorestore --drop --port 5001 /tmp/mongo_temp_backups/s1
+mongorestore --drop --port 5002 /tmp/mongo_temp_backups/s2
+
+  # Now restore the config server
+mongorestore --port 5003 /tmp/mongo_temp_backups/config
+
+  # Two important things to note, the port has changed, hence the shard names. 
+mongo --quiet --eval 'db.shards.find()' config
+  # and	the database exists on a shard as a primary. 
+db.databases.find()
+  # And the chunks have the shard listed, which might have to change, 
+mongo --quiet --eval 'db.chunks.find()' config
+
+  # These databases that are sharded should exist on the target servers. 
+  # You can ignore the local databases. 
+mongo --quiet --eval 'db.databases.find()' config
+mongo --quiet --eval "db.getMongo().getDBNames()" --port 5001
+mongo --quiet --eval "db.getMongo().getDBNames()" --port 5002
+  
+  # You may have to db.config.shards, chunks, and databases
+  # Since we haven't messed with the shard names
+  # we are lucky we only need to change shards
+  # TODO in the future: include name the shards to force examples for all 3. 
+  # TODO the shard identity is in question. 
+
+mongo --quiet --eval 'db.shards.update({ "_id" : "shard0000"}, {"host" : "localhost:5001" })' config
+mongo --quiet --eval 'db.shards.update({ "_id" : "shard0001"}, {"host" : "localhost:5002" })' config
+mongo --quiet --eval 'db.shards.find()' config
+
+  # kill mongos and restart 
+killall mongos
+sleep 2
+mongos --configdb "z/127.0.0.1:5003" --bind_ip 127.0.0.1 > mongo/logs/ms_2.log 2>&1  &
+sleep 2
+
+  # save the config
+mongo --quiet --eval 'sh.status()' | egrep '\-\->>|state|host' > /tmp/shard_setup.log2
+
+  # compare the differences
+diff  /tmp/shard_setup.log1  /tmp/shard_setup.log2
+  # count the no of documents
+mongo --quiet --eval 'db.no.count()' test
+
+  # Let's test the balancer is working. 
+mongo --quiet --eval 'sh.setBalancerState(0)'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "100" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "200" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "300" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "400" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "500" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "600" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "700" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "800" }, "shard0000")'
+mongo --quiet --eval 'sh.moveChunk("test.no", { value: "900" }, "shard0000")'
+mongo --quiet --eval 'sh.setBalancerState(1)'
+  # Give is a few seconds
+sleep 5
+mongo --quiet --eval 'sh.status()' | egrep '\-\->>|state|host' > /tmp/shard_setup.log2
+
+db.getCollection("version").find()
+
+
+##### neeed to get the id and replace it
+ObjectId("58b7e4dc413c5c4dc4284ba4")
+
+
+db.chunks.find().forEach(function(doc){ 
+    doc.lastmodEpoch = ObjectId("58b7e4dc413c5c4dc4284ba4")
+    db.chunks_new.insert(doc);
+});
+db.chunks.renameCollection("chunks_old", true);
+db.chunks_new.renameCollection("chunks", true);
+
