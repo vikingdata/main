@@ -1,0 +1,206 @@
+
+
+  # I assume the 2 shard is running from Shard.txt
+  # and Shard.txt is finished. 
+
+  # We take liberties knowing no data is being written
+  # and the shards are not in replicaa sets. 
+  # This deals with the hardest part of 
+  # retoring the shards. With replica sets for
+  # shards it gets more complicated but this deal with
+  # the theory if you get in a mess. 
+
+  # You can take note of the shard setup if you wish and need to turn off balancer
+mongo --quiet --eval 'sh.setBalancerState(false)'
+mongo --quiet --eval 'sh.status()' | egrep '\-\->>|state|host' > /tmp/shard_setup.log1
+
+  # Take backups
+map="
+s1:4001 to z1:5001
+s2:4002 to z2:5002
+
+replica name of c to d on config server. It may not be needed. 
+
+"
+
+rm -rf /tmp/mogno_temp_backups
+mkdir -p /tmp/mongo_temp_backups/config
+mkdir -p /tmp/mogno_temp_backups/s1
+mkdir -p /tmp/mogno_temp_backups/s2
+
+for i in chunks collections databases settings;
+    do
+      mongo --quiet --port 4003 --eval "db.$i.find()" config > /tmp/mongo_temp_backups/config_$i
+    done
+
+mongo --port 4001 --quiet --eval "db.system.version.find()" admin  > /tmp/mongo_temp_backups/s1_system
+mongo --port 4002 --quiet --eval "db.system.version.find()" admin  > /tmp/mongo_temp_backups/s2_system
+mongo --quiet --port 4003 --eval 'db.getCollection("version").find()' config > /tmp/mongo_temp_backups/config_version
+
+mongodump --port 4003 -o /tmp/mongo_temp_backups/config -d config
+mongodump --port 4001 -o /tmp/mongo_temp_backups/s1a -d admin
+mongodump --port 4002  -o /tmp/mongo_temp_backups/s2a -d admin
+mongodump --port 4001 -o /tmp/mongo_temp_backups/s1d -d shard_test
+mongodump --port 4002  -o /tmp/mongo_temp_backups/s2d -d shard_test
+
+killall mongod
+killall mongos
+killall mongo
+sleep 2
+
+  # You shouldn't have any mongo stuff running
+ps auxw | grep mongo
+jobs
+
+  # Make the new data servers and mongo config server. 
+  # We blow away the original databases, so we pray the backups are good. 
+rm -rf mongo
+mkdir -p mongo/e1 mongo/e2 mongo/e3 mongo/logs
+
+  # Lets make the data servers and config servers start
+mongod --shardsvr --dbpath mongo/e1 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5001 > mongo/logs/e1.log 2>&1  &
+   #Now add a 2nd shard. 
+mongod --shardsvr --dbpath mongo/e2 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5002 > mongo/logs/e2.log 2>&1  &
+  # Start a mongo config server --- in the Sharding2 document, we will
+  # have 3 in a replica set. 
+mongod --configsvr --replSet z --dbpath mongo/e3 --smallfiles --oplogSize 10  --bind_ip 127.0.0.1 --port 5003 > mongo/logs/e3.log 2>&1  &
+  # Stupid but single config server still has to be in a replica set. 
+sleep 2
+mongo --port 5003 --eval "rs.initiate({ _id: 'z', version: 1, members: [ {_id :0, host: 'localhost:5003' } ] })"
+sleep 3
+
+  # Start a mongos -- this connects to the mongod, since the default for a config server is 5003
+mongos --configdb "z/127.0.0.1:5003" --bind_ip 127.0.0.1 > mongo/logs/ms_2.log 2>&1  &
+sleep 5
+
+  # Turn off the balaner.
+mongo --quiet --eval 'sh.setBalancerState(false)'
+
+steps="
+1. add the shards
+2. restore config server
+3. change values in config server. 
+   a. db.shards
+   b. db.databases
+   c. db.chunks -- partitions
+   d. db.chunks -- cluster Id
+   e. db.collections -- ObjectId
+4. Kill config and mongos
+5. Restore data servers -- without system.version
+6. Start config and mongos
+7. Check, insert, check again.  
+"
+  # 1
+mongo --eval 'db.runCommand({addShard: "localhost:5001", name: "t1"})' admin
+mongo --eval 'db.runCommand({addShard: "localhost:5002", name: "t2"})' admin
+
+  #2 Do not drop the collections, we have ids that 
+   # we have to delete, that can't be changed. easily. 
+mongorestore  --port 5003 /tmp/mongo_temp_backups/config        -d config
+
+  # 3a
+#mongo --port 5003 --quiet --eval 'db.shards.insert({"_id" : "t1", "host" : "localhost:5001", "state" : 1})' config
+#mongo --port 5003 --quiet --eval 'db.shards.insert({"_id" : "t2", "host" : "localhost:5002", "state" : 1})' config
+
+mongo --port 5003 --quiet --eval 'db.shards.remove({_id: "s1"})' config
+mongo --port 5003 --quiet --eval 'db.shards.remove({_id: "s2"})' config
+  #3b
+mongo --port 5003 --quiet --eval 'db.databases.update({"primary": "s1"}, {"primary": "t1", "partitioned" : true })' config
+  #3c
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s1"}, {$set: {"shard" : "t1"}})' config
+
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+mongo --port 5003 --quiet --eval 'db.chunks.update({"shard" : "s2"}, {$set: {"shard" : "t2"}})' config
+
+  # 3d - this is complicated
+myId=`mongo --quiet --port 5003 --eval 'var x = db.getCollection("version").findOne(); print (x.clusterId)' config`
+echo "clusterId", $myId
+echo "
+db = db.getSiblingDB('config')
+db.chunks.find().forEach(function(doc){
+    doc.lastmodEpoch = $myId;
+    db.chunks_new.insert(doc);
+});
+db.chunks.renameCollection('chunks_old');
+db.chunks_new.renameCollection('chunks');
+" > mongo/replace_chunks.js
+mongo --port 5003 mongo/replace_chunks.js 
+
+  # 3e
+echo "
+db = db.getSiblingDB('config')
+db.collections.find().forEach(function(doc){
+    doc.lastmodEpoch = $myId;
+    db.collections_new.insert(doc);
+});
+db.collections.renameCollection('collections_old');
+db.collections_new.renameCollection('collections');
+" > mongo/replace_collections.js
+mongo --port 5003 mongo/replace_collections.js
+ 
+  #4
+killall mongod
+killall mongos
+killall mongo
+sleep 2
+
+mongod --shardsvr --dbpath mongo/e1 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5001 > mongo/logs/e1.log 2>&1  &
+mongod --shardsvr --dbpath mongo/e2 --smallfiles --oplogSize 10 --bind_ip 127.0.0.1 --port 5002 > mongo/logs/e2.log 2>&1  &
+mongod --configsvr --replSet z --dbpath mongo/e3 --smallfiles --oplogSize 10  --bind_ip 127.0.0.1 --port 5003 > mongo/logs/e3.log 2>&1  &
+sleep 10
+
+  #5 
+mongorestore --drop --port 5001 /tmp/mongo_temp_backups/s1 --nsExclude system.version
+mongorestore --drop --port 5002 /tmp/mongo_temp_backups/s2 --nsExclude system.version
+
+  #6
+mongos --configdb "z/127.0.0.1:5003" --bind_ip 127.0.0.1 > mongo/logs/ms_2.log 2>&1  &
+sleep 2
+
+
+  # These databases that are sharded should exist on the target servers. 
+  # You can ignore the local databases. 
+mongo --quiet --eval 'db.databases.find()' config
+mongo --quiet --eval "db.getMongo().getDBNames()" --port 5001
+mongo --quiet --eval "db.getMongo().getDBNames()" --port 5002
+  
+  # save the config
+mongo --quiet --eval 'sh.status()' | egrep '\-\->>|state|host' > /tmp/shard_setup.log2
+
+  # compare the differences
+diff  /tmp/shard_setup.log1  /tmp/shard_setup.log2
+  # count the no of documents
+
+mongo --port 5001 --quiet --eval 'db.no.count()' shard_test
+mongo --port 5002 --quiet --eval 'db.no.count()' shard_test
+mongo --quiet --eval 'db.no.count()' shard_test
+
+mongo --quiet --eval 'db.no.insert({value:1.1})' shard_test
+mongo --quiet --eval 'db.no.insert({value:900.1})' shard_test
+mongo --quiet --eval 'db.no.insert({value:900.2})' shard_test
+
+echo "Should detect some increases for all 3 below."
+mongo --port 5001 --quiet --eval 'db.no.count()' shard_test
+mongo --port 5002 --quiet --eval 'db.no.count()' shard_test
+mongo --quiet --eval 'db.no.count()' shard_test
+
+
+notes="
+Notice I restored, the data mongod servers. You don't have to. 
+If you can get the admin database settings, which I couldn't change
+to be correct on another server, just back that up and restore on
+your target server --- after everything. Its a little more
+complicated. This demo is just to show it can be done. 
+To make it efficient and other stuff, will take more steps. 
+"

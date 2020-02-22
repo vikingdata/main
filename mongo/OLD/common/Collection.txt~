@@ -1,0 +1,4 @@
+
+1. Backup sa single collection
+  use DB
+  b = db.products_bak; db.products.find().forEach( function(o){ b.insert(o) } )

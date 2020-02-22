@@ -1,0 +1,59 @@
+
+  # You must have the 6 mongo servers running in Replicatikon_setup.txt  and Replication_setup2.txt.
+  # The replication in the replica set must be setup. 
+
+  # In  the mongo shell
+mongo --port 3001 --eval "db.runCommand( { serverStatus: 1, localtime: 1 } )" | grep '"uptime"'
+
+  # Make a client side function. 
+echo '
+function scheck() {
+  s = db.runCommand( { serverStatus: 1 });
+  print (s.uptime);
+}
+' > mongo/sample_functions.js
+
+  # Execute it with eval and it will fail. 
+mongo --quiet --port 3001 --eval "scheck()" mongo/sample_functions.js
+
+  # You have to go to shell or put the command in the file. 
+echo '
+function scheck() {
+  s = db.runCommand( { serverStatus: 1 });
+  print (s.uptime);
+}
+scheck()
+' > mongo/sample_functions.js
+mongo --quiet --port 3001  mongo/sample_functions.js 
+
+  # Or properly use the load command. 
+echo '
+function scheck() {
+  s = db.runCommand( { serverStatus: 1 });
+  print (s.uptime);
+}
+' > mongo/sample_functions2.js
+mongo --quiet --port 3001 --eval "load('mongo/sample_functions2.js'); scheck()"  
+
+  # Now create a server side function. 
+  # Look at https://docs.mongodb.com/manual/tutorial/store-javascript-function-on-server/
+
+echo '
+db.system.js.save(
+   {
+     _id : "custom_uptime ,
+     value : function (){ s = db.runCommand( { serverStatus: 1 }); return s.uptime; }
+   }
+);' > mongo/server.js
+  
+  # Load function
+mongo --quiet --port 3001 mongo/server.js
+
+  # Execute function, should fail only on 5. 
+mongo --quiet --port 3001 test --eval "db.loadServerScripts(); custom_uptime();"
+mongo --quiet --port 3002 test --eval "rs.slaveOk(); db.loadServerScripts(); custom_uptime();"
+mongo --quiet --port 3003 test --eval "rs.slaveOk(); db.loadServerScripts(); custom_uptime();"
+mongo --quiet --port 3004 test --eval "rs.slaveOk(); db.loadServerScripts(); custom_uptime();"
+mongo --quiet --port 3005 test --eval "rs.slaveOk(); db.loadServerScripts(); custom_uptime();"
+mongo --quiet --port 3006 test --eval "rs.slaveOk(); db.loadServerScripts(); custom_uptime();"
+
