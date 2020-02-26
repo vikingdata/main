@@ -8,7 +8,8 @@ if [ "$b" != 'TEMPBRANCH' ]; then
 fi
 
 echo "Trying to commit, then push."
-git commit
+d=`date`
+git commit -m "$d"
 git push origin -u TEMPBRANCH
 
 echo " goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH "
