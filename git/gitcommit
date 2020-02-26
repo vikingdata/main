@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 echo "Making sure we are in the TEMPBRANCH for git"
 b=`git branch | head -n 1 | sed s/[^A-Z]//g`
 if [ "$b" != 'TEMPBRANCH' ]; then
@@ -12,7 +14,9 @@ d=`date`
 git commit -m "$d"
 git push origin -u TEMPBRANCH
 
-echo " goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH "
+echo ""
+echo ""
+echo "goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH "
 echo "Finish doing merge and do gitcleanup when done."
 echo "You can start TEMPBRACH over with gitstart later."
 

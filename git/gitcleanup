@@ -1,5 +1,6 @@
 #!/bin/bash
 
+clear
 
 echo "If you are done with the merge, we are deleting TEMPBRANCH locally now."
 echo "When you are done with the merge remotely, delete the branch remotely."
