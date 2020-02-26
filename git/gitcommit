@@ -1,0 +1,24 @@
+#!/bin/bash
+
+git commit
+
+git push origin -u TEMPBRANCH
+
+  1. goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH
+
+
+echo "Making sure we are in the TEMPBRANCH for git"
+b=`git branch | top -l 1`
+if [ "$b" != 'TEMPBRANCH' ]; then
+    echo "Not in TEMPBRANCH. nothing to do. Aborting"
+    exit
+fi
+
+echo "Trying to commit, then push."
+#git commit
+#git push origin -u TEMPBRANCH
+
+echo " goto website :  https://github.com/menprojects/main/pull/new/TEMPBRANCH "
+echo "Finish doing merge and do gitcleanup when done."
+echo "You can start TEMPBRACH over with gitstart later."
+
