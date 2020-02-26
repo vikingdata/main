@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+echo "If you are done with the merge, we are deleting TEMPBRANCH locally now."
+echo "When you are done with the merge remotely, delete the branch remotely."
+echo "Then we are start with a fresh TEMPBRANCH"
+
+echo ""
+echo "Switching to : master"
+git checkout master
+git branch
+
+# Should we put a validation prompt here?
+echo "Deleting local  TEMPBRANCH....."
+git branch -d TEMPBRANCH
+
+echo "Attempting prunes."
+
+git prune
+git remote prune origin
