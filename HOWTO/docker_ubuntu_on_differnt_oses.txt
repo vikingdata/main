@@ -1,0 +1,56 @@
+3-3-2020
+
+The purpose is to run docker ubuntu under Windows or Mac.
+I did not include how to do it in Linux, what's the point?
+We want windows and Mac to use MySQL running under the docker ubuntu image. 
+
+
+Windows
+1. Install : https://docs.docker.com/docker-for-windows/install/
+2. docker pull ubuntu # download image
+3. mkdir -p docker\my_ubuntu\mount 
+  # create ubuntu container from image 
+4. docker create --mount type=bind,source=/Users/mark/docker/my_ubuntu/mount,target=/mysql  -p 3306:3306 -it --name my_ubuntu ubuntu
+5. docker create --mount type=bind,source=c:\Users\mark\docker\my_ubuntu\mount,target=/mysql -p 3306:3306 -it --name my_ubuntu ubuntu
+  # start the container
+6. docker start my_ubuntu 
+  # login to the container
+7. docker exec -it my_ubuntu /bin/bash 
+
+Mac
+1. Install docker
+2. register to download images
+3. Follow the commands which
+   a. downloads the image
+   b. runs into a container
+   c. connects to the container
+   d. runs linux commands to get packages and stuff
+
+1. docker pull ubuntu # download image
+2. mkdir -p /Users/mnielsen/docker/my_ubuntu/mount 
+  # create ubuntu container from image 
+3. docker create --mount type=bind,source=/Users/mnielsen/docker/my_ubuntu/mount,target=/mysql -p 3306:3306 -it --name my_ubuntu ubuntu
+  # start the container
+4. docker start -D my_ubuntu 
+  # login to the container
+5. docker exec -it my_ubuntu /bin/bash 
+
+
+Ubuntu commands
+
+
+apt-get update
+apt-get install emacs lsb-core wget sudo python-mysqldb openssh-server
+####### put int ap-tget command for percona 5.6
+wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
+sudo apt-get update
+sudo apt-get install percona-server-server-5.7
+
+# decide a root password that is simple
+# you will have to enter it twice
+# This mysql will only be available through localhost without further work
+service mysql start
+mysql -u root -p # it will ask for the password
+sudo apt-get install python-mysqldb
+
