@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ~/GITHUB/main
+
 clear
 
 # git checkout master
