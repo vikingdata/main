@@ -54,3 +54,40 @@ service mysql start
 mysql -u root -p # it will ask for the password
 sudo apt-get install python-mysqldb
 
+
+Other issues
+
+List options:
+  command line: docker -h 
+  webpage:
+Restart Docker:
+  cli: killall Docker && open /Applications/Docker.app
+  GUI: the program  can be restarted on the running icon at the top of the desktop. 
+List Images installed : docker images -a 
+List Containers installed : docker ps
+Restart container: docker restart container
+  connect to mysql to localhost : docker restart container
+Reconnect to a container
+  docker exec -it <Container> /bin/bash
+webpage If you change things like mount, volumes, port forwarding and or stuff outside of the container:
+  For some things you can edit the configuration files, like opening ports,
+  Try to use mounts instead of volumes, is seems to be more flexible than volumes. 
+  Remake and image
+    docker commit my_ubuntu NEW_IMAGE
+    docker create --mount type=bind,source=/Users/mnielsen/docker/my_ubuntu/mount,target=/mysql \
+-p 3306:3306 -it --name my_ubuntu2 NEW_IMAGE
+    OR
+    docker commit my_ubuntu u1
+    docker commit my_ubuntu u2
+    mkdir -p /Users/mnielsen/docker/u1/mount
+    mkdir -p /Users/mnielsen/docker/u2/mount
+    docker create --mount type=bind,source=/Users/mnielsen/docker/u1/mount,target=/mysql -p 3306:3306 -it --name U1 u1
+    docker create --mount type=bind,source=/Users/mnielsen/docker/u2/mount,target=/mysql -p 3307:3306 -it --name U2 u2
+
+Problems with mysql
+  wipe out /var/lib/mysql /var/log/mysql/error.log
+  mysql --initialize
+     look for password in /var/log/mysql/error.log
+  update password = password('root');
+  CREATE USER 'root'@'%' IDENTIFIED BY 'root';
+  grant all privileges on *.* to root@'%';
