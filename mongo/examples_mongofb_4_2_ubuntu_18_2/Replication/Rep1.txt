@@ -20,7 +20,7 @@ function printPrimary {
   # If restarting, kill the mogo processes and then do 
 killall mongod
 sleep 1
-killall x-9 mongod
+killall -9 mongod
 sleep 1
 rm -rf  mongo/d1 mongo/d2 mongo/d3 mongo/logs
   # Setup 3 directories:
