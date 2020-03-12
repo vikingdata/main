@@ -1,9 +1,10 @@
+#!/bin/bash
 
-$mongod_options=" --oplogSize 50 --replSet r --bind_ip 127.0.0.1 --wiredTigerDirectoryForIndexes --wiredTigerMaxCacheOverflowFileSizeGB=50 "
+mongod_options=" --oplogSize 50 --replSet r --bind_ip 127.0.0.1 --wiredTigerDirectoryForIndexes --wiredTigerMaxCacheOverflowFileSizeGB=50 "
 
-$mongod_options1="  $mongod_options  --dbpath mongo/d1 --port 3001"
-$mongod_options2="  $mongod_options  --dbpath mongo/d2 --port 3002"
-$mongod_options3="  $mongod_options  --dbpath mongo/d3 --port 3003"
+mongod_options1="  $mongod_options  --dbpath mongo/d1 --port 3001"
+mongod_options2="  $mongod_options  --dbpath mongo/d2 --port 3002"
+mongod_options3="  $mongod_options  --dbpath mongo/d3 --port 3003"
  
 function printPrimary { 
   count=`mongo --quiet --port 3001 mongo/functions.js| wc -l`
@@ -18,9 +19,9 @@ function printPrimary {
 }
 
   # If restarting, kill the mogo processes and then do 
-killall mongod
+killall mongod 2>/dev/null 
 sleep 1
-killall -9 mongod
+killall -9 mongod 2>/devnull
 sleep 1
 rm -rf  mongo/d1 mongo/d2 mongo/d3 mongo/logs
   # Setup 3 directories:
@@ -28,12 +29,15 @@ mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/logs
   # If not AWS,	  ignore.  
 #sudo  -s -- bash -c   '  echo "127.0.0.1 localhost ">> /etc/hosts '
   # Start once mongo instance
+echo "Starting first mongod"
 mongod $mongod_options1 > mongo/logs/1.log 2>&1  & 
 sleep 2
-  # In  the mongo shell
+    # In  the mongo shell
+echo "Starting replica set"
 mongo --port 3001 --eval "rs.initiate( { _id: 'r', version: 1, members: [ {_id :0, host: 'localhost:3001' } ] } )"
 
   # Start and add two other replica sets
+echo "Adding in 2 more mongod"
 mongod $mongod_options2 > mongo/logs/2.log 2>&1  &
 mongod $mongod_options3 > mongo/logs/3.log 2>&1  &
 sleep 2
@@ -66,6 +70,7 @@ function pcheck() {
 pcheck()
 ' > mongo/functions.js
 
+echo "Remove a node"
   # Lets print out the hosts in the replica set
 mongo --port 3001 --eval "rs.status()" | grep name
   # Remove a host
@@ -73,6 +78,7 @@ mongo --port 3001 --eval "rs.remove('localhost:3003')"
 sleep 1
 mongo --port 3001 --eval "rs.status()" | grep name
 
+echo "Add it back in"
   # Add host back in
 mongo --port 3001 --eval "rs.add('localhost:3003')"
 sleep 2
@@ -83,12 +89,14 @@ mongo --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
 cat mongo/reconfig.js | mongo --port 3001 
 mongo --port 3001 --eval "rs.conf()" | egrep 'host|priority'
 
+echo "Do a stepdown"
 mongo --port 3001 --eval "rs.stepDown({secondaryCatchUpPeriodSecs: 10 })"
 sleep 5
 printPrimary
 mongo --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
 
   # Not let's force it back to the first one --- this is bad in production. 
+echo "Change it back"
 mongo --quiet  --port 3001 --eval "rs.remove('localhost:3003')"
 sleep 5
 printPrimary
