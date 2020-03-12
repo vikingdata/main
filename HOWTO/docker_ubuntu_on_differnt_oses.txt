@@ -10,8 +10,8 @@ Windows
 2. docker pull ubuntu # download image
 3. mkdir -p docker\my_ubuntu\mount 
   # create ubuntu container from image 
-4. docker create --mount type=bind,source=/Users/mark/docker/my_ubuntu/mount,target=/mysql  -p 3306:3306 -it --name my_ubuntu ubuntu
-5. docker create --mount type=bind,source=c:\Users\mark\docker\my_ubuntu\mount,target=/mysql -p 3306:3306 -it --name my_ubuntu ubuntu
+---- IGNORE 4. docker create --mount type=bind,source=/Users/mark/docker/my_ubuntu/mount,target=/mysql  -p 3306:3306 -it --name my_ubuntu ubuntu
+5. docker create --mount type=bind,source=c:\Users\mark\docker\my_ubuntu\mount,target=/windows -p 3306:3306 -p 27017:27017 -it --name my_ubuntu ubuntu
   # start the container
 6. docker start my_ubuntu 
   # login to the container
@@ -40,12 +40,12 @@ Ubuntu commands
 
 
 apt-get update
-apt-get install emacs lsb-core wget sudo python-mysqldb openssh-server
+apt-get -y install emacs lsb-core wget sudo python-mysqldb openssh-server
 ####### put int ap-tget command for percona 5.6
 wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
 sudo dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
 sudo apt-get update
-sudo apt-get install percona-server-server-5.7
+sudo apt-get -y install percona-server-server-5.7
 
 # decide a root password that is simple
 # you will have to enter it twice
@@ -53,6 +53,37 @@ sudo apt-get install percona-server-server-5.7
 service mysql start
 mysql -u root -p # it will ask for the password
 sudo apt-get install python-mysqldb
+
+service mysql restart
+mysql -e "CREATE FUNCTION fnv1a_64 RETURNS INTEGER SONAME 'libfnv1a_udf.so'" -u root -proot
+mysql -e "CREATE FUNCTION fnv_64 RETURNS INTEGER SONAME 'libfnv_udf.so'" -uroot -proot
+mysql -e "CREATE FUNCTION murmur_hash RETURNS INTEGER SONAME 'libmurmur_udf.so'" -u root -proot
+
+
+#mongo 4.2
+sudo apt-get -y install gnupg
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+
+# we are ubuntu 18.4
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+sudo apt-get update
+apt-get install apt-utils
+
+sudo apt-get install -y mongodb-org=4.2.3 mongodb-org-server=4.2.3 mongodb-org-shell=4.2.3 mongodb-org-mongos=4.2.3 mongodb-org-tools=4.2.3
+cd /etc/init.d
+wget https://raw.githubusercontent.com/mongodb/mongo/master/debian/init.d -O mongod
+chmod 755 mongod
+
+# It is stupid now we can't make small databases
+#We will have to abadon wiredtiger. 
+
+We will put this in mongo.conf later in various scritps. 
+# storage.wiredTiger.engineConfig.cacheSizeGB = 0.25
+
+mongo --quiet --eval ' db.adminCommand( { setParameter: 1, maxIndexBuildMemoryUsageMegabytes : 50 } ) '
+# db.adminCommand( { setParameter: 1, maxIndexBuildMemoryUsageMegabytes : 50 } )
+
+service mongod restart
 
 
 Other issues
