@@ -1,0 +1,11 @@
+
+$m_options=" --oplogSize 50 --replSet r --bind_ip 127.0.0.1 --wiredTigerDirectoryForIndexes --wiredTigerMaxCacheOverflowFileSizeGB=50 "
+
+# --wiredTigerDirectoryForIndexes we want indexes to be separate from data
+# --wiredTigerMaxCacheOverflowFileSizeGB=50 We want to use the minmal
+# --wiredTigerCacheSizeGB 0.25 We want to use minmal memory. 
+
+# dont forget to reduce memory for making inxdexes.
+# mongo --quiet --eval ' db.adminCommand( { setParameter: 1, maxIndexBuildMemoryUsageMegabytes : 50 } ) '
+
+#--replSet might change with shards or more than one replset. 

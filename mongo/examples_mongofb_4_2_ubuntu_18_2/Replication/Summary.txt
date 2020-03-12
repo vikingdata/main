@@ -1,0 +1,4 @@
+
+1. Repl1.txt
+   a. setup replication with 3 nodes. 
+   b. remove and add nodes. 
