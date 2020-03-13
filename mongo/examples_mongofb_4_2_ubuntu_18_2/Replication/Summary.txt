@@ -1,4 +1,8 @@
 
 1. Repl1.txt
    a. setup replication with 3 nodes. 
-   b. remove and add nodes. 
+   b. remove and add nodes.
+   c. Stepdown the Primary and stewp back. Set the priority levels.
+
+
+
