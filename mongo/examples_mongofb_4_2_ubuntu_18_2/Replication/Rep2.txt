@@ -1,0 +1,97 @@
+
+
+   # Run Repl.txt first.  
+   # We are going to make a 6 cluster, with a non failover slave, arbiter, and hidden
+
+rm -rf  mongo/d4 momgo/d5 mongo/d6 
+mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/d4 mongo/d5 mongo/d6 mongo/logs
+
+mongod_options=" --oplogSize 50 --replSet r --bind_ip 127.0.0.1 --wiredTigerDirectoryForIndexes --wiredTigerMaxCacheOverflowFileSizeGB=50 "
+
+mongod_options4="  $mongod_options  --dbpath mongo/d4 --port 3001"
+mongod_options5="  $mongod_options  --dbpath mongo/d5 --port 3002"
+mongod_options6="  $mongod_options  --dbpath mongo/d6 --port 3003"
+
+   # Start the arbiter and hidden servers.
+   # d4 is a non failover sceondary, d5 is arbiter, d6 is hidden 
+echo "starting mongo 4, 5, 6"
+mongod $mongod_options4 > mongo/logs/4.log 2>&1  &
+mongod $mongod_options5 > mongo/logs/5.log 2>&1  &
+mongod $mongod_options6 > mongo/logs/6.log 2>&1  &
+sleep 5
+
+echo "Adding secondary priority 0 , an arbiter, and delay"
+   # Add the non failover secondary, arbiter, and hidden with delay.
+mongo --port 3001 --eval "rs.add({ host: 'localhost:3004', priority: 0})"
+sleep 1
+mongo --port 3001 --eval "rs.addArb('localhost:3005')"
+sleep 1
+mongo --port 3001 --eval "rs.add({ host: 'localhost:3006', hidden: 0, priority: 0, "slaveDelay" : 10 })"
+sleep 3
+mongo --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+sleep 1
+
+
+echo "Adding data"
+  # Lets add some data. 
+echo "
+function fillData() { 
+    db = db.getSiblingDB('test')
+    db.no.insert({valiue: 1});
+    db.no.drop();
+
+    for( var i = 0; i < 1000; i++ ) {
+        db.no.insert( {value: i } );
+    }
+}
+fillData()
+" > mongo/fill.js
+
+mongo --port 3001 mongo/fill.js
+
+  # Should be 1000 entries
+mongo  --quiet --port 3001 --eval "db.no.count()" test
+
+  # Make it so we can connect to the secondaries for reads. 
+  # We won't affect 2, will will make it so 3,4 and 6 are readable
+  # 2 should not be readable.
+  # We will issue the same command to the arbiter for fun to see what happens. 
+  # In theory the command will work on the arbiter, but means nothing
+
+  # This should fail
+mongo --quiet --port 3002 --eval "db.no.count()" test
+  # This should work
+mongo --quiet --port 3003 --eval "rs.slaveOk(); db.no.count()" test
+  # This should work
+mongo --quiet --port 3004 --eval "rs.slaveOk(); db.no.count()" test
+  # This should fail
+mongo --quiet --port 3005 --eval "rs.slaveOk(); db.no.count()" test
+
+
+  # Refill the data.
+mongo --quiet --port 3001 --eval "rs.slaveOk(); db.dropDatabase()" test
+sleep 10
+mongo --quiet --port 3001 mongo/fill.js
+  # What there's no data?
+mongo --quiet --port 3006 --eval "rs.slaveOk(); db.no.count()" test
+sleep 11
+  # There it is. It is delayed, remember?
+mongo --quiet --port 3006 --eval "rs.slaveOk(); db.no.count()" test
+
+echo "Redoing votes. Priority 0 has no votes if ou change priority."
+echo "Setting write concern, 
+echo "
+cfg = rs.conf();
+cfg.members[0].votes = 10;
+cfg.members[1].priority = 5;
+cfg.members[2].priority = 2;
+cfg.settings.getLastErrorDefaults = { w: "majority", wtimeout: 5000 }
+rs.reconfig(cfg);
+" >> mongo/reconfig.js
+
+cat mongo/reconfig.js | mongo --port 3001
+mongo --port 3001 --eval "rs.conf()" | egrep 'host|priority|vote'
+
+echo "NOTE CLient sets read preference: db.getMongo().setReadPref('secondary')"
+echo "NOTE: Client defineds write concern: db.test.doc1.insert({ item: "thing},{ writeConcern: { w: "majority" , wtimeout: 5000 } } )
+)
