@@ -1,0 +1,31 @@
+
+This is just an overview to describe the setup.
+In this directory will be notes how to setup ops manager, ansible, AWS,
+
+
+1. 4 OPS Managers
+   a.master, dev, qa, prod
+   b. Use? Automation, Backups, and Monitoring
+
+2. Automation: Jenkins, Ansible, Redt API, and Python scripts
+   a. NOTE: Ansible is written in Python and the REST API can use Python.
+     So one main programming language.
+
+3. Security
+   a. LDAP, SSL, Kerberos, etc. Some Sys Admin work involved here. 
+   b. You should use encryption at rest
+   c. Auditing would be nice.
+
+The directories here should be:
+servers
+  opsmanager
+    For purposes you may not use ops manager because it is for
+    backups, monitoring, and it can be taken care of in other
+    ways. Have ansible make nagios alarms and cronjobs for backups. 
+  ansible
+    ubuntu
+    mongo
+  jenkins CI/CD
+  apache Spark -- read data from mongo to perform actions
+    This one will be last. 
+and thee directories will contain config, howto docs, and code.
