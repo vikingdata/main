@@ -2,6 +2,15 @@
    # Run Repl.txt first.  
    # We are going to make a 6 cluster, with a non failover slave, arbiter, and hidden
 
+echo " You may want to
+apt-get install python2
+apt install python2.7 python-pip
+apt-get install python-mysqldb
+python -m easy_install pymongo
+
+
+"
+
 mongod_options=" --oplogSize 50 --replSet r --bind_ip 127.0.0.1 --wiredTigerDirectoryForIndexes --wiredTigerMaxCacheOverflowFileSizeGB=50 "
 
 mongod_options1="  $mongod_options  --dbpath mongo/d1 --port 3001"
