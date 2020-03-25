@@ -12,33 +12,34 @@
    e. SlaveOk
    e. read preference and example
 
-   
-
-3. Repl3.txt
+3. Rep3.txt
    1. Mongo client
    2. pymongo
    3. ssl or tsl
 
-4. Repl4.txt
+4. Rep4.txt
    1. Client side functions
    2. Server side fucntions
 
-5. Shard1.txt
+5. Shard.txt
    1. Setup Shard
    2. Add 2nd shard
    3. Add 3rd Zone shard
    4. Balance shards and disribute by zone
 
+TODO 6. Rep5.txt
+        a.SSL/TSL
+     	b. encryoption at rest
+	c. Other security
+	d. Compression
+	e. Pipline in bash and python
+	f. validator
+	g. Different indexes, Spare, Partial,Text, Hash, and GeoSpatial,
+	h. encrypted backups ---- and with gpg
 
 TODO subjects
-encryption at rest,
-encryption on the wire,
-indexes More indexes:Spare, Partial,Text, Hash, and GeoSpatial,
 slow logs, analyzing slow logs ---hint adn explain, engines and using them,
 views, BI connector, time to live, table reference,
 Setup mongodrdl to create a definition drdl for mongosqld,
-validator
-pipeline
-encrpyed backups
-compressions
+
 
