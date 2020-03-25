@@ -10,12 +10,12 @@
    c. hidden
    d. Setting priorities and votes.
    e. SlaveOk
-   e. read preference and example
-
+   e. read preference versus SlaveOk
+   
 3. Rep3.txt
    1. Mongo client
    2. pymongo
-   3. ssl or tsl
+y
 
 4. Rep4.txt
    1. Client side functions
