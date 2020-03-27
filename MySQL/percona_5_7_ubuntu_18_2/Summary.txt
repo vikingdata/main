@@ -6,6 +6,12 @@
    c. NDB Cluster
    d. delay, hidden, other slave options
    e. GTID
+   f. Slave Delayed
+   g. Write
+   h, Mutil Channel: Source
+   i. Group Replication.
+   j. semi-synchronous: Should have 2nd master dedicated.
+   i. rewrites
 
 2. Sharding
    a. Software
