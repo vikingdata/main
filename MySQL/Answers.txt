@@ -1,0 +1,99 @@
+
+Settings.
+
+1. How much innodb buffer pool should be set? ANSWER: 75% of memory.
+   People say %80 but I have seen where systems need the 5%
+
+2. What should the size of my various buffers be for connections?
+
+3. Always assign a server-id to the servers.
+
+4. What should my backup rentation policy be?
+  a. backup binlogs for 30 days. or your choice. 
+  b. Daily backup of Slave.
+     1. How long and if you want to keep them and if you want to do diff backps is your choice.
+  c. Schema and data compare the Master and Slave once a month.
+  d. Backup from a Slave.
+  e. Record the binlog position of the slave and its master so you can connect to either.
+
+5. What should be my high availability?
+  a. Use a product like MHA which can redo all the slave positions if a Master Fails.
+  b. TODO: list others here.
+
+6. What types of Sharding is good?
+  a. The web sharding from oracle sucks.
+  b. ProxySQL is good.
+  d. SOFTWARE: Shard databases by mod like 32 databases with mod 32 of a key hash is good
+      and put mutiple databases on a server. Need more space, divide the no of databases
+      by 2 a ove them to new servers. A single database and table should record
+      which servers have which database. 
+  e. SOFTWARE: One database server has a table which lists of ID of the customer and
+      which server they are one.
+      1. Add new servers and which servers can accept new customers.
+      2. Which tables can be trimmed by date in the databases.
+      3. Be able to lock and move one customer at a time from one server to another. 
+
+7. What locks, mutexes, and semaphores should be be concerned about?
+
+8. How do I detect locks, mutexs, andsemaphores causing problems?
+
+9. What are drawbacks for not having a primary key on a table?
+
+10. What should some misc config items be:
+    a. For temporary tables, set max_heap_table_size and tmp_table_size to the size
+       your queries will need.
+
+11. What are danger sizes of having a high tmp table size or other problems with
+    temp tables.
+    a.If 100 connections used 100 megs for temp tables, then 100*100megs will get used
+      up in memory if every connection needs it.
+    b. It still maybe be true, if you have varchar(1000) and only 1 byte in each row,
+       temp tables will assing 1000 bytes for that row regardless. Eat up lots of ram.
+
+12. use innodb_file_per_table
+
+13. innodb_log_file_size should be 1 gig and have 4 files.
+    a. Check by global variables or show engine innodb status these files are mostly
+       empty. TODO: which global variables.
+
+14. Misc config:
+    a. Set Linux swapiness to 0 but still have swap space.
+    b. innodb_write_io_threads and innodb_read_io_threads defaults are okay, but you might
+       want to test increasing them. If the innodb logs are filling up, increase
+       innodb_purge_threads
+    c. The no of tables should be may less then open files or table_cache.
+
+15. How do I tell ifIo is an issue?
+    1. iostats
+    2. show innodb status (innodb logs filling up)
+    3. All queries are effcient, very few slow queries, but you still have lots of queries
+       second or more for less than  rows of data each.
+    4. in Show proesslist, you see connections 1 second or more in a bad state like:
+        Analyzing for MySIAM tables, freeing items (shouldnt see this, it quick),
+	init (should be very quick), Opening tables, statistics, and many more.
+
+
+
+
+Nagios alarms:
+1. Replication alarm should check the master status and slave status.
+Master and slave on differnet files:  3 crits.
+Master and Slave on the same posiion (give it a buffer for warnings
+ and a buffer for crits): 3 warnings before 3 crits.
+
+2. What should my diskspace alarm be? 70% for warning. Which means you should
+have enough time to get more space. %80 for crit.
+
+3. What else should I check?
+  a. connectios not getting close to max connections.
+  b. Buffer for new connections is good.
+  c. Innodb logs are filling up.
+  d. Processes look good. No locked queries. No more than one long running query,
+      0r 10 queries above 1 second, or 5 above 5 seconds, or 2 about 30. No queries
+      in bad states.
+      1. TODO: list out bad states. 
+  e. Write adn read activity
+  f. selects, deletes, insert, updates and others should be checked on.
+  g. Lots of graphing products make charts, and you may want to make alarms on critical
+     lines on the charts.,
+     

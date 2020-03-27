@@ -1,0 +1,15 @@
+1. Get total space, and by database, and by table used inside MySQL.
+
+
+
+2. Get the innodb Hit ratio. 99% means selects are hitting ram rather than diskspace
+   which adds to IO.
+
+
+3. How much memory should I allocate to M memory patitions given N amount of memory?
+
+
+
+4. What should my read, write, and purge io be?
+
+
