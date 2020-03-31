@@ -55,3 +55,54 @@
    b. Binary
    c. xtrabackup 
    d. other options == maybe
+
+8. HA
+   a. MHA - setup.
+   b. Percona Replication Manager
+   c. ProxySQL 2.0
+
+9. Percona tools -- setup and use
+  a. Percona Tools
+  b. xtrabackup
+  c. Replicaiton Manager
+  d. slow query reports ---???
+  e. pt-config-diff
+  f. pt-index-usage – runs explain on queries from a slow log. 
+  g. pt-online-schema-change
+  h. pt-query-digest
+  i. pt-table-sync
+
+10. Performace
+  a. Performance Schema
+  b. Slow logs
+  c. Global status
+  d. benchmark function
+  e, show pofile ---being moved to perforemance schema.
+
+11. Stupid things asked in Interiews you almost never need to explain in real life
+  a. N-th normalization explained
+  b. Locks, Mutexs, Semaphores, s-lockm x-lock
+  c. Fastest lookup, reverse index or max(id) limit 1.
+  d.
+
+12. Most important mysql porgrams
+https://dev.mysql.com/doc/refman/8.0/en/programs-overview.html
+  a. mysqlpump  – fast dumping of databases in parallel. 5.7
+  b. mysqldump
+  c. mysqlslap
+  d. mysqlsh – upgrade to mysql client to allow javacript, python, and document store. 
+  e. mysqlbinlog – look at binglog or relay logs and convert row level replication to sql commands. 
+  f. mysqldumpslow – to look at slow files
+    give examples here and compare to percona
+  g. mysql_secure_installation – simple program to lock down simple account settings. 
+  h. mysql_ssl_rsa_setup --- setup ssl and rsa files for secure communications
+  i. mysql_upgrade – check and upgrade tables
+  j. mysql_config_editor – manage logins with .mylogin.cnf and hides passwords
+
+13. Other Topics
+  a. Import and import Innodb Tables
+  b. Export and Export Innodb Tables
+  c. Sending backups through pipe to remote site.
+  d. Cache -- redis and memcache
+  e. Indexes  --- invisible, spatial b-tree, hash, multi-column  , primary and unique,
+      foriegn keys, reversed 

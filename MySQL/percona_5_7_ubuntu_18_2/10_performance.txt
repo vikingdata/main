@@ -1,0 +1,15 @@
+Performance
+
+WARNING: Need to test these queries. 
+
+Performance schema
+  1. Useless indexes:
+     select object_schema, object_name, index_name
+        from table_io_waits_summary_by_index_usage
+        where  index_name is not null null and
+	  countr_star = 0
+	order by object_schema, object_name
+	  and object_schema not in
+	    ['mysql','performances_information', 'schema_information');
+
+  2. 
