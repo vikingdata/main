@@ -78,12 +78,17 @@
   c. Global status
   d. benchmark function
   e, show pofile ---being moved to perforemance schema.
+  f. Fastest lookup, reverse index or max(id) limit 1. and reverse indexes.
+  
 
-11. Stupid things asked in Interiews you almost never need to explain in real life
-  a. N-th normalization explained
-  b. Locks, Mutexs, Semaphores, s-lockm x-lock
-  c. Fastest lookup, reverse index or max(id) limit 1.
-  d.
+11.  Locks, Mutexs, Semaphores
+  a. Locks, Mutexs, Semaphores, s-lockm x-lock
+  b. s-lock, x-lockFastest lookup
+  c. Detecting all locks
+  d. Performance Schema and locks
+  e. Links
+
+
 
 12. Most important mysql porgrams
 https://dev.mysql.com/doc/refman/8.0/en/programs-overview.html
