@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>MySQL connect and tasks</title>
+  </head>
+  <body>
+    <p>MySQL console connection and tasks</p>
+    <p><br>
+    </p>
+    <h1>Tickets</h1>
+    <ul>
+      <li>Commands are all replicated by default UNLESS it it stated no
+        replication should be used. </li>
+      <li>Which servers data or accounts should be on. </li>
+      <ul>
+        <li>Note replication may take care of getting data to other servers. </li>
+      </ul>
+      <li>which databases to connect to</li>
+      <li>each database has its own file or files to source</li>
+      <ul>
+        <li>No code should be in a ticket except in attached files. </li>
+      </ul>
+      <li>If it is creation of an account:</li>
+      <ul>
+        <li>A File can be skipped. </li>
+        <li>Username must be identifiable. </li>
+        <li>Permissions must be stated ir understood by policy.</li>
+      </ul>
+    </ul>
+    <p><br>
+    </p>
+    <h1>Doing tickets</h1>
+    <ul>
+      <br>
+      <ul>
+      </ul>
+      <li>&nbsp;Check all servers are in working order and replication is good.
+      </li>
+    </ul>
+    <ul>
+      <li>Start Ticket:</li>
+      <ul>
+        <li>Start screen or tux</li>
+      </ul>
+      <ul>
+        <ul>
+          <li>for screen, name the screen: screen -S mark</li>
+        </ul>
+        <li>Change to ticker directory</li>
+        <ul>
+          <li>cd TICKETS</li>
+        </ul>
+        <li>Make a directory for this ticket and cd to it</li>
+        <ul>
+          <li>mkdir ticket50; cd ticket50</li>
+        </ul>
+        <li>Put all files you need to source in here and uncompress it if
+          necessary</li>
+        <ul>
+          <li>scp sourceserver:account1.sql .</li>
+          <li>scp sourceserver:commands.sql.gz .</li>
+          <ul>
+            <li>guzip commands.sql.gz</li>
+          </ul>
+        </ul>
+      </ul>
+      <ul>
+        <li>Connect with mysql.</li>
+      </ul>
+      <ul>
+        <ul>
+          <li>Use ~/.my.cnf to store password. </li>
+        </ul>
+        <ul>
+          <ul>
+            <li>Or export a variable for the password. </li>
+          </ul>
+          <ul>
+            <ul>
+              <li>export MYPASS='badpassword'</li>
+            </ul>
+          </ul>
+        </ul>
+        <ul>
+          <li>Always connect to an existing database. </li>
+        </ul>
+        <ul>
+          <ul>
+            <li>mysql -u root -p$MYPASSWD mysql -e "show databases"</li>
+          </ul>
+        </ul>
+        <ul>
+          <li>Connection example:</li>
+        </ul>
+        <ul>
+          <ul>
+            <li>mysql -v-v-v --comments -u root -p$MYPASS database1</li>
+          </ul>
+        </ul>
+        <ul>
+          <li>Connect to turn on warnings, turn on log, change to working
+            database</li>
+        </ul>
+        <ul>
+          <ul>
+            <li>
+              <pre>\W 
+\T example.log
+use WORKINGDB; </pre>
+            </li>
+          </ul>
+          <li>Source files and check for errors one at a time</li>
+          <ul>
+            <li>OPTIONAL: If not replicated, make it so it won't replicate:</li>
+            <ul>
+              <li>set SQL_LOG_BIN=0;</li>
+            </ul>
+            <li>Check there is a "use DB" in the beginning of the script</li>
+            <li>OPIONAL: If this is not to be replicated, sql_log_bin should be
+              in the script. Check:</li>
+            <ul>
+              <li>set SQL_LOG_BIN=0;</li>
+            </ul>
+            <li>source file:</li>
+            <ul>
+              <li>source account.sql</li>
+            </ul>
+            <li>Switch to another screen or open up another connection and check
+              the log file</li>
+            <ul>
+              <li>grep -i err example.log</li>
+              <ul>
+                <li>look for any errors</li>
+              </ul>
+            </ul>
+            <li>If replication was used, check replication is still good for all
+              servers. </li>
+            <li>Repeat for other files. </li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+  </body>
+</html>
