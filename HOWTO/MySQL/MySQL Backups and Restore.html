@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>MySQL Backups and Restore</title>
+  </head>
+  <body>
+    <p>99% of backups involve mysqldump, percona hot inndbbackup, or snapshots.
+      This document explains advantages and disadvantageous of each. It is
+      HIGHLY important the backups can be restored when needed, or they are
+      useless. You must backup binlogs of the master, or the backup could be
+      useless. You must clean up backups. </p>
+    <h1>Various Links</h1>
+    <p>Read these links for further info. None of these links provide all the
+      backup methods. I am kinda of upset. Real world solutions tend to be
+      different under pressure. </p>
+    <ul>
+      <li>https://www.binlogic.io/blog/different-methods-of-mysql-backups/</li>
+      <li>https://dev.mysql.com/doc/refman/8.0/en/backup-types.html</li>
+      <li>https://severalnines.com/database-blog/mysql-backup-and-restore-best-practices</li>
+      <li>https://linuxize.com/post/how-to-back-up-and-restore-mysql-databases-with-mysqldump/</li>
+      <li>https://www.w3resource.com/mysql/mysql-backup-and-restore.php</li>
+      <li>https://www.percona.com/software/mysql-database/percona-xtrabackup</li>
+    </ul>
+    <h2><br>
+    </h2>
+    <h2>Backups binlogs</h2>
+    <ul>
+      <li>Backup binlogs every 15 minutes.</li>
+      <li>Flush the binlogs. </li>
+      <li>You just started with a new binlog, backup all binlogs EXCEPT the
+        newest one. </li>
+      <ul>
+        <li>Your backup should compare binlogs already present. </li>
+        <ul>
+          <li>"rsync -av -e ssh "with exclusion of newest binlog would be a
+            start. </li>
+        </ul>
+      </ul>
+      <li>Binlog file and index:</li>
+      <ul>
+        <li>(root@localhost:mysql.sock) [(none)]&gt; show global variables like
+          'log_bin_basename';<br>
+          | log_bin_basename | /var/lib/mysql/mysql-bin |</li>
+        <li>(root@localhost:mysql.sock) [(none)]&gt; show global variables like
+          'log_bin_index';<br>
+          | log_bin_index | /var/lib/mysql/mysql-bin.index |</li>
+        <ul>
+          <li>You might need to exclude the index in the rsync, If needed, you
+            can rebuild it later.</li>
+        </ul>
+      </ul>
+      <li>If you decide to have these binlogs on a 2nd server for replication:</li>
+      <ul>
+        <ul>
+          <li>shutdown mysql</li>
+          <li>rysnc all binlogs but the last</li>
+          <li>rebuild index file manually</li>
+          <li>start mysql</li>
+        </ul>
+      </ul>
+    </ul>
+    <h2>MySQLdump and restore</h2>
+    <ul>
+      <li>mysqldump --all-databases -u &lt;USER&gt; -p&lt;PASSWORD&gt; |
+        gzip&nbsp; &gt; /&lt;remote
+        mount&gt;/backups/mysql/server/&lt;date&gt;/&lt;name&gt;.tgz</li>
+      <li>RESTORE: guzip -d &lt;BACKUP FILE&gt; | mysql -u root
+        -p&lt;PASSWORD&gt;</li>
+      <ul>
+        <li>Note any errors on restore. </li>
+        <li>The restore will take a LONG time on big backups. There are ways to
+          make it go faster. </li>
+      </ul>
+    </ul>
+    <h2>Save to outfile</h2>
+    <ul>
+      <li>Save tables in databases to outfiles. </li>
+      <li>Restore data, building indexes later. </li>
+      <ul>
+        <li>If done right, it goes twice as fast as a mysqkdumo restore. </li>
+      </ul>
+    </ul>
+    <h2>Percona Hot Innodb Backup Install, use, and restore</h2>
+    <ul>
+      <li>Download :
+        https://www.percona.com/downloads/Percona-XtraBackup-LATEST/#</li>
+      <li>Install:
+        https://www.percona.com/doc/percona-xtrabackup/LATEST/installation.html</li>
+      <ul>
+        <li>Installing for your OS is up the user. Folllow instructions. </li>
+        <li>BEWARE: you might need an older version of the software for older
+          versions of mysql. </li>
+      </ul>
+      <li>Compressed backups</li>
+      <ul>
+        <li>link:
+https://www.percona.com/doc/percona-xtrabackup/LATEST/backup_scenarios/compressed_backup.html</li>
+        <li>&nbsp;xtrabackup --backup --compress --compress-threads=4
+          --target-dir=/data/compressed/</li>
+        <li>The advantage of doing this even though you have to apply logs
+          later, is you can compress it to a directory on an NFS parition or
+          remote partition directly which saves lots of IO, </li>
+      </ul>
+      <li>Compress restore</li>
+      <ul>
+        <li>It sucks but you have to uncompress and then apply logs</li>
+        <ul>
+          <li> xtrabackup --decompress --target-dir=/data/compressed/ </li>
+          <li> xtrabackup --prepare --target-dir=/data/compressed/ </li>
+        </ul>
+      </ul>
+      <li>Uncompressed</li>
+      <ul>
+        <li>Make backup.</li>
+        <li>Apply logs. </li>
+        <li>tar and zip everything to a file on NFS</li>
+        <ul>
+        </ul>
+      </ul>
+    </ul>
+    <h2>Snapshot and restore</h2>
+    <p>There are various types of snapshots. </p>
+    <ul>
+      <li>LVM snapshot</li>
+      <ul>
+        <li>Make sure there is enough diskspace to make a snapshot partition and
+          enough space for data changes t o occur while the backup is in
+          process.</li>
+        <li>Make snapshot.</li>
+        <li>Compress and backup offsite to enother server. </li>
+        <li>Remove snapshot. </li>
+        <li>Record in database the server, time, and the status of the backup. </li>
+        <li>Make documentation on the backup script, how to restore it, and how
+          to view the status of the snaphosts in the database. </li>
+        <li>Make an app or webpage which displays the status of the snaphots. </li>
+      </ul>
+      <li>Virtual snapshots. </li>
+      <ul>
+        <li>This totally depends on the virtual system setup. </li>
+        <li>For virtual systems, you can add paritions. </li>
+        <li>Follow similar steps as LVM backups, just you can add virtual
+          partitions to your system or you should be able to.</li>
+      </ul>
+    </ul>
+    <h2>Slave Copy</h2>
+    <ul>
+      <li>Backup</li>
+      <ul>
+        <li>stop slave</li>
+        <li>copy my.cnf and entire directory to a backup directory.</li>
+        <ul>
+          <li>I suggest compressing it by piping through gzip. </li>
+        </ul>
+      </ul>
+      <li>Restore</li>
+      <ul>
+        <li>Move or delete old data in data dir to another dir, if possible.
+          This is good in case of accidents </li>
+        <li>Uncompress if needed with my,cnf and restore to server, </li>
+      </ul>
+      <li>Comments</li>
+      <ul>
+        <li>This tends to be easiest way to make another slave if you don't use
+          snapshots. </li>
+        <li>Slave that you shut down must NOT be crucial to running while it is
+          being copied. </li>
+        <li>Perhaps make a snapshot? Read how to make snapshot correctly on a
+          running mysql server. </li>
+        <li>Change the server_id variable on new server. </li>
+      </ul>
+    </ul>
+  </body>
+</html>
