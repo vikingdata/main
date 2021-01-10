@@ -5,7 +5,7 @@
     <title>MySQL Backups and Restore</title>
   </head>
   <body>
-    <p>99% of backups involve mysqldump, percona hot inndbbackup, or snapshots.
+    <p>99% of backups involve mysqldump, percona hot innodbbackup, or snapshots.
       This document explains advantages and disadvantageous of each. It is
       HIGHLY important the backups can be restored when needed, or they are
       useless. You must backup binlogs of the master, or the backup could be
@@ -21,6 +21,7 @@
       <li>https://linuxize.com/post/how-to-back-up-and-restore-mysql-databases-with-mysqldump/</li>
       <li>https://www.w3resource.com/mysql/mysql-backup-and-restore.php</li>
       <li>https://www.percona.com/software/mysql-database/percona-xtrabackup</li>
+      <li>https://www.lullabot.com/articles/mysql-backups-using-lvm-snapshots</li>
     </ul>
     <h2><br>
     </h2>
@@ -78,11 +79,13 @@
       <li>Save tables in databases to outfiles. </li>
       <li>Restore data, building indexes later. </li>
       <ul>
-        <li>If done right, it goes twice as fast as a mysqkdumo restore. </li>
+        <li>If done right, it goes twice as fast as a mysqldump restore. </li>
       </ul>
     </ul>
     <h2>Percona Hot Innodb Backup Install, use, and restore</h2>
     <ul>
+      <li>You should restore this binary backup to the same version of MySQL.</li>
+      <li>Usin this tool is the most popular method. </li>
       <li>Download :
         https://www.percona.com/downloads/Percona-XtraBackup-LATEST/#</li>
       <li>Install:
@@ -100,7 +103,7 @@ https://www.percona.com/doc/percona-xtrabackup/LATEST/backup_scenarios/compresse
           --target-dir=/data/compressed/</li>
         <li>The advantage of doing this even though you have to apply logs
           later, is you can compress it to a directory on an NFS parition or
-          remote partition directly which saves lots of IO, </li>
+          remote partition directly which saves lots of IO.</li>
       </ul>
       <li>Compress restore</li>
       <ul>
@@ -120,20 +123,32 @@ https://www.percona.com/doc/percona-xtrabackup/LATEST/backup_scenarios/compresse
       </ul>
     </ul>
     <h2>Snapshot and restore</h2>
-    <p>There are various types of snapshots. </p>
+    <p>There are various types of snapshots.Snapshots are good for very very big
+      mysql installs but can cost a lot. </p>
     <ul>
       <li>LVM snapshot</li>
       <ul>
+        <li>NOTE: in the process of making the snapshot, if you connect to mysql
+          manually to do this, please sart screen or tux first. You have to
+          flush and lock mysql if you do not shut it down. </li>
         <li>Make sure there is enough diskspace to make a snapshot partition and
-          enough space for data changes t o occur while the backup is in
-          process.</li>
+          enough space for data changes to occur while the backup is in process.</li>
         <li>Make snapshot.</li>
-        <li>Compress and backup offsite to enother server. </li>
+        <ul>
+          <li>flush and lock mysql</li>
+          <li>create snapshot</li>
+          <li>unlock tables in mysql</li>
+          <li>All&nbsp; commands should be very quick. I recommend a Slave and a
+            spare Slave not taking on any prod queries. </li>
+        </ul>
+        <li>Compress and backup offsite to another server. </li>
         <li>Remove snapshot. </li>
         <li>Record in database the server, time, and the status of the backup. </li>
         <li>Make documentation on the backup script, how to restore it, and how
           to view the status of the snaphosts in the database. </li>
         <li>Make an app or webpage which displays the status of the snaphots. </li>
+        <li>You should restore this binary backup to the same version of MySQL.
+        </li>
       </ul>
       <li>Virtual snapshots. </li>
       <ul>
@@ -141,6 +156,7 @@ https://www.percona.com/doc/percona-xtrabackup/LATEST/backup_scenarios/compresse
         <li>For virtual systems, you can add paritions. </li>
         <li>Follow similar steps as LVM backups, just you can add virtual
           partitions to your system or you should be able to.</li>
+        <li>You should restore this binary backup to the same version of MySQL.</li>
       </ul>
     </ul>
     <h2>Slave Copy</h2>
@@ -168,6 +184,7 @@ https://www.percona.com/doc/percona-xtrabackup/LATEST/backup_scenarios/compresse
         <li>Perhaps make a snapshot? Read how to make snapshot correctly on a
           running mysql server. </li>
         <li>Change the server_id variable on new server. </li>
+        <li>You should restore this binary backup to the same version of MySQL.</li>
       </ul>
     </ul>
   </body>
