@@ -42,4 +42,6 @@ while IFS= read -r line; do
 done < $TMPDIR/gitdiff.txt
 
 git commit -m "ttt"
- 
+
+
+git push origin -u master
