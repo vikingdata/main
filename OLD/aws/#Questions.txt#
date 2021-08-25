@@ -1,0 +1,65 @@
+Links
+     https://aws.amazon.com/rds/aurora/faqs/
+     https://db-engines.com/en/system/Amazon+Aurora%3BMySQL
+     https://www.percona.com/blog/2018/07/17/when-should-i-use-amazon-aurora-and-when-should-i-use-rds-mysql/
+https://www.stratoscale.com/blog/dbaas/aurora-vs-rds/
+
+1. How is Aurora different from MySQL??
+  a. adaptive thread pool. Autora is better.
+  b. Online schema changes in Aurora. Transactional too. 
+  c. query cache in aurora is good. 
+  d. Claim upto 5 times faster.  
+  e. Auto scales.
+  f. HA and durabiliy automatic. Replicate  ways across 3 availability zones.
+     An Aurora Replica, failover 30 seconds, otherwise 15 minutes. 
+
+2. What else can auroa provide
+   Aurora Serverless -- meant for infrequent tempoary use. 
+   Aurora Parallel -- 2 orders of magnitude using many cpus. Transactional.
+   	  a. No cost. cost is reading data from storage layer. 
+   Aurora multi master - scale out, testing. 
+
+2. What engine difference is betweeen MySQL and Aurora.
+  a. 
+
+
+3. Expalain the normalizations. 
+   1st: no sub columns, everthing in columns
+   2nd: There is a key column, and non-key column depend on it
+   3rd: all columns in parent table are keys or foriegn keys
+
+
+4. Monitoring in RDS and Auraora
+  1. Cloudwatch
+     metrics -- view instance metrics
+     alarms --- watch a mretic over time and alarm on it
+     logs --- scan logs
+  2. Enhanced monitiring metrics -- a lot of goodies of the OS and MySQL.
+  3. amazon events -- like reboots, changes in variables. 
+  4. Database Logs file
+
+
+MySQL
+  A. OS tune parameters
+     1. copy this https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-performance/
+     	a. swapiness, xfs, noatime, io scheduler, numa
+
+
+  B. MySQL parameters
+     1. temp table : tempta ble_max_ram
+     2. innodb : isolation, unqie_checjk, autocmiit
+     3 copy this: https://www.percona.com/blog/2014/01/28/10-mysql-performance-tuning-settings-after-installation/
+
+   B2. on vm
+       1. avoid temp files, do not using disk cache
+
+  c. query iotimize
+
+
+   d. schema optimize
+
+
+   e.innodb versus myisqm
+   	    1. transactions
+	    2. row level locks
+	    3. MyISAM can be copied, innodb exported

@@ -1,0 +1,6 @@
+dbpath=/var/lib/mongodb_config1
+logpath=/var/log/mongodb/mongod_config1.log
+logappend=true
+port = 28001
+configsvr = 1
+profile = 1

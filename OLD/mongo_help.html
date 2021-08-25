@@ -1,0 +1,762 @@
+<html>
+<head>
+<meta name="google-site-verification" content="ALq7ZHlLuubscXnaAqoIdbA1_JzimtFT4HOZrPt9yrw" />
+
+<title>MEN Mongo Help</title>
+
+</head>
+
+<body>
+
+<a name=help_mongo></a>
+<h2>Mongo Help</h2>
+Also, I stored a lot of class notes, if you know where to look for them. 
+In preparation for the 2nd certification for mongodb, I am writing some stuff up. My stuff will always be free. 
+In time will contain how to do javascript functions in mongo client (you would put in on the server), 
+bash functions, setup replica set, setup a two replica set shard, populate a dummy document quickly, 
+add/remove/change indexes, aggregate function....
+<a href=/public/mongo target=learn>Mongo</a>
+<p>
+  Unless otherwise noted, this will in general be for 3.4, with 3.6 notes. 
+
+<ul>
+  <li>Simple BASH and Python scripts --- use these commands to find out simple info of your servers. 
+    <ul>
+      <li><a href='mongo_admin.html'>Useful admin commands</a>
+      <li>Connection status: Connections and what they are doing.
+      <li>Recent slow queries
+      <li>Page Faults
+      <li>Memory usage
+      <li>Replication status
+      <li>Database size (internal). 
+      </ul>
+
+  <li> Replication
+    <ol>
+      <li><a href=/public/mongo/Replication_setup1.txt target=learn>Replication_setup.txt</a>
+      <li><a href=/public/mongo/Sll.txt target=learn>Replication_setup.txt with SSL </a>. This is not ideal, but you can get the picture settting it up on localhost with self-signed certifcates. 
+      <li><a href=/public/mongo/Replication_setup2.txt target=learn> Replication part two.</a>
+    Look up arbiters, hidden members, priorities, etc.
+      <li><a href=/public/mongo/Replication3_pymongo.txt target=learn> Replication part three.</a> Mongo client and pymongo.
+      <li> <a href=/public/mongo/Replication4_Functions.txt target=learn>Client side and server side functions.</a> 
+      <br>Look at: <a href="https://docs.mongodb.com/manual/tutorial/store-javascript-function-on-server/">https://docs.mongodb.com/manual/tutorial/store-javascript-function-on-server/</a>
+
+    <li> <a href="/public/mongo/Replication_setup5.txt"  target=learn>Replication_setup5.txt</a> ReadPreference instead of slaveOk. TODO: write concerns and wtimeout, get last error one out of a 1000 times, and votes.  
+   </ol>
+<li> Sharding
+  <ol>
+   <li><a href=/public/mongo/Shard1.txt>Setup a basic shard</a> and move chunks, turn on the autro balancer and see how the data
+    moves berween the shards. 
+   <li><a href=/public/mongo/Shard_restore.txt>Shard_restore.txt</a>, This is a very illegal, well not illegal but discouraged, way to 
+    rename a shard entirely with new replica set for the config server. The data servers are not in replica sets, but it could be extended
+    for this. 3-8-2017 --- THERE IS NO DOCUMENTATION HOW TO DO THIS. I think I might write an article. I haven't completely checked this
+   yet, as I got it too work twice, and now I want a break and come back after a while with fresh eyes. 
+   <li><a href=/public/mongo/shard_configs> Create 2 shards</a> using config files. Has install program. TODO: needs run through a few times.  
+   <li><a href=/public/mongo/ShardZone.txt>Zones</a> with shards
+   <li><a href="https://www.mongodb.com/blog/post/tiered-storage-models-in-mongodb-optimizing">Automatic moving old data through zones</a>. Sharding that moves data by date from fast to slower systems. I won't show any example of this.  Basically shard by date. To archive, Stop balancer, split at date you want to archive, retag, and turn on balancer. It will then migrate the data for you. I need to find a way so you don't have to retag. 
+   <li>Sharding without sharding databases. why? Well first you must
+     move databases with movePrimary like <b>'db.runCommand( { movePrimary : "test", to : "shard0001" } )</b>' to another shard.
+     <ul>
+       <li> Put stuff in that database that isn't critical but could affect other collections. Like if you want to store
+     messages that are infrequently accessed but are huge. Log messages, etc.
+     You want to keep slow growing collections away from huge collections. The
+     problem with this is if you have a fast growing collection or its used
+     a lot, all the traffic is on one shard. That can be bad. 
+       <li> You have lots of small databases and want to keep them on one
+	 mongos so you leave all the databases unsharded and put them on
+	 different shards. 
+	 </ul>
+     <li> Sharding collections to specific shards? why? Well you might be able
+     to do tag aware and specify only certains shards will have a collection.
+     The problem with this is you'll have to tag aware every collection to keep
+     other collections off those shards.
+     The advantage is you can keep big collections
+     on their own shards. 
+  </ol>
+  
+<li>Queries
+
+  <ol>
+    <li>Queries<a href=mongo_queries.html> Queries  and Aggregation explained</a>.
+      <ol>
+	<li> Has examples to query scalar, numeric, lists, dictionaries and the pitfalls. 
+      </ol>	
+    <li>Cool query programming:
+      <pre>
+ 	// This prints with braces
+	db.p.find( {}, {city:1, _id:0}).sort({city:1})
+
+	//Just print the field with braces
+	var Y = db.p.find( {}, {city:1, _id:0}).sort({city:1});
+	while (Y.hasNext() ) { print (Y.next().name);  }
+
+        // or another way
+	var Z = db.p.find( {}, {city:1, _id:0}).sort({city:1});
+	Z.forEach(function (obj) {print (obj.name) } )
+	</pre>
+    <li> <a href="/public/base/">Base databases</a>. One for mongo and one for
+      mysql the SAMPLE database. <ul> 
+	<li>mongo :  <a href="/public/base/mongo.json.txt">mongo.json</a>
+	 <li>mysql :  <a href="/public/base/mysql.sql.txt">Mysql.sql</a>
+	 <li> mongo document embed :    <a href="/public/base/mongo_embed.json.txt">mongo_embed.json</a>
+   
+      </ul>
+    <li> Setup BI Connector
+      <ul>
+	<li> Download mongodrdl and mongosqld. <br><a href="https://docs.mongodb.com/bi-connector/master/installation/">https://docs.mongodb.com/bi-connector/master/installation/</a>
+
+	<li>Setup mongodrdl to create a definition drdl for mongosqld
+	  <br>mongodrdl --host localhost -d SAMPLE > sample.drdl 
+	<li> Use mongosqld to execute mysql queries to mongo. Default port 3307 connecting to default 3306. 
+	  <br> mongosqld --mongo-uri=mongodb://localhost --schema sample.drdl -vv --logPath=mongosqld.log &
+	<li> Comparing sql to mongo log to get the mongo query.
+	  <ul>
+	    <li>tail -f mongosqld.log
+	    <li> mysql --port 3307 --protocol tcp SAMPLE
+	    <li> Execute  QUERY: <pre>select l.first_label, l.second_label, c.color, sum(h.hits)
+		from label l
+		join label_color_hit h on (l.label_id = h.label_id)
+		join color c on (c.color_id = h.color_id)
+		group by l.first_label, l.second_label, c.color
+		order by l.first_label, l.second_label, c.color;
+	      </pre>
+	    <li>Answer:<pre>
++-------------+--------------+-------+-------------+
+| first_label | second_label | color | sum(h.hits) |
++-------------+--------------+-------+-------------+
+| a           | a            | red   |          11 |
+| a           | b            | green |          22 |
+| a           | c            | blue  |          33 |
+| b           | b            | red   |          44 |
+| b           | c            | green |          55 |
++-------------+--------------+-------+-------------+
+5 rows in set (0.01 sec)</pre>
+		<li> Look at tail of log file.
+	    <li> As we can see the mysql statement becomes in mongo:
+	      <br>MONGO:<pre>
+	MongoSource: '[color label_color_hit label]' (db: 'SAMPLE', collection: '[color label_color_hit label]') as '[c h l]':
+	{"$match":{"color_id":{"$ne":null}}},
+	{"$lookup":{"as":"__joined_h","foreignField":"color_id","from":"label_color_hit","localField":"color_id"}},
+	{"$unwind":{"path":"$__joined_h","preserveNullAndEmptyArrays":false}},
+	{"$match":{"__joined_h.label_id":{"$ne":null}}},
+	{"$lookup":{"as":"__joined_l","foreignField":"label_id","from":"label","localField":"__joined_h.label_id"}},
+	{"$unwind":{"path":"$__joined_l","preserveNullAndEmptyArrays":false}},
+	{"$group":{"_id":{"l_DOT_first_label":"$__joined_l.first_label","l_DOT_second_label":"$__joined_l.second_label","c_DOT_color":"$color"},"sum(h_DOT_hits)":{"$sum":"$__joined_h.hits"},"sum(h_DOT_hits)_count":{"$sum":{"$cond":[{"$eq":[{"$ifNull":["$__joined_h.hits",null]},null]},0,1]}}}},
+	{"$project":{"_id":0,"c_DOT_color":"$_id.c_DOT_color","l_DOT_first_label":"$_id.l_DOT_first_label","l_DOT_second_label":"$_id.l_DOT_second_label","sum(h_DOT_hits)":{"$cond":[{"$or":[{"$eq":[{"$ifNull":["$sum(h_DOT_hits)_count",null]},null]},{"$eq":["$sum(h_DOT_hits)_count",0]},{"$eq":["$sum(h_DOT_hits)_count",false]}]},{"$literal":null},"$sum(h_DOT_hits)"]}}},
+	{"$sort":{"l_DOT_first_label":1,"l_DOT_second_label":1,"c_DOT_color":1}},
+	{"$project":{"c_DOT_color":"$c_DOT_color","l_DOT_first_label":"$l_DOT_first_label","l_DOT_second_label":"$l_DOT_second_label","sum(h_DOT_hits)":"$sum(h_DOT_hits)"}}	      </pre>
+	    <li> Later, we will add some indexes to see this changes things. Also, we will look at the explain.   
+	    <li>In the mongo embedded documents, we would write it like this and there is no sql equivlent (though you might be able to add
+	      mongo command to the sql). You can see that this is much easier under certain circumstances. It depends on the architecture
+	      of your system and workflow. 
+	      <br>Mongo embed: TODO (hint its easier, also you can load the entire document in memory and work on the resuls there instead of
+	      letting the database figure stuff out). 
+	    <li> Now if you get confused below and you know SQL, you and try to write how the query should be in SQL
+	      and see what it thinks the mongo query should be.
+	    <li> In addition, you can add $match  commands to a mongo filter special option in the where portion of an sql query.
+	      See the documention.   
+	    <li> Also, for fun...., let's look at the embedded mongo json file. 
+	      <ul>
+		<li>Kill mongosqld
+		<li> mongodrdl --host localhost -d SAMPLE_embed > sample_embed.drdl
+		<li> mongosqld --mongo-uri=mongodb://localhost --schema sample_embed.drdl -vv --logPath=mongosqld.log2 &
+		<li>mysql --port 3307 --protocol tcp SAMPLE_embed
+		<li> execute in mysql: 'show tables'		  <pre>
+    MySQL [SAMPLE_embed]> show tables;
+    +------------------------+
+    | Tables_in_SAMPLE_embed |
+    +------------------------+
+    | label                  |
+    | label_hit_list         |
+    +------------------------+
+    2 rows in set (0.00 sec)		    </pre>
+		  <li>The 2nd table is the embedded document.
+		  <li>MySQL:<pre>
+      select l.first_label, l.second_label, lhl.`hit_list.color` as color , sum(lhl.`hit_list.hits`) as count 
+      from label l
+      join label_hit_list lhl on (l._id = lhl._id)
+      group by l.first_label, l.second_label, lhl.`hit_list.color`
+      order by l.first_label, l.second_label, lhl.`hit_list.color`;
+		    </pre>
+		  <li>output:<pre>
+      +-------------+--------------+-------+-------+
+      | first_label | second_label | color | count |
+      +-------------+--------------+-------+-------+
+      | a           | a            | red   |    11 |
+      | a           | b            | green |    22 |
+      | a           | c            | blue  |    33 |
+      | b           | b            | red   |    44 |
+      | b           | c            | green |    55 |
+      +-------------+--------------+-------+-------+		      </pre>
+		  <li>Mongo:<pre>
+      MongoSource: '[label_hit_list label]' (db: 'SAMPLE_embed', collection: '[label label]') as '[lhl l]':
+      {"$unwind":{"includeArrayIndex":"hit_list_idx","path":"$hit_list"}},
+      {"$group":{"_id":{"l_DOT_first_label":"$first_label","l_DOT_second_label":"$second_label","lhl_DOT_hit_list_DOT_color":"$hit_list.color"},"sum(lhl_DOT_hit_list_DOT_hits)":{"$sum":"$hit_list.hits"},"sum(lhl_DOT_hit_list_DOT_hits)_count":{"$sum":{"$cond":[{"$eq":[{"$ifNull":["$hit_list.hits",null]},null]},0,1]}}}},
+      {"$project":{"_id":0,"l_DOT_first_label":"$_id.l_DOT_first_label","l_DOT_second_label":"$_id.l_DOT_second_label","lhl_DOT_hit_list_DOT_color":"$_id.lhl_DOT_hit_list_DOT_color","sum(lhl_DOT_hit_list_DOT_hits)":{"$cond":[{"$or":[{"$eq":[{"$ifNull":["$sum(lhl_DOT_hit_list_DOT_hits)_count",null]},null]},{"$eq":["$sum(lhl_DOT_hit_list_DOT_hits)_count",0]},{"$eq":["$sum(lhl_DOT_hit_list_DOT_hits)_count",false]}]},{"$literal":null},"$sum(lhl_DOT_hit_list_DOT_hits)"]}}},
+      {"$sort":{"l_DOT_first_label":1,"l_DOT_second_label":1,"lhl_DOT_hit_list_DOT_color":1}},
+      {"$project":{"l_DOT_first_label":"$l_DOT_first_label","l_DOT_second_label":"$l_DOT_second_label","lhl_DOT_hit_list_DOT_color":"$lhl_DOT_hit_list_DOT_color","sum(lhl_DOT_hit_list_DOT_hits)":"$sum(lhl_DOT_hit_list_DOT_hits)"}}		    </pre>
+	      </ul>
+	  </ul>
+      </ul>
+    <li>T 2 tables on referencing the other
+    <li>T Indexes:unique, compound, array indexes and how to use them
+    <li>T More indexes: Time to live, 3rd table.
+    <li>T Hint and explain
+    <li>T More indexes:Spare, Partial,Text, Hash, and GeoSpatial
+    <li>T SQL to Mongo examples -- a lot of this is not explained well.
+      <br>T: Do the same with two mongo collections and $lookup
+      <br>Give example answers.
+      <br><a href="https://docs.mongodb.com/manual/reference/sql-aggregation-comparison/">SQL to Aggregation Mapping Chart</a>
+
+<li>T  Aggregation Pipeline
+<li>T Document validators :db.runCommand({  collMod: TBL, validator: {
+<li>T Views
+  </ol>
+<li>T Security and Encryption
+  <ul>
+    <li>T LDAP : what a pain..
+    <li>Log Redaction. Remove any client data from logs files. This is to protect sensitive user data. HINT: Put all the sensitive data
+        on its own server. 
+      What about op.log? 3 ways:
+      <ul>
+	<li>Put in in the config file for mongo:
+	  <pre>security:
+	    redactClientLogData: true</pre>
+	<li>start mongod with --redactClientLogData
+	<li>on the mongo client: db.adminCommand({setParameter : 1, redactClientLogData: 1})
+       <li> Note: must be done to all mongos or mongod. 
+      <li>Inserts will not be in system logs, update and other only show pattern without data. 
+      </ul>
+    <li>T Encrypted Storage Engine.
+      <li>T Encrypted Backups
+	
+  </ul>
+<li>Shard balancing is at most one chunk per pair of shards A to B. With WiredTiger you get less locks and more chunks moved at a given time
+  compared to just one with more locks in the old engine. 
+<li>T linearizable setting for queries.
+<li>T MongoDB Stitch
+<li>T Engines:Old, Wiredtiger, Encrypted, Memory (entrerprise)  
+<li><a href=/public/mongo/common target=common> Common tasks<a/> 
+<li>T Aggregate functions: Populate data and analyze. 
+<li>T Feed data to other systems. 
+<LI>T Write concerns and read preference, and secondaries cross data centers
+  and non failover secondaries. 
+  Read local and write global. 
+<li>Mongod 3.4 stuff, ldap, graphlookup, collation : the free mongo have ops manager capabilities -- yes? Role-Based-Access-Control
+  <ul>
+    <li>The new decimal type in 3.4 cannot be used in 3.2 if you downgrade later and have it.
+    <li>  n = NumberDeicmal(111.1111) is treated the same as n2 = NumberDecimal("111.111") in Mongo but javascript thinks they are different. 
+    <li>If you where storing in cents like 10330 = 10.330 as int or string, convert with this<pre>
+	db.p.find({ p1 : { $exists: true}}).froeach(functin(d) {
+	d.pd = NumberDecimal(d.p/100);
+	delete (d.p1);
+	db.p.save.(d);  
+
+          // or just update it
+	pd = NumberDecimal(d.p/100);
+	db.p.update({_id : d._id}, {$set: {pd: pd}})  # update where the _id matches, do a set.       
+
+	// or if a string with a decimal in it like "10.230"
+	d.pd = NumberDecimal(d.p/100);
+	delete (d.p);
+	db.p.save.(d);  
+	}
+
+	// another useful complicated query which saves resources in bulk
+	// if string do this.....
+	ups = []
+	db.p.find({p1: {"$type": "string"}).forEach (function(d1) {ups.push({"replaceOne": {"filter": {_id: d1._id}, "replacement": {"$set": {"$price" : NumerDecimal(d1.p1)}}}          })
+ 	});
+	db.p.bulkWrite(ups)
+        // If int do this
+	db.p.updateMany({p1: {"$type": "int"}}, {"$mul": { p1: NumberDecimal(0.001) }});
+	
+      </pre>
+  </ul>
+<li> Compression
+  <ul>
+    <li>Storage engine
+    <li>Initial Sync
+     <li>Over the wire: Replia sets can use compression. Software cannot use it yet. Uses Snappy compression.
+  </ul>
+<li> Validatiom (mongo 3.2) rules to enforce structure. 
+
+<li>  Mongo 3.6 features
+  <ol>
+<li>TODO 
+
+    </ol>
+  
+<li>Exam preparation for developers certificate. I did the DBA one in 2016. If I get recertified in that I will make one again for it. It is for Mongo 3.4.
+  <ol>
+    <li> TODO 
+    </ol>
+
+<li>PyMongo
+  <ul>
+    <li>Simple things in this list -- I have used Pymongo for years. Just some things to note for beginners. 
+    <li> doc = coll.find_one() --- slight change sometimes compare to the mongo shell. 
+    <li>All strings must be quoted.
+    <li> All $ variables need to be quoted. 
+    <li>Examples of pymongo commands. <pre>
+	cursor = stuff.find().skip(5).limit(10).sort([('people', pymongo.DESCENDING)])
+
+	</pre>
+  </ul>
+
+<li>Mongo version upgrades
+  <ul> <a href="https://docs.mongodb.com/manual/release-notes/3.2/">Mongo 3.2</a>
+    <li>Partial Indexes. This is replaced by another index type in 3.4. 
+    <li>Document validation: This is highly significiant.
+    <li>Lots of Aggregation improvements, the most important being $lookup which does joins, and also Accumulator Expression Availability in the $project stage.   
+    <li>Encrypted engine in exterprise edition. 
+    <li>In memory storage engine in enterprise edition.
+    <li>Uses SpiderMonkey JavaScript Engine.
+    <li>Bulk insert, update, delete commands.
+  </ul>
+  <ul>Mongo 3.4
+    <li>config servers are replica sets.
+    <li>Shard zones
+    <li> decimal type
+    <li> date type
+    <li> bi connector, compass, spark connector, etc. 
+    <li>Type operator
+    <li>Collatons
+    <li>Views
+      <li>Security auth and connection
+    <li>Aggregation improvements, buckets, facets  
+    <li>currentop enhacements
+      <li>mongoreplay
+  </ul>
+  <ul>Mongo 3.6
+    <LI>chand streams -- triggers and actions based onevents.
+    <li> mongo compass
+    <li>retryable writesl
+    <li>tunablke consistency
+    <li>$exprt capabilities to issue sql queries.
+    <li>ned to end comprssion
+    <li>schema validation updates. 
+    <li>R driver fo mongo.
+      <li>Other improvements across the board. 
+  </ul>
+</ul>
+
+<hr>
+<h2>Mongo in the cloud</h2>
+<ul>
+  <li> T Getting
+  <li>T Atlas
+  <li>T OPS manager
+    <ul>
+      <li>T Continuous backups
+      <li>T Graphs
+      <li>T Alarms
+      <li>T Installation of systms
+    </ul>
+  <li>T Compass --GUI replacement for mongo shell. 
+    <ul>
+      <li>T Performance
+	<li>Viewing and modifying data
+      <li>T schema innfo
+      <li>T explain info
+      <li>T Validation
+	<li>T Indexes
+      </ul>
+  <li> Other Cloud
+    <ul>
+      <li> Mongo and google
+      <li>Mongo and ms
+      <li>T Mongo and AWS
+    </ul>
+</ul>
+
+<hr>
+Mongo links
+<ul>
+<li><a target=link href=https://docs.mongodb.com/v3.4/administration/strategy/>https://docs.mongodb.com/v3.4/administration/strategy/</a>
+<li><a target=link href=https://docs.mongodb.com/manual/reference/command/nav-administration/>https://docs.mongodb.com/manual/reference/command/nav-administration/</a>
+<li><a target=link href=http://www.databasejournal.com/sqletc/article.php/3908591/Administering-MongoDB.htm>http://www.databasejournal.com/sqletc/article.php/3908591/Administering-MongoDB.htm</a> -- I find the books not useful. 
+<li><a href="https://docs.mongodb.com/manual/meta/aggregation-quick-reference/">https://docs.mongodb.com/manual/meta/aggregation-quick-reference/</a>
+
+<li><a href="https://dzone.com/articles/mongodb-pit-backups-in-depth">https://dzone.com/articles/mongodb-pit-backups-in-depth</a>
+
+<li><a href="https://dzone.com/articles/mongodb-pit-backups-part-2">https://dzone.com/articles/mongodb-pit-backups-part-2</a>
+
+<li>Good mongo videos
+  <ul>
+    <li><a href="https://www.percona.com/blog/2017/11/22/mongodb-3-6-change-streams-nest-temperature-fan-control-use-case/">https://www.percona.com/blog/2017/11/22/mongodb-3-6-change-streams-nest-temperature-fan-control-use-case/</a>
+
+  <li><a href="https://explore.mongodb.com/vidyard-all-players/eliot-horowitz">https://explore.mongodb.com/vidyard-all-players/eliot-horowitz</a>
+
+  <li><a href="https://www.slideshare.net/mongodb/mongodb-for-time-series-data-part-3-sharding">https://www.slideshare.net/mongodb/mongodb-for-time-series-data-part-3-sharding</a>
+
+    <li><a href="https://www.slideshare.net/Severalnines/mongo-db-monitoring-become-a-mongodb-dba">https://www.slideshare.net/Severalnines/mongo-db-monitoring-become-a-mongodb-dba</a>
+
+    </ul>
+<li>Good percona links
+  <ul>
+    <li><a href="https://www.percona.com/blog/2017/10/16/when-should-i-enable-mongodb-sharding/">https://www.percona.com/blog/2017/10/16/when-should-i-enable-mongodb-sharding/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/07/25/mongodb-consistent-backups/">https://www.percona.com/blog/2016/07/25/mongodb-consistent-backups/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/12/16/mongodb-pit-backups-in-depth/">https://www.percona.com/blog/2016/12/16/mongodb-pit-backups-in-depth/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/01/09/mongodb-pit-backups-part-2/">https://www.percona.com/blog/2017/01/09/mongodb-pit-backups-part-2/</a>
+
+    <li>MUST HAVE: <a href="https://github.com/Percona-Lab/mongodb_consistent_backup">https://github.com/Percona-Lab/mongodb_consistent_backup</a>
+
+    <LI>I wonder why we use the default Mongo: <br><a href="https://www.percona.com/doc/percona-server-for-mongodb/LATEST/comparison.html">https://www.percona.com/doc/percona-server-for-mongodb/LATEST/comparison.html</a>
+
+    <li><a href="https://www.percona.com/blog/2016/11/14/mongodb-and-mysql-mongodb-through-mysql-lens/">https://www.percona.com/blog/2016/11/14/mongodb-and-mysql-mongodb-through-mysql-lens/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/01/04/mongodb-3-4-sharding-improvements/">https://www.percona.com/blog/2017/01/04/mongodb-3-4-sharding-improvements/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/06/17/mongodb-security-pay-enterprise-open-source-covered/">https://www.percona.com/blog/2016/06/17/mongodb-security-pay-enterprise-open-source-covered/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/12/08/tuning-linux-for-mongodb-automated-tuning-redhat-and-centos/">https://www.percona.com/blog/2016/12/08/tuning-linux-for-mongodb-automated-tuning-redhat-and-centos/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/06/16/mongorocks-deprecating-perconaft-mongodb-optimistic-locking/">https://www.percona.com/blog/2016/06/16/mongorocks-deprecating-perconaft-mongodb-optimistic-locking/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/12/05/mongodb-troubleshooting-top-5/">https://www.percona.com/blog/2016/12/05/mongodb-troubleshooting-top-5/</a>
+
+    <li>https://db-engines.com/en/system/MongoDB%3BPercona+Server
+
+<li><a href="https://www.percona.com/blog/2015/10/21/rocksdb-101/">https://www.percona.com/blog/2015/10/21/rocksdb-101/</a>
+
+<li><a href="https://www.percona.com/blog/2017/10/17/webinar-wednesday-october-18-2017-scale-with-mongodb/">https://www.percona.com/blog/2017/10/17/webinar-wednesday-october-18-2017-scale-with-mongodb/</a>
+
+<li><a href="https://www.percona.com/blog/2017/07/08/mongodb-indexing-types-how-when-and-where-should-they-be-used/">https://www.percona.com/blog/2017/07/08/mongodb-indexing-types-how-when-and-where-should-they-be-used/</a>
+
+<li><a href="https://www.percona.com/blog/2017/07/07/last-resort-how-to-use-a-backup-to-start-a-secondary-instance-for-mongodb/">https://www.percona.com/blog/2017/07/07/last-resort-how-to-use-a-backup-to-start-a-secondary-instance-for-mongodb/</a>
+
+<li><a href="https://www.percona.com/blog/2015/07/01/using-cgroups-to-limit-mysql-and-mongodb-memory-usage/">https://www.percona.com/blog/2015/07/01/using-cgroups-to-limit-mysql-and-mongodb-memory-usage/</a>
+
+<li><a href="https://www.percona.com/blog/2015/08/21/find-unused-indexes-mongodb-tokumx/">https://www.percona.com/blog/2015/08/21/find-unused-indexes-mongodb-tokumx/</a>
+
+  <li><a href="https://www.percona.com/blog/2015/12/23/percona-server-for-mongodb-storage-engines-in-iibench-insert-workload/">https://www.percona.com/blog/2015/12/23/percona-server-for-mongodb-storage-engines-in-iibench-insert-workload/</a>
+
+  
+ <li>  <a href="https://www.percona.com/blog/2016/03/24/percona-how-to-field-names-and-document-size-in-mongodb/">https://www.percona.com/blog/2016/03/24/percona-how-to-field-names-and-document-size-in-mongodb/</a>
+
+  <li> <a href="https://www.percona.com/blog/2016/02/26/monitoring-mongodb-response-time/">https://www.percona.com/blog/2016/02/26/monitoring-mongodb-response-time/</a>
+
+  <li> <a href="https://www.percona.com/blog/2016/02/25/percona-back-to-basics-mongodb-updates/">https://www.percona.com/blog/2016/02/25/percona-back-to-basics-mongodb-updates/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/02/19/myth-busting-mongodbs-scalability/">https://www.percona.com/blog/2016/02/19/myth-busting-mongodbs-scalability/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/06/01/embracing-mongorocks/">https://www.percona.com/blog/2016/06/01/embracing-mongorocks/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/05/13/benchmark-mongodb-sysbench/">https://www.percona.com/blog/2016/05/13/benchmark-mongodb-sysbench/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/04/15/creating-geo-enabled-applications-with-mongodb-geojson-and-mysql/">https://www.percona.com/blog/2016/04/15/creating-geo-enabled-applications-with-mongodb-geojson-and-mysql/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/04/11/dealing-with-jumbo-chunks-in-mongodb/">https://www.percona.com/blog/2016/04/11/dealing-with-jumbo-chunks-in-mongodb/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/06/01/mongodb-administration-checklist-for-mysql-dba/">https://www.percona.com/blog/2016/06/01/mongodb-administration-checklist-for-mysql-dba/</a>
+
+   <li><a href="https://www.percona.com/blog/2016/08/12/tuning-linux-for-mongodb/">https://www.percona.com/blog/2016/08/12/tuning-linux-for-mongodb/</a>
+
+<li><a href="https://www.percona.com/blog/2017/11/14/common-mongodb-topologies/">https://www.percona.com/blog/2017/11/14/common-mongodb-topologies/</a>
+
+
+<li><a href="https://www.percona.com/blog/2016/11/18/wiredtiger-b-tree-vs-wiredtiger-in-memory-q-a/">https://www.percona.com/blog/2016/11/18/wiredtiger-b-tree-vs-wiredtiger-in-memory-q-a/</a>
+
+<li><a href="https://www.percona.com/blog/2016/12/13/webinar-wednesday-1214-mongodb-system-tuning-best-practices/">https://www.percona.com/blog/2016/12/13/webinar-wednesday-1214-mongodb-system-tuning-best-practices/</a>
+
+<li><a href="https://www.percona.com/blog/2016/11/16/is-docker-for-your-database/">https://www.percona.com/blog/2016/11/16/is-docker-for-your-database/</a>
+
+<li><a href="https://www.percona.com/blog/2016/12/13/mongodb-3-4-facet-aggregation-features-and-server-27395-mongod-crash/">https://www.percona.com/blog/2016/12/13/mongodb-3-4-facet-aggregation-features-and-server-27395-mongod-crash/</a>
+
+<li><a href="https://www.percona.com/blog/2016/12/05/mongodb-troubleshooting-top-5/">https://www.percona.com/blog/2016/12/05/mongodb-troubleshooting-top-5/</a>
+
+<li><a href="https://www.percona.com/blog/2017/01/06/archiving-mysql-mongodb-data/">https://www.percona.com/blog/2017/01/06/archiving-mysql-mongodb-data/</a>
+
+<li><a href="https://www.percona.com/blog/2017/02/20/mongodb-3-4-bundle-release-pmm-mongodb-3-4-percona-toolkit-3-0-with-mongodb/">https://www.percona.com/blog/2017/02/20/mongodb-3-4-bundle-release-pmm-mongodb-3-4-percona-toolkit-3-0-with-mongodb/</a>
+
+<li><a href="https://www.percona.com/blog/2017/02/09/using-nvme-command-line-tools-to-check-nvme-flash-health/">https://www.percona.com/blog/2017/02/09/using-nvme-command-line-tools-to-check-nvme-flash-health/</a>
+
+<li><a href="https://www.percona.com/blog/2017/03/16/percona-server-for-mongodb-dashing-new-ldap-authentication-plugin/">https://www.percona.com/blog/2017/03/16/percona-server-for-mongodb-dashing-new-ldap-authentication-plugin/</a>
+
+<li><a href="https://www.percona.com/blog/2017/03/15/upgrading-to-percona-server-for-mongodb-3-4-from-previous-versions/">https://www.percona.com/blog/2017/03/15/upgrading-to-percona-server-for-mongodb-3-4-from-previous-versions/</a>
+
+<li><a href="https://www.percona.com/blog/2017/03/03/mongodb-audit-log-why-and-how/">https://www.percona.com/blog/2017/03/03/mongodb-audit-log-why-and-how/</a>
+
+<li><a href="https://www.percona.com/blog/2017/02/21/percona-monitoring-and-management-pmm-upgrade-guide/">https://www.percona.com/blog/2017/02/21/percona-monitoring-and-management-pmm-upgrade-guide/</a>
+
+<li><a href="https://www.percona.com/blog/2017/05/26/percona-server-for-mongodb-3-0-15-1-10-now-available/">https://www.percona.com/blog/2017/05/26/percona-server-for-mongodb-3-0-15-1-10-now-available/</a>
+
+<li><a href="https://www.percona.com/blog/2017/05/17/mongodb-authentication-and-roles-creating-your-first-personalized-role/">https://www.percona.com/blog/2017/05/17/mongodb-authentication-and-roles-creating-your-first-personalized-role/</a>
+
+  <li><a href="https://www.percona.com/blog/2017/06/15/three-methods-of-installing-percona-monitoring-and-management/">https://www.percona.com/blog/2017/06/15/three-methods-of-installing-percona-monitoring-and-management/</a>
+
+  
+
+  </ul>
+
+<li>Performance, Monitoring, and other tools besides commercial services like Ops Manager.
+  <uL>Some of these blog posts are old, so look for the latest versions of software.
+    <li><a href="https://www.percona.com/blog/2017/11/21/percona-toolkit-3-0-5-is-now-available/">https://www.percona.com/blog/2017/11/21/percona-toolkit-3-0-5-is-now-available/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/08/12/tuning-linux-for-mongodb/">https://www.percona.com/blog/2016/08/12/tuning-linux-for-mongodb/</a>
+
+    <li><a href="https://www.percona.com/blog/2016/12/07/first-mongodb-replica-set-configuration-for-mysql-dbas/">https://www.percona.com/blog/2016/12/07/first-mongodb-replica-set-configuration-for-mysql-dbas/</a>
+
+      
+      
+    <li><a href="https://www.percona.com/blog/2015/07/14/mongodb-benchmark-sysbench-mongodb-io-bound-workload-comparison/">https://www.percona.com/blog/2015/07/14/mongodb-benchmark-sysbench-mongodb-io-bound-workload-comparison/</a>
+
+    <li><a href="https://www.percona.com/blog/2015/12/15/mongodb-3-2-wiredtiger-in-iibench/">https://www.percona.com/blog/2015/12/15/mongodb-3-2-wiredtiger-in-iibench/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/11/02/percona-monitoring-and-management-1-4-1-is-now-available/">https://www.percona.com/blog/2017/11/02/percona-monitoring-and-management-1-4-1-is-now-available/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/08/02/percona-toolkit-3-0-4-now-available/">https://www.percona.com/blog/2017/08/02/percona-toolkit-3-0-4-now-available/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/09/28/percona-monitoring-and-management-1-3-0-query-analytics-support-for-mongodb/">https://www.percona.com/blog/2017/09/28/percona-monitoring-and-management-1-3-0-query-analytics-support-for-mongodb/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/06/29/how-does-percona-software-compare-the-value-of-percona-software-and-services/">https://www.percona.com/blog/2017/06/29/how-does-percona-software-compare-the-value-of-percona-software-and-services/</a>
+
+    <li><a href="https://www.percona.com/blog/2017/03/10/percona-monitoring-and-management-pmm-graphs-explained-custom-mongodb-graphs-metrics">https://www.percona.com/blog/2017/03/10/percona-monitoring-and-management-pmm-graphs-explained-custom-mongodb-graphs-metrics</a>
+
+     <li><a href="https://www.percona.com/blog/2017/02/27/percona-monitoring-and-management-pmm-graphs-explained-wiredtiger-and-percona-memory-engine/">https://www.percona.com/blog/2017/02/27/percona-monitoring-and-management-pmm-graphs-explained-wiredtiger-and-percona-memory-engine/</a>
+
+     <li><a href="https://www.percona.com/blog/2017/02/22/percona-monitoring-and-management-pmm-graphs-explained-mongodb-with-rocksdb/">https://www.percona.com/blog/2017/02/22/percona-monitoring-and-management-pmm-graphs-explained-mongodb-with-rocksdb/</a>
+
+     <li><a href="https://www.percona.com/blog/2016/07/27/monitoring-mongodb-with-nagios/">https://www.percona.com/blog/2016/07/27/monitoring-mongodb-with-nagios/</a>
+
+       <li><a href="https://www.percona.com/blog/2017/01/23/mysql-and-mongodb-alerting-with-pmm-and-grafana/">https://www.percona.com/blog/2017/01/23/mysql-and-mongodb-alerting-with-pmm-and-grafana/</a>
+
+       <li><a href="https://www.percona.com/blog/2016/09/14/webinar-thursday-sept-15-identifying-solving-database-performance-issues-pmm/">https://www.percona.com/blog/2016/09/14/webinar-thursday-sept-15-identifying-solving-database-performance-issues-pmm/</a>
+
+<li><a href="https://www.percona.com/blog/2016/02/26/monitoring-mongodb-response-time/">https://www.percona.com/blog/2016/02/26/monitoring-mongodb-response-time/</a>
+
+<li><a href="https://www.percona.com/blog/2016/09/28/percona-live-europe-featured-talk-with-john-de-goes-mongodb-analytics-dashboards/">https://www.percona.com/blog/2016/09/28/percona-live-europe-featured-talk-with-john-de-goes-mongodb-analytics-dashboards/</a>	 
+
+<li><a href="https://www.percona.com/blog/2017/02/02/pmm-alerting-with-grafana-working-with-templated-dashboards/">https://www.percona.com/blog/2017/02/02/pmm-alerting-with-grafana-working-with-templated-dashboards/</a>
+
+<li><a href="https://www.percona.com/blog/2017/03/02/using-percona-toolkit-pt-mongodb-summary/">https://www.percona.com/blog/2017/03/02/using-percona-toolkit-pt-mongodb-summary/</a>
+
+<li><a href="https://www.percona.com/blog/2017/03/01/using-percona-toolkit-pt-mongodb-query-digest/">https://www.percona.com/blog/2017/03/01/using-percona-toolkit-pt-mongodb-query-digest/</a>
+
+<li><a href="https://www.percona.com/blog/2017/02/24/installing-percona-monitoring-and-management-pmm-for-the-first-time-2/">https://www.percona.com/blog/2017/02/24/installing-percona-monitoring-and-management-pmm-for-the-first-time-2/</a>
+
+  <li><a href="https://www.percona.com/blog/2017/02/23/percona-mongodb-3-4-bundle-release-percona-server-mongodb-3-4-features-explored/">https://www.percona.com/blog/2017/02/23/percona-mongodb-3-4-bundle-release-percona-server-mongodb-3-4-features-explored/</a>
+
+  </ul>
+</ul>
+
+
+
+<hr>
+Mongo questions:
+<uL>
+     <li> shell script writing: <a href="https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ I need to check on server side.">https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/ I need to check on server side.</a> 
+
+     <li>server` side:
+     <li>How to do clear out fragmentation or massively deleted stuff taking up diskspace?
+       <ol>
+	 <li> Add a 4th secondary as hidden and no priority.
+	 <li>For each secondary, stop secondary, remove everything, restart secondary, wait for it to sync. 
+         <li> Stepdown primary
+	 <li> Repeat for that server since its a seconbdary now. 
+	 <li> Remove extra secondary server.   
+       </ol>
+
+       
+  <li> How do to do consistent backups of a sharded environment? This has always been a pain. 
+     <ul>
+       <li>Subscribe to mongo ops manager. I don't like this. 
+	 <li>Very promising: <a href="https://www.percona.com/sites/default/files/open-source-backups-for-mongodb-david-murphy.pdf and">https://www.percona.com/sites/default/files/open-source-backups-for-mongodb-david-murphy.pdf and</a>
+
+	   <a href="https://github.com/Percona-Lab/mongodb_consistent_backup   There is something I suspect you should do is have a 4th hidden server">https://github.com/Percona-Lab/mongodb_consistent_backup   There is something I suspect you should do is have a 4th hidden server</a>
+
+	   as a secondary for backups. 
+    </ul>
+  <li>  Does percona make tools for mongodb? Yes. However, I wish they would separate out MySQL from Mongo more. 
+<a href="https://www.percona.com/doc/percona-toolkit/3.2/index.html">https://www.percona.com/doc/percona-toolkit/3.2/index.html</a>
+
+<li> Python? Yes of course with lots of examples. <a href="https://api.mongodb.com/python/current/examples/index.html">https://api.mongodb.com/python/current/examples/index.html</a>
+
+<li> How do we prevent rollback queries during a primary failover? Have write concern equal to a majority of the servers. 
+<li>What tools to use? or where to go to find problems?
+  <ul>
+    <li> OPs Manager and Cloud Manager from Mongo enterprise you can download and use for evaulation purposes. You also can use it on Atlas.
+    <li>Graphing tools: Cacti, Graphite, Grafana,, etc.
+    <li>Alarming: Nagios
+    <li>DAD
+    <li>system tools
+      <ul>
+	<li>mongostat - realtime incoming opertations . 
+	<li> mongotop - which collections are the busiest. 
+	<li>monoreplay - mintor, record, and replay from network traffic, for debugging
+	<li>profiler - logs queries for us. 
+	<li>compass - GUI to help look the databases and analyze collections, and other stuff. 
+	<li>mtools -- spin up mongo environments, logging tools, load testing. Not supported, but useful. 
+	  <ul>
+	    <li>mlogfilter - manipuklates log files, find table scans. 
+	    <li>mloginfo  -- gives info about log files
+	    <li>mlogqueries -- crates graphs about the activity in the logs
+	    <li>mlogvis -- similar to mlogqueries but makes an html page. 
+	    <li>mlaunch -- sping up test deployments 
+            <li>mgenerate -- creates random data sets based on templates to test issues. 
+	    <li> mloginfo get data, mlogfilter filters data, then mlogvis to graph it
+	    <li>mlaunch to setup test environment and mgenerate to test it.   
+	  </ul>
+      </ul>
+    <li>Look at the ops logs and the slow logs.
+      <li>Unix commands: ps, df, top, ntop, iostat
+      <li>Mongo status variables -- use Object.keys(<document>) to get the keys. 
+	<ul>
+	  <li>db.serverStatus() --- long document with status of various things. 
+	    <ul>
+	      <li> Instance Information
+	      <li>Asserts
+	      <li>Connections and Network
+	      <li>Locking
+	      <li>Operation stats
+	      <li>Security
+	      <li>Replication stats
+	      <li>Storage Engine Stats
+	      <li>Metrics
+		<li> Example1: db.serverStatus().opcounters.insert
+		<li> Actual keys<pre>> Object.keys(db.serverStatus())
+		    [
+		    "host",
+		    "version",
+		    "process",
+		    "pid",
+		    "uptime",
+		    "uptimeMillis",
+		    "uptimeEstimate",
+		    "localTime",
+		    "asserts",  - when errors happen, look place to look.
+		    "connections", --- good place to look. 
+		    "extra_info", 
+		    "globalLock", -- good place, order by length of time
+		    "locks",      -- good place, order by length of time
+		        r,w = intent shared and exclusive, R,W = shared and exclusive lock. 
+		    "network",
+		    "opLatencies", -- good to look at
+		    "opcounters", -- activity, good to know what is going n
+		    "opcountersRepl",
+		    "storageEngine",
+		    "tcmalloc",
+		    "wiredTiger", -- look at cache, "eviction calls to get page"
+		                 "cache: maximum buyts configured, bytes currently in cache"
+		    "mem",
+		    "metrics", cursors and document counts. opcounters is 1 per time, 
+		            metrics:documents is all the documents for an operation. 
+		    "ok"
+		    ]
+		    </pre>
+		<li>Profiler: db.getProfilingLevel(); level 1 are slow queries, 2 is all queries.
+		  <br> db.system.profile.aggregate( [ { $group : { _id : "$op", count : {sum : 1 }}}])
+		  <br> db.system.profile.find(op : "query"} ) .forEach (functin(doc) {printjson(doc.planSummary)})
+		<li><pre>
+bsondump -- convert bson dump files to human readable. 
+mongo
+mongod
+mongodecrypt
+mongodump -- binary
+mongoexport -- json files
+mongofiles --- for grid fs
+mongoimport -- json files
+mongoldap * Allows you to validate connection to ldap server.
+mongooplog -- allow you to pull oplog and apply it
+mongoperf * -- performance testing tool, disk io performance. 
+mongoreplay * -- network diagnostic tool to : monitor, record, replay and debug -- heavily used.
+mongorestore -- binary
+mongos
+mongostat *
+mongotop *
+</pre>	 	    
+
+		   
+
+	    </ul>
+	    
+	</uL>
+  </ul>  
+  
+</ul>
+
+<table border=1><td>Class<td>Status<td>Due date
+      <tr><td>M001: MongoDB Basics
+	<td>DONE</tr>
+      <tr><td>M034: New Features and Tools in MongoDB 3.4
+	<td>DONE<td>Nov 07<td>SAVE </tr>
+      <tr><td>M101P: MongoDB for Developers
+	<td>  <td>Dec 12th <td>REDO (time)</tr>
+      <tr><td>M102: MongoDB for DBAs
+	<td>DONE<td>Dec 5th<td>NOTE each page. waiting for confirmation.</tr>
+      <tr><td>M121: The MongoDB Aggregation Framework
+	<td>Startnig<td>Dec 19th<td> Make doc notes. </tr>
+      <tr><td>M123: Getting Started with MongoDB Atlas
+	<td>Starting<td>DEc 12th<td>Everything due at end.</tr>
+      <tr><td>M201: MongoDB Performance
+	<td>DONE <td>Nov 7th  <td>SAVE. Review all.</tr>
+      <tr><td>M310: MongoDB Security
+	<td><td>Nov 7th <td>REDO (time)</tr>
+      <tr><td>M312: Diagnostics and Debugging
+	<td>week 3<td>Dec 19th <td>Make Doc Notes.</tr>
+</table>
+
+<hr>
+
+Here are annoying questions I've been asked in interviews. Annoying because
+most of the time you only use this info during interviews and never in the
+real world. It also to get them to show they are superior. 
+
+<pre>
+  1. ops manager --- why? who cares. Its cool, its nice, it is great and you
+  should learn ops manager, but a real DBA should't need it and should be
+  able to do things manually. Some would argue time, I am for ability first.
+  OPS Manager is great, but easy as hell. No great ability.
+  2. command to see if upgrade can happen: db.upgradeCheckAllDBs() or db.upgradeCheck().
+    Who cares. If you follow the steps for upgrade, you will do this.
+    In addition, this was only for 2.6. 
+  3. compass --- its nice and recommend using it. But a real DBA doesn't need it.
+  4. Atlas -- same thing.  
+
+  5. Mongo Isolation levels -- who cares. Mongo releases locks between connections
+  for inconsistent results anyways. 
+  
+     Two aggreage functions with write locks or shared locks run, what happens.
+     <a href="https://docs.mongodb.com/v3.4/faq/concurrency/">https://docs.mongodb.com/v3.4/faq/concurrency/</a>
+
+     <a href="https://docs.mongodb.com/v3.4/core/write-operations-atomicity/">https://docs.mongodb.com/v3.4/core/write-operations-atomicity/</a>
+
+    Run A write test, 2 queries, updating date which should take 10 seconds.
+    1st starts at beignning, 2nd starts 90% of way through, then does the rest.
+    Count them after.
+
+  6. How can you configure HA for 3 servers and 2 data centers. you can't
+     and an arbiter (still one of the 3) doesn't help. The person was thinking
+     of https://docs.mongodb.com/manual/core/replica-set-architecture-geographically-distributed/
+     but you can't have HA with two data centers and one goes down. 
+
+  7. What happens specifically, between journaling, writing to the ops logs,
+     and if a system crashes. Well the journaling will help the ops log
+     be consistent before the crash. But this is why who cares. Its just a
+     a way for junior DBA to show he/she is superior when they are not.
+     Mongo is ONLY one document at a time atomic. It is not atomic at the
+     collection level with locks and stuff. Crashes are helped by journaling
+     to keep ops logs consistent with the data. Read more about journaling.
+     You never need to know the specifics in the real world.
+
+  8. Have you installed ssl, Kerberos, ldap, etc. Who cares, this is easy
+     and most people don't use them. A lot don't even use passwords.
+
+  9. updateMany() --- why is this useless? Its an alias for update with the
+     multi option. New in 3.2. 
+     
+  </pre>
+
+Legitimate questions
+<ul>
+<li> Page Faults -- how many times data was not in memory but on disk. 
+<li> Give an example of an aggregate pipeline and what it means. 
+<li> Never been asked this: Instead of have you used OPS Manager, have you downloaded and installed
+  it for your cluster? That is much harder than using. And Did you make
+  it available through Apache Proxy or some other web proxy?
+  
+</ul>

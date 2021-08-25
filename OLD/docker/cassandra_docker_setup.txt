@@ -1,0 +1,20 @@
+
+
+Note before install:
+
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped cassandra1
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped cassandra3
+
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped mongo1
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped mongo2
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped mongo3
+
+docker run -dit --restart --cpus=.5 --memory="1000m" unless-stopped mysql1
+
+--------------------------
+on /etc/docker/daemon.json
+   {
+     "live-restore": true
+   }
+
+

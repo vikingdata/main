@@ -1,0 +1,8 @@
+# ttl, capped, backups, restore to different database
+# secuirty, auth keyfile, ssl, ldap 
+
+var a = connect("localhost:27001/admin");
+a.shutdownServer()
+rs.status()
+
+

@@ -1,0 +1,11 @@
+select m.title, m.imdb.rating, mg.genres, ml.languages, m._id, mg._id, ml._id
+       from movies m
+              join movies_genres mg on (m._id = mg._id)
+              join movies_languages ml on (m._id = ml._id )
+       where `imdb.rating` > 6
+              and (rated = "G" or rated = "PG")
+              and mg.genres != 'Crime' and mg.genres != 'Horror'
+              and (ml.languages = 'English' or ml.languages = "Japanese")
+  limit 10;
+
+

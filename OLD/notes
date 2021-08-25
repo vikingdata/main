@@ -1,0 +1,7 @@
+
+db.runCommand( { "connPoolStats" : 1 } )
+
+netstat -anp --tcp --udp | grep mongo
+ sudo lsof | grep mongod | grep TCP
+
+sudo lsof -i | grep mongod

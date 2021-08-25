@@ -1,0 +1,72 @@
+
+db.movies.aggregate(
+	{$match : {"imdb.rating" : {$gt : 6 }}  },
+	{$match : {$or: [{rated: "G"}, {rated: "PG"}]}  },
+	{$match : { $or: [{languages: "English"}, {languages: "Japanese"}]} },
+	{$match : {rated :1}})
+
+db.movies.aggregate(
+        {$match : {"imdb.rating" : {$gte : 7 }}  },
+ 	{$match : { $or: [{languages: "English"}, {languages:"Japanese"}]} },	
+	{$match : {genres: { $ne :"Horror"}}},
+	{$match : {genres: { $ne :"Crime"}}},
+{ $count : "c"}
+)
+				
+
+db.movies.aggregate(
+	{$match : {"imdb.rating": {$gte : 7 }}  },
+	{$match : { $or: [{languages: "English"}, {languages:"Japanese"}]} },
+	{$match : {genres: { $ne :"Horror"}}},
+	{$match : {genres: { $ne :"Crime"}}},
+	{$project: {_id:0, "imdb.rating": 1, genres: 1, languages: 1}}
+)
+
+var pipeline = [
+    {$match : {"imdb.rating": {$gte : 7 }}  },
+    {$match : { $or: [{languages: "English"}, {languages:"Japanese"}]} },
+    {$match : {genres: {$not : /Horror/}}},
+    {$match : {genres: { $not :/Crime/}}},
+    {$match : {genres: { $ne :"Crime"}}},
+    {$match : { $or: [{rated: "G"}, {rated:"PG"}]} }
+];
+db.movies.aggregate(pipeline).itcount()
+
+
+var pipeline = [
+    {$match : {"imdb.rating": {$gte : 7 }}  },
+    {$match : { $or: [{languages: "English"}, {languages:"Japanese"}]} },
+    {$match : {genres: { $not : /Horror/}}},
+    {$match : {genres: { $not :/Crime/}}},
+    {$match : { $or: [{rated: "G"}, {rated:"PG"}]} },
+    {$project : {_id:1, "imdb.rating":1, rated: 1, genres: 1, languages:1}}
+];
+db.movies.aggregate(pipeline).itcount()
+
+
+select count(1)
+       from movies m
+       	    join movies_genres mg on (m._id = mg._id)
+	    join movies_languages ml on (m._id = ml._id )
+       where `imdb.rating` > 6
+         and (rated = "G" or rated = "PG"), 
+	 and mg.genres != 'Crime' and mg.genres != 'Horror'
+	 and (ml.languages = 'English' or ml.languages = 'Japanese');
+
+select m._id, m.title, count(1)
+       from movies m
+              join movies_genres mg on (m._id = mg._id)
+       	      join movies_languages ml on (m._id = ml._id )
+       where `imdb.rating` > 6
+              and (rated = "G" or rated = "PG")
+              and mg.genres != 'Crime' and mg.genres != 'Horror'
+              and (ml.languages = 'English' or ml.languages = "Japanese")
+       group by     m._id, m.title 
+;
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+
+1. apache
+2. mysql
+3. kafka
+4. spark
+5. python based source control
+
+
+webpage
+home | insert data | kakfa status | spark status | report | raw data
+
+1. home is the homepage.
+2. Is the just a button to insert the data below the button that is generated.
+3. Kakfa status should display some kafka config plus what it captured today.
+4. Spark is config, and also all files and how much data is in them. Databricks?
+5. Report is the report of the messages sent by xml.
+6. raw data is ONLY data in last month. 
+
+a. Show cofigs for ansible, pyspark processing data, kafka, python to make report.
+   spark config. 

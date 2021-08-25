@@ -1,0 +1,7 @@
+
+
+r = open("mongo_help.html")
+
+for line in r:
+    if "https://" in r and "href" not in l:
+        print l

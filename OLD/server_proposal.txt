@@ -1,0 +1,24 @@
+
+1. apache
+2. mysql
+3. kafka --- aws service. Keep it off unless you press a button to turn on for one hour. 8 gig ram system. 
+4. spark -- use free community service databricks. 
+5. python based source control
+
+
+webpage
+home | Turn on | insert data | kakfa status | spark status | report | raw data
+
+
+0. Turn On --- activates the kakfa service, lets you know when it is active, have a cronjob every hour checking if
+   a file exists, and if it does, turns it off. 
+
+1. home is the homepage.
+2. Is the just a button to insert the data below the button that is generated.
+3. Kakfa status should display some kafka config plus what it captured today.
+4. Spark is config, and also all files and how much data is in them. Databricks?
+5. Report is the report of the messages sent by xml.
+6. raw data is ONLY data in last month. 
+
+a. Show cofigs for ansible, pyspark processing data, kafka, python to make report.
+   spark config. 

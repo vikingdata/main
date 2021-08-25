@@ -1,0 +1,6 @@
+
+db.movies.aggregate(
+	{$matc h:{"imdb.rating" : {$gt : 6 }},
+	{$match : {$or: [{rated: "G"}, {rated: "PG"}]}},
+	{$match :{ $or: [{languages: "English"}, {languages: "Japanese"}] }},
+	{$match : {rated :1}}).count()

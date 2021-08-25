@@ -1,0 +1,10 @@
+
+1. Backup data single collection
+  use DB
+  db.COL.find().forEach( function(l) { db.COL_BAK.insert(l) } )
+  or 
+  ref = db.COL_BAK
+  db.COL.find().forEach( function(l) { ref.insert(l) } )
+ 
+2. Add the indexes to the backuip:
+   TODO

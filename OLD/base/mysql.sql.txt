@@ -1,0 +1,42 @@
+
+create database if not exists SAMPLE;
+use SAMPLE
+
+create table if not exists label (
+label_id bigint not null auto_increment,
+first_label varchar(255) not null default '',
+second_label varchar(255) not null default '',
+primary key (label_id)
+);
+
+insert IGNORE into label (first_label, second_label) values
+  ('a','a'), ('a','b'),('a','c'),('b','b'), ('b','c'),('c','c');
+
+create table if not exists color (
+color_id int not null   auto_increment,
+color varchar(64) not null default 'unknown',
+primary key (color_id)
+);
+
+insert IGNORE into color  (color) values
+  ('red'), ('green'), ('blue');
+  
+create table if not exists label_color_hit (
+label_color_hit_id int not null   auto_increment,
+label_id int not null default 0,
+color_id int not null default 0,
+hits int not null default 0,
+hit_time datetime not null default '0000-00-00 00:00:00',
+primary key (label_color_hit_id),
+key (label_id, color_id),
+key (color_id)
+);
+
+insert into  label_color_hit (label_id, color_id, hits, hit_time) values
+  (1,1,1, '2000-01-01'), (2,2,2, '2002-02-02'), (3,3,3, '2003-03-03'),
+  (4,1,4, '2004-04-04'), (5,2,5, '2005-05-05');  
+
+insert into  label_color_hit (label_id, color_id, hits, hit_time) values
+  (1,1,10, '2010-01-01'), (2,2,20, '2012-02-02'), (3,3,30, '2013-03-03'),
+    (4,1,40, '2014-04-04'), (5,2,50, '2015-05-05');
+    

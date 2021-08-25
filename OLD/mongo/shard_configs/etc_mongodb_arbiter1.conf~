@@ -1,0 +1,29 @@
+net:
+  port: 27001
+
+systemLog:
+  quiet: true
+  path: /var/log/mongodb/mongodb1.log
+  logAppend: false
+  logRotate: rename
+  destination: file
+
+storage:
+  journal:
+    enabled: false
+  dbPath: /var/lib/mongodb1
+  directoryPerDB: true
+  engine: mmapv1
+  mmapv1:
+    smallFiles: true
+    nsSize: 1
+   
+replication:
+  oplogSizeMB: 1
+  replSetName: r1
+
+sharding:
+  clusterRole: shardsvr
+
+operationProfiling:
+  mode: off
