@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>MySQL indentifying problems</title>
+  </head>
+  <body>
+    <h1>MySQL and identifying problems</h1>
+    <p>Rules</p>
+    <ul>
+      <li>Emails suck for notifications, alarms, or anything. It is ONLY good as
+        a complimentary service. Period. </li>
+      <li>All automatic processes should record time, status, action, and on
+        which server/service into a database. </li>
+      <li>All alarms should be recorded in a database.</li>
+      <li>You should have a dashboard fir easy viewing of all databases (even a
+        thousand of them).</li>
+      <li>Sufficient work has not been done if you can't tell you CEO within 5
+        minutes if your 100 servers are good. Nagios and alarming systems don't
+        count. Graphing doesn't count. Green and red dots don't count. Live
+        status checking of servers is required. Diskspace or intensive status
+        checking can be less than one day old. </li>
+      <li>Servers should be configured for basic install and automatic
+        monitoring, graphing, and stat gathering with Ansible or high quality
+        software. Chef and Puppet are has beens. </li>
+      <li>Always push software and database schema changes on DIFFERENT days. </li>
+      <ul>
+        <li>Try to push backward compatible changes to the database 2 days
+          before software push. </li>
+        <li>95% of the time you can do this.&nbsp;</li>
+        <li>Non destructive changes, like new accounts, new tables/databases or
+          approval from higher up can be done any time. </li>
+      </ul>
+      <li>Setup a Dev/QA/Staging environments just for database testing. Few do
+        this and its wrong. </li>
+      <li>Setup a stress test environment for your different severs. Nobody does
+        this and it wrong. </li>
+    </ul>
+    <h2>Links</h2>
+    <ul>
+      <li>https://www.tecmint.com/command-line-tools-to-monitor-linux-performance/</li>
+    </ul>
+    <h2>Monitoring/Graphing to consider</h2>
+    <ul>
+      <li>Nagios</li>
+      <li>Graphite and Grafana</li>
+      <li>percona monitoring tools and percona toolkit</li>
+      <li>datadog</li>
+      <li>If you are in the cloud --- check what they have available. </li>
+    </ul>
+    <p><br>
+    </p>
+    <h2>Tools to consider</h2>
+    <ul>
+      <li>MySQL Workbench</li>
+      <li>Linux tools</li>
+      <ul>
+        <li>top, iostat, df, free, vmstat, lsof (open files and open ports),
+          tcpdump, netstat, ps, sar, nmap, pmap, strace</li>
+        <li>other: mytop, mtop, innodbtop, htop</li>
+        <li>other: mycli, sqlcheck, looking at /proc</li>
+      </ul>
+    </ul>
+    <h2>Steps</h2>
+    <ul>
+      <li>How does the server look:</li>
+      <ul>
+        <li>Dashboard</li>
+        <li>Alarms</li>
+        <li>Graphs</li>
+      </ul>
+      <li>Then connect to it manaully</li>
+      <ul>
+        <li>Check disk stats with iostats&nbsp; or other software. </li>
+        <li>Check with top and mytop. </li>
+        <li>Check diskspace with df or others. </li>
+        <li>Check memory with mem and swapspace.</li>
+        <li>Check errors logs. </li>
+        <li>Check slow logs. </li>
+        <ul>
+          <li>It still stumped, run slow log through analyzer,. </li>
+          <li>Reduce long_query_time</li>
+        </ul>
+        <li>Use strace</li>
+        <li>Check global variables. Perhaps variables were not loaded from
+          my.cnf or they were changed live.&nbsp; </li>
+        <li>Show innodb status, show global status, sow global vaiables</li>
+        <li>Performance Schema and Information Schema</li>
+      </ul>
+      <li>Bring up a duplicate server or use a spare slave to run queries on. </li>
+      <li>If they cannot connet:</li>
+      <ul>
+        <li>Log in via ssh to that server and see if you can connect with
+          anything. MySQL client is good.</li>
+        <li>Check authorization and authentication. </li>
+      </ul>
+      <li>If it is bad queries:</li>
+      <ul>
+        <li>Take the worst queries and run explain on them. </li>
+        <li>Do a slow log analysis. </li>
+        <li>Check indexes. </li>
+        <li>Check the amount of queries running. </li>
+      </ul>
+      <li>You should be recording show processlist once a minute for the last 48
+        hours. Show innodb status and show global stats and show global
+        variables might help.&nbsp;</li>
+      <ul>
+        <li>Look at the info why something happened at 3 am last night, </li>
+        <li>It is usually software and NOT the database that is the problem. </li>
+      </ul>
+      <li>If still in doubt, </li>
+      <ul>
+        <li>Turn on general log for a few minutes while problem is occuring,.
+          This is slow the system down a little, use IO, and the general log
+          with grow rapidly. </li>
+        <li>And/Or same thing&nbsp; for slow log, make long_query_time 0 seconds
+          for a few minutes. </li>
+        <li>Analyze them.</li>
+      </ul>
+    </ul>
+  </body>
+</html>

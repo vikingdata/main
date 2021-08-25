@@ -2,6 +2,7 @@
 
    # Run Repl.txt first.  
    # We are going to make a 6 cluster, with a non failover slave, arbiter, and hidden
+   # TODO: Check this script. Technically not checked yet if you get an error.
 
 rm -rf  mongo/d4 momgo/d5 mongo/d6 
 mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/d4 mongo/d5 mongo/d6 mongo/logs

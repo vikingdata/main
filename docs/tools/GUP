@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Must have an stuff defined.
+
+COPY=~/GITHUB_COPY/main
+LIVE=~/GITHUB/main
+TMPDIR=~/tmp
+
+echo "Updating copy of github."
+
+cd $COPY
+git checkout master
+git pull
+
+echo "Syncing changes to GITHUB"
+cd $LIVE
+
+status=""
+b=`git branch --show-current`
+if [ $? == 0 ];
+  then
+	git checkout master
+	status="ok";
+fi
+if [ $status != "ok" ];
+  then
+    if [ $b == "master" ];
+      then
+        status = "ok";
+    fi
+fi
+
+if [ $status == "ok" ]; then echo "git status good"; fi
+
+rsync -nra --out-format="%n"  $LIVE/ $COPY/ --size-only  --exclude=".git" > $TMPDIR/gittmp.txt
+egrep -v "^./" $TMPDIR/gittmp.txt | egrep -v "~$" |egrep -v "/$"  > $TMPDIR/gitdiff.txt
+
+echo "adding files"
+while IFS= read -r line; do
+    echo "adding : $line"
+    git add -v "$line"
+done < $TMPDIR/gitdiff.txt
+
+git commit -m "ttt"
+ 

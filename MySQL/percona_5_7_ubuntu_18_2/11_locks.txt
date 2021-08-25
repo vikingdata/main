@@ -67,6 +67,8 @@ e. Links
     5. https://dev.mysql.com/doc/refman/5.6/en/monitor-innodb-mutex-waits-performance-schema.html
     6. https://dev.mysql.com/doc/refman/5.6/en/rwlock-instances-table.html
     7. https://dev.mysql.com/doc/refman/5.6/en/performance-schema-wait-tables.html
+    8. https://www.percona.com/blog/2020/01/08/mysql-a-series-of-bad-design-decisions/
+    9. https://dev.mysql.com/doc/refman/8.0/en/show-engine.html
 
   f. Other locks --- asssume innodb
      table -- tables are locked usually because of a write (MyISAM) or manually
@@ -80,5 +82,6 @@ e. Links
      https://dev.mysql.com/doc/refman/8.0/en/innodb-standard-monitor.html
      In the command, look at the section "Semaphores", "transactions",
      "Last foriegn key error", and others. Locks mya appear in any section. 
-
+     1. Show innodb engine mutex --- displays InnoDB mutex and rw-lock statistics.
+       and https://dev.mysql.com/doc/refman/8.0/en/monitor-innodb-mutex-waits-performance-schema.html
 

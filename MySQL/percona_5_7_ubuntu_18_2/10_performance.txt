@@ -4,7 +4,10 @@ WARNING: Need to test these queries.
 
 Performance schema
   Links:
-    1. https://www.fromdual.com/mysql-performance-schema-hints
+    1. VERY USEFUL: https://www.fromdual.com/mysql-performance-schema-hints
+    2. https://orangematter.solarwinds.com/2020/01/12/mysql-query-performance-statistics-in-the-performance-schema/
+       a. Even though there is some corporate speak,its still good.
+    
 
   Other Queries:
 

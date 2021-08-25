@@ -1,0 +1,49 @@
+
+Make a alias to start a bash script executing a script. 
+
+#  cd main directory in COPY and make it sycned to github
+cd DIR_COPY
+git checkout master
+git pull
+
+# cd to local repostitory
+# Does sync remove any changes?
+# cd to master and sync
+cd DIR_COPY
+git checkout master
+git pull
+
+# Run rsync to note changes
+
+# If not abort
+# If changes. 
+
+git checkout -b TEMPBRANCH
+
+# Add all changes
+git add FILE
+
+git commit
+
+git push origin -u TEMPBRANCH
+
+# Replace going to remote site with local commands
+# Accept brach, merge brach, delett branch remote
+# Switch to master branch
+# delete local branch
+
+# delete remote brnach
+git push remote_name --delete branch_name
+# or
+git remote remote branch
+
+
+goto website : https://github.com/menprojects/main/pull/new/TEMPBRANCH
+
+accept push
+
+delete branch
+
+# goto masster, no update, delete local branch
+git checkout master
+git branch -d TEMPBRANCH
