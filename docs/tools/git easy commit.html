@@ -8,8 +8,33 @@
 
 </head><body>
 <!--#include virtual="/include/body_begin.shtml" -->
+<span style="font-weight: bold;"><br>
+</span>
+<h1>Git -- Easy Save</h1>
+__TOC__<br>
 <br>
-__BODY__
-<br><!--#include virtual="/include/body_end.shtml" -->
-<!--#include virtual="/include/footer.shtml" -->
+<h2>Purpose</h2>
+I wanted to make it easy to save changes to the remote repository on
+GITHUB without using git commands or changing braches. Thus, this will
+add all files and upload them. For delete, or rename, the changes will
+be reflected at the next time you run the command. All comitted changes
+locally will synced to the remote repository. Most of the time, its
+just add. Thus this makes it easy.
+<h2>Steps
+</h2>
+<ul>
+<li>Make Copy of git remote repository site. It it exists, just
+update it. &nbsp;</li>
+<li>Make sure we are not in git or we are in the master branch.</li>
+<li>Rsync just the changes that exist on your local repository
+that does NOT exist in the copy.&nbsp;</li>
+<li>"'git add" all missing files on copy and not not include
+empty directories. Also filter out files we do not want.&nbsp;</li>
+<li>"git commit"</li>
+<li>push the changes to the remote repository. </li>
+</ul>
+<h2>The Scripts</h2>
+<pre><!--#include virtual="/tools/git/GUP" --><br></pre>
+<br>
+<!--#include virtual="/include/body_end.shtml" --><!--#include virtual="/include/footer.shtml" -->
 </body></html>
