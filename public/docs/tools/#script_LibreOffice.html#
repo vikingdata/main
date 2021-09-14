@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
+	<title>odebndata Editing web pages with server side includes : part 1</title>
+	<meta name="generator" content="LibreOffice 7.2.0.4 (Windows)"/>
+	<meta name="created" content="2021-09-14T02:27:47.801000000"/>
+	<meta name="changed" content="2021-09-14T03:18:15.979000000"/>
+<!--#include virtual="/include/header.html" -->
+
+
+	<style type="text/css">
+		@page { margin: 0.79in }
+		h1 { margin-bottom: 0.08in }
+		h1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		h1.cjk { font-family: "Microsoft YaHei"; font-size: 16pt }
+		h1.ctl { font-family: "Lucida Sans"; font-size: 16pt }
+		p { line-height: 115%; margin-bottom: 0.1in }
+		h2 { margin-bottom: 0.08in }
+		h2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		h2.cjk { font-family: "Microsoft YaHei"; font-size: 14pt; font-style: italic }
+		h2.ctl { font-family: "Lucida Sans"; font-size: 14pt; font-style: italic }
+		h3 { margin-bottom: 0.08in }
+		h3.western { font-family: "Arial", sans-serif }
+		h3.cjk { font-family: "Microsoft YaHei" }
+		h3.ctl { font-family: "Lucida Sans" }
+		pre.cjk { font-family: "NSimSun", monospace }
+		a:link { so-language: zxx }
+	</style>
+</head>
+<body lang="en-US" dir="ltr"><h1 cl
+<h1 class="western">
+<!--#include virtual="/include/body_header.html" -->
+
+<br/>
+
+</h1>
+<h1 class="western">Editing web pages with server side includes :
+part 1</h1>
+<div id="Table of Contents1" dir="ltr"><p><br/>
+<br/>
+
+	</p>
+	<div id="Table of Contents1_Head" dir="ltr"><p style="line-height: 100%; margin-top: 0.17in; margin-bottom: 0.08in; page-break-after: avoid">
+		<font face="Liberation Sans, sans-serif"><font size="4" style="font-size: 16pt"><b>Table
+		of Contents</b></font></font></p>
+	</div>
+	<p style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc153_357802470"><span lang="zxx">Install
+	Software </span></a>
+	</p>
+	<p style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc155_357802470"><span lang="zxx">Using
+	the software </span></a>
+	</p>
+	<p style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc157_357802470"><span lang="zxx">Example:
+	Server side includes </span></a>
+	</p>
+	<p style="line-height: 100%; margin-left: 0.39in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc159_357802470"><span lang="zxx">Download
+	and install Apache includes </span></a>
+	</p>
+</div>
+<p><br/>
+<br/>
+
+</p>
+<p>So here it the state of things. The web is extremely looks and not
+efficient programming for webpages. 
+</p>
+<ol>
+	<li><p>Web pages are very heavy in their content when they don't
+	need to be. 
+	</p>
+	<li><p>Most web pages are designed to attract people to something
+	that looks professional and pretty to draw in money when the
+	services or products could be sub standard. The choice of whether to
+	use a product or service has to be done through critical comparison,
+	which most people don't do and I am guilty of that. We don't have
+	time. Hence money not quality rules. WYSIWYG</p>
+	<li><p>I have been through many free software alternatives and
+	rarely seen good integration of programming with WYSIWYG
+	applications. I am able to use LibreOffice for WYSIWYG and
+	programming. I like the Table of Contents in LibreOffice. 
+	</p>
+	<li><p>This is how I get some web pages made sometimes. 
+	</p>
+</ol>
+<ul>
+	<ul>
+		<li><p>Even though I used LibreOffice, I have to make a table of
+		contents, save the document. Open of the web editor to add scripts.
+		Then save again. This is annoying. 
+		</p>
+	</ul>
+	<li><p>I would like LibreOffice to br more integrated with the web
+	like Confluence. I love the free service of Confluence but I had a
+	heck of a time letting the public have read access --- thought its
+	suppose to be easy. And multiple times my free account was
+	terminated because I didn&rsquo;t log in in a while. I can&rsquo;t
+	have that. 
+	</p>
+	<li><p>BTW, this solution sucks. I will be looking for WYSIWYG
+	solutions that are good for programming which is free and easy to
+	use. Is been a while since I worked on webpages, so excuse my
+	ignorance. 
+	</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc153_357802470"></a>Install
+Software</h2>
+<p>It is assumed you will be able to get these softwares installed.
+We will not be going into detail how to install them. 
+</p>
+<ul>
+	<li><p>Install LibreOffice</p>
+	<ul>
+		<li><p>https://www.libreoffice.org/get-help/install-howto/ 
+		</p>
+	</ul>
+	<li><p>Install Docker</p>
+	<ul>
+		<li><p>https://docs.docker.com/engine/install/</p>
+	</ul>
+	<li><p>If Windows, install cygwin</p>
+	<ul>
+		<ul>
+			<li><p>https://cygwin.com/install.html</p>
+		</ul>
+		<li><p>OPTIONAL Install Kompozer</p>
+		<ul>
+			<ul>
+				<li><p><a href="https://kompozer.net/">https://kompozer.net/</a></p>
+			</ul>
+			<li><p>install Notepad++ and PSPad editor</p>
+			<ul>
+				<li><p><a href="https://notepad-plus-plus.org/downloads/">https://notepad-plus-plus.org/downloads/</a></p>
+				<li><p>http://www.pspad.com/en/download.htm</p>
+			</ul>
+		</ul>
+	</ul>
+</ul>
+<h2 class="western"><a name="__RefHeading___Toc155_357802470"></a>Using
+the software</h2>
+<ol>
+	<li><p>Edit the original web page in LibreOffice. DO NOT USE THE WEB
+	EDITOR YET. 
+	</p>
+	<ol>
+		<li><p>Make all your sections. 
+		</p>
+		<li><p>Add a table of contents. 
+		</p>
+		<li><p>Save as an HTML page. 
+		</p>
+	</ol>
+	<li><p>Open up the HTML in LibreOffice again, and it should go to
+	the web editor. Make sure you using the web editor. 
+	</p>
+	<li><p>Add table of contents. 
+	</p>
+	<li><p>Use the script option under &ldquo;insert&rdquo; to put in
+	hidden commands. It should be able to embed commands from multiple
+	languages, 
+	</p>
+	<ol>
+		<li><p>OR edit with Kompozer or other test editor. 
+		</p>
+		<ol>
+			<li><p>Insert hidden commands or modify for PHP or other language.</p>
+		</ol>
+	</ol>
+</ol>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc157_357802470"></a>Example:
+Server side includes</h2>
+<p>This is an example with server includes, but could be used with
+other languages. Just keeping it simple. 
+</p>
+<h3 class="western"><a name="__RefHeading___Toc159_357802470"></a>Download
+and install Apache includes</h3>
+<ul>
+	<li><p>Assuming we have Linux. 
+	</p>
+	<li><p>Links</p>
+	<ul>
+		<li><p>https://httpd.apache.org/docs/2.4/howto/ssi.html</p>
+	</ul>
+	<li><p>Run ae2mod</p>
+	<ul>
+		<li><p>Select includes module</p>
+		<li><p>Make it active</p>
+		<li><p>Edit Apache to use server side includes</p>
+		<ul>
+			<li><p>You can do this by editing the Apache config files</p>
+			<li><p>OR by editing the Apache config files to allow .htaccess,
+			which is easiest. 
+			</p>
+			<ul>
+				<li><p>In Apache under the document diretory</p>
+				<ul>
+					<li><p>Options +Includes</p>
+					<li><p style="margin-bottom: 0in">You must include this to allow
+					.htacess files. It it suggesed you limit this only to certain
+					directories. 
+					</p>
+					<li><p>Example: 
+					</p>
+					<pre class="western">        Options All
+        AllowOverride all
+        Require all granted
+
+ </pre>
+					<li><p>Make a .htaccess file in a directory which allows
+					includes. 
+					</p>
+					<ul>
+						<li><p>Contents should be 
+						</p>
+						<pre class="western"> AddType text/html .shtml
+AddHandler server-parsed .shtml
+Options Indexes FollowSymLinks Includes
+                                        </pre>
+						<li><p>Make a sample web page with the include</p>
+						<pre class="western" style="margin-bottom: 0.2in"> &lt;!--#echo var=&quot;DATE_LOCAL&quot; &gtxsxsx&gt;</pre>
+						<li><p>View the web page. See if the date pops up. 
+						</p>
+					</ul>
+				</ul>
+			</ul>
+		</ul>
+	</ul>
+	<li><p>To put commands in the header</p>
+	<ul>
+		<li><p>View HTML source mode</p>
+		<li><p>Go to the &lt;header&gt; section</p>
+		<li><p>Add &lt;script&gt; My STUFF &lt;/script&gt;</p>
+		<li><p>Make sure you put the content of body down one line because
+		a little box for this script will appear.</p>
+		<li><p>You can edit this box. It may move to the top of the header
+		section instead of leaving it where it is. 
+		</p>
+	</ul>
+	<li><p>To update the table of contents, it will ruin the embedded
+	scripts. 
+	</p>
+	<ul>
+		<li><p>Open document in LibreOffice Writer and not the web editor. 
+		</p>
+		<ul>
+			<li><p>You might have to open up Writer and copy and paste into
+			it. 
+			</p>
+		</ul>
+		<li><p>Update of table of contents. 
+		</p>
+		<li><p>Save. 
+		</p>
+		<ul>
+			<li><p>Save it as html if you started as a text document in
+			Writer. 
+			</p>
+		</ul>
+		<li><p>Open in web editor. 
+		</p>
+		<li><p>Put back in the script commands. 
+		</p>
+		<li><p>Save. 
+		</p>
+		<li><p>Yes this is very annoying, but the table of contents is
+		worse to make manually. 
+		</p>
+	</ul>
+	<li><p>This is a BIG suggestion:</p>
+	<ul>
+		<li><p>Put one line script commands in. 
+		</p>
+		<ul>
+			<li><p>In should load a library and execute methods. 
+			</p>
+			<li><p>Or one line commands. 
+			</p>
+			<li><p>Why? In case you blow the scripts away, its easy to put
+			back in,. 
+			</p>
+		</ul>
+		<li><p>Document how and which commands or methods should be put
+		into the documents. Make it simple. 
+		</p>
+	</ul>
+	<li><p>Other suggestions</p>
+	<ul>
+		<li><p>Space the body down one line. Then you can put commands in
+		the header section. 
+		</p>
+		<li><p>Just before the first text, it will put a script in the body
+		section of the webpage.</p>
+		<li><p>The last line will put a footer in the webpage. 
+		</p>
+		<li><p>DO NOT EDIT the scripts in HTML mode or it might get
+		deleted.</p>
+		<li><p>I think if you edit in HTML mode and save an reopen then it
+		will not delete them. <br/>
+<br/>
+<br/>
+
+		</p>
+	</ul>
+</ul>
+  <p>
+    <!--#include virtual="/include/body_footer.html" -->
+
+<br/>
+
+</p>
+</body>
+</html>
