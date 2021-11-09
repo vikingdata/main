@@ -208,8 +208,8 @@ local computer you can use for more containers.&nbsp;</li>
 </ol><li>docker create -it -p 8001:80 -p 2200:22 -p 3106:3306 --name local_odendata -v "c:\tmp";/windows odendata_base_image</li><ol><li>This creates the container ports and shared directory. </li></ol><ol>
 </ol>
 <li>docker start local_odendata&nbsp;</li><ol><li>start container</li></ol><li>docker exec -it local_odendata bash</li><ol><li>connect to container</li></ol>
-<li>In bash:start apache and ssh</li><ol><li>service apache2 start</li><li>service sshd start</li></ol>
-<li>Test the web ports:</li>
+<li>In the docker instance start apache and ssh.</li><ol><li>service apache2 start</li><li>service sshd start</li></ol>
+<li>Test the web portsin Windoze:</li>
 <ol>
 <li>On your browser go to http:://127.0.0.1:8801/</li>
 <ol>
