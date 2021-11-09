@@ -50,6 +50,7 @@ Certifications
 	Python and other languages
 	Linux
 	Windoze
+	AWS, GCP, and maybe Azure
 
 Creating your own website
 	 AWS etup
