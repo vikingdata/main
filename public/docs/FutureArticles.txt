@@ -1,0 +1,79 @@
+Forgive any typos
+
+Database
+	snowflake
+	MySQL
+	MongoDB
+	Casandra
+	Spark
+
+Monitoring and Graphing
+	solar winds
+	Zabbix
+	Nagios
+	Grafana/Graphite
+	DataDog
+	PMM
+
+
+MySQL and other databases
+      percona vs oracle vs mariadb, db ratings, couchbase
+      mysql upgrade to percona, mariadb, tar and rpm
+      audit modules, information schema, performance schema
+      Security and Accounts: ssl connection, easiest authentication and authorization
+    	  and manging passwords, and stuff etc.
+  	schema and datga changes in prod, with inline, psc, and separate days
+  	       database and software push.
+
+      HA and Failover and Replication and Backups and Recovery
+     	  Types of replication, clustering, backups, recovery, sharding
+	  Scale up horizontal and vertical, and read scaling and write scaling
+       	  haproxy
+       	  MHA
+       	  Innodb CLuster
+       	  NDB cluster
+	  Keep Alive and vip
+  	   https://us.sios.com/blogs/how-to-configure-mysql-cluster-amazon-ec2/
+	   https://www.clusterdb.com/mysql/replication-and-auto-failover-made-easy-with-mysql-utilities
+	   https://datto.engineering/post/lossless-mysql-semi-sync-replication-and-automated-failover
+
+Cloud
+	SkySQL versus other cloud, aws, azure, gcp
+	Tools: Lamda, Dass, SaaS, Load balancing, cache, etc. 
+	different DaaS, SaaS
+	Monitoring and graphing
+	  AWS Insight and extended insight
+
+
+Certifications
+	MySQL, Mongo, Spark, etc
+	Python and other languages
+	Linux
+	Windoze
+
+Creating your own website
+	 AWS etup
+	 DNS setup
+	 Google setup
+	 Software setup
+	 	  kcomposer and ispell. [s[ad and download spell chjcker,
+		  notepad++
+		  docker : more articles, Kubernetes, etc. 
+
+Techniques and Procedures
+	   Failover, HA, etc. 
+	   Saving sql work in prod.
+	      mkdir TICKETS/<id>
+	      mysql -v-v
+	      tee logfile
+	      use <DB>
+   	      select now(), hostname;
+      	      source FILE.sql
+	      ALso, source file must be approved with exact commands. Must not be copied by windows to Linux.
+	   Dev to SQ to Staging to Prod
+	    
+
+Autmation and related
+	Anisble, Salt, Chef, Puppet, and cloud
+	Kerburnetes
+	GIT
