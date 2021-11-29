@@ -16,7 +16,12 @@ Monitoring and Graphing
 	PMM
 
 
-MySQL and other databases
+Mariadb
+	Docker etup notes and install cluster and master-slave locally on different ports
+	Innodb Cluster
+	rep and gtid plus ons slave commit
+
+MySQL
       percona vs oracle vs mariadb, db ratings, couchbase
       mysql upgrade to percona, mariadb, tar and rpm
       audit modules, information schema, performance schema
@@ -74,7 +79,7 @@ Techniques and Procedures
 	   Dev to SQ to Staging to Prod
 	    
 
-Autmation and related
+Automation and related
 	Anisble, Salt, Chef, Puppet, and cloud
 	Kerburnetes
 	GIT
