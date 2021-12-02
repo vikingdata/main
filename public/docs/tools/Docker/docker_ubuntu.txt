@@ -1,0 +1,37 @@
+apt-get update
+# these updates will take a "long" time
+apt-get install -y emacs screen apache2 tmux man
+# start and stop services. Will be useful for apache, mysqld, ssh, and maybe others. 
+# postfix might ask internet questions
+apt-get install -y ubuntu-system-service postfix apt-get install -y gnupg gnupg1 gnupg2 software-properties-common python2 sudo
+a2enmod  alias auth_basic authn_dmb cgi env filter headers include proxy request rewrite status vhost_alias
+service apache2 restart
+
+# install mariadb because I said so
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+add-apt-repository 'deb http://mirrors.accretive-networks.net/mariadb/repo/10.3/ubuntu bionic main'
+apt update
+
+apt install -y mariadb-server python3-pip
+service mariadb start
+sleep 2
+service mysql status
+mysql -u root -e "select 'database is up', now()"
+apt-get install python3-mysqldb
+
+# install monogdb because I said so
+unminimize
+apt-get install -y wget curl
+wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
+echo "deb https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+apt-get update
+apt-get install -y mongodb-org
+# For some reason service won't start mongodb
+/usr/bin/mongod --config /etc/mongod.conf
+mongo -eval "db.adminCommand('listDatabases')"
+
+apt-get install openssh-server
+service ssh start
+useradd -m  -s /bin/bash mark
+echo 'mark:mark' | sudo chpasswd
+
