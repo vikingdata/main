@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+
+    <!--#include virtual="/include/header.html" -->
+
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Git AutomatedDocker Install</title>
+
+</head>
+<body>
+
+  <!--#include virtual="/include/body_header.html" -->
+  
+  </head>
+
+<body lang="en-US" dir="ltr"><h1 class="western">Git -- Easy Save</h1>
+
+
+  I wanted to make it easy to save changes to the remote repository on
+GITHUB without using git commands or changing branches. Thus, this
+will add all files and upload them. For delete, or rename, the
+changes will be reflected at the next time you run the command. All
+committed changes locally will synced to the remote repository. Most
+of the time, its just add. Thus this makes it easy.</p>
+
+<h1>Steps</h1>
+<ul>
+	<li><p style="margin-bottom: 0in">Make Copy of git remote repository
+	site. It it exists, just update it. &nbsp; 
+	</p>
+	<li><p style="margin-bottom: 0in">Make sure we are not in git or we
+	are in the master branch. 
+	</p>
+	<li><p style="margin-bottom: 0in">Rsync just the changes that exist
+	on your local repository that does NOT exist in the copy.&nbsp; 
+	</p>
+	<li><p style="margin-bottom: 0in">&quot;'git add&quot; all missing
+	files on copy and not not include empty directories. Also filter out
+	files we do not want.&nbsp; 
+	</p>
+	<li><p style="margin-bottom: 0in">&quot;git commit&quot; 
+	</p>
+	<li><p>push the changes to the remote repository. 
+	</p>
+</ul>
+<h2>The Scripts</h2>
+
+<hr style="width: 100%; height: 2px;">
+
+<!--#include virtual="/include/body_footer.html" -->
+
+
+</body>
+</html>
