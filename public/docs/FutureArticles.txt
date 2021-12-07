@@ -1,5 +1,24 @@
 Forgive any typos
 
+Docker with environments are all below.
+       MySQL and MariaDB Spark, mongo, Kakfa, Cassandra, Redis
+       MySQL with Slaves, MHA, haproxy, sql proxy, and other HA, FO, or scalable solutions. 
+       MySQL or MariaDB with NDB, galeria
+
+spark, pyspark, kakfa, solar winds, skysql,
+mysql (stored procedures, HA and FO, tuning, Slow Queries, variables ,  Xtrabackup, ProxySQL, MySQL Orchestrator,
+mongo 4.4 (with various topics, aggregatged pipline sharding, etc. )
+Database dashboard. git
+
+AWS : Lamda, Clouffront, Ec2, S3, Document DD, diferent Auraos setups (pros and cons),
+  Elastic Cache and setup with MySQL, Kenesis, Elastoc bean stalk, CLI and Python API,
+  kafka, redshift, monitoring and alarms, 
+
+Cassandra and versus Mongo
+ETL process --- General processe (raw data, processed data, data to SQL or warehouse) -- mysql, spark and mongo
+
+Monitoring: solar winds, MMS, Mongo (and tools), 
+
 Database
 	snowflake
 	MySQL
