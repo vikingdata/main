@@ -1,5 +1,11 @@
 Forgive any typos
 
+MySQL: stored procedure, in and out variables.
+AWS: check instances script. 
+
+On Library, docker in docker, and docker in Linux. Commands to create image in Windows
+and Linux --- the mount points will be different. 
+
 Docker with environments are all below.
        MySQL and MariaDB Spark, mongo, Kakfa, Cassandra, Redis
        MySQL with Slaves, MHA, haproxy, sql proxy, and other HA, FO, or scalable solutions. 
@@ -12,12 +18,22 @@ Database dashboard. git
 
 AWS : Lamda, Clouffront, Ec2, S3, Document DD, diferent Auraos setups (pros and cons),
   Elastic Cache and setup with MySQL, Kenesis, Elastoc bean stalk, CLI and Python API,
-  kafka, redshift, monitoring and alarms, 
+  kafka, redshift, monitoring and alarms, Glue 
 
 Cassandra and versus Mongo
 ETL process --- General processe (raw data, processed data, data to SQL or warehouse) -- mysql, spark and mongo
 
 Monitoring: solar winds, MMS, Mongo (and tools), 
+
+Meanstack (MongoDB, Express, Angular, and Node)
+
+VM: virtualbox, docker, KVM, cygwin (kinda of)
+
+DevOPS: normal and AWS
+SRE: normal and AWS
+Vendors: Percona, Snowflake, AWS, Solar Winds, SkySQL, databricks
+Vendor Certification for each, and how to. 
+---------------------
 
 Database
 	snowflake

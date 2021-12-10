@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 
 import re, sys, os, time
 import argparse
@@ -9,10 +9,13 @@ import boto3
 ./list_ec2.py -c <Command> <Instance Name>
 
 ./list_ec2.py
-# With no options, lists out rc2 with status an info
+# With no options, lists out ec2 with status an info
 
-Command : start stop reboot sshupdate sshupgrade
+Command : start stop reboot 
 Instance Name: The name you give to the ec2 server. 
+
+You need to setup the aws files in ~/.aws with the key file for ssh, the
+default.pem file in ~/aws. 
 
 """
 
