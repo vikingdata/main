@@ -5,7 +5,7 @@
     <!--#include virtual="/include/header.html" -->
 
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-    <title>AWS: List EC2</title>
+    <title>MySQL: Stored Procedures INOUT</title>
 
 </head>
 <body>
@@ -14,10 +14,21 @@
   
   </head>
 
-<body lang="en-US" dir="ltr"><h1 class="western">AWS List EC2</h1>
-  I wanted to make a scripts to view all the EC2 instances I had. You cane also
-  use the CLI, but I made a python2 script years ago. This is a good example to start
-  with to program with the API. 
+<body lang="en-US" dir="ltr"><h1 class="western">MySQL: Stored Procedures INOUT</h1>
+  MySQL stored procedures are easy to understand once you follow the simple rules for
+  IN and OUT.
+  <ol>
+    <li> IN rquires there to be an input. If you define a default, you don't have to submit inout.
+    <li>OUT requires you to have output in the charater type defined. HINT: you should
+      force a conversation or possibly error out.
+    <li> INOUT requires and input and it prints an output.
+  </ol>
+  For more information read:
+  <ol>
+    <li>https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html
+      <li>https://dev.mysql.com/doc/connector-net/en/connector-net-tutorials-stored-procedures.html
+      <li>https://www.sqlshack.com/learn-mysql-the-basics-of-mysql-stored-procedures/
+    </ol>
 
   <h1> Requirements</h1>
   <ol>
@@ -28,11 +39,20 @@
   </ol>
   
 
-<h1>List EC2</h1>
+<h1>IN example</h1>
 
 <pre>
-<!--#include virtual="/tools/AWS/list_ec2.py" -->
+
 </pre>
+
+<h1>OUT example</h1>^M
+
+<h1>INOUT example</h1>^M
+
+
+
+
+
 <hr style="width: 100%; height: 2px;">
 
 <!--#include virtual="/include/body_footer.html" -->
