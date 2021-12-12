@@ -36,10 +36,14 @@
   <p>
     Simple function. 
 <pre>
+  create database if not exists test_sp;
+  use test_sp;
+  drop if exists now;
+      
 DELIMITER //
-CREATE PROCEDURE now()
+CREATE PROCEDURE n()
     BEGIN
-    SELECT *  FROM products;
+  SELECT now();
     END //
 
 DELIMITER ;
@@ -101,6 +105,8 @@ BEGIN
     END //
 DELIMITER ;
 
+  call n();
+  call 
 
 </pre>
 <h1>IN example</h1>
