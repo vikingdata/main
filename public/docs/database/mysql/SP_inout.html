@@ -28,8 +28,81 @@
     <li>https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html
       <li>https://dev.mysql.com/doc/connector-net/en/connector-net-tutorials-stored-procedures.html
       <li>https://www.sqlshack.com/learn-mysql-the-basics-of-mysql-stored-procedures/
-    </ol>
+<li>https://www.softwaretestinghelp.com/mysql-stored-procedure/
+  </ol>
 
+  <h1>MySQL Stored Procedures</h1>
+  Create these stored procedure in mysql.
+  <p>
+    Simple function. 
+<pre>
+DELIMITER //
+CREATE PROCEDURE now()
+    BEGIN
+    SELECT *  FROM products;
+    END //
+
+DELIMITER ;
+
+-- Simple procedure. It takes a number and adds 10. 
+
+DELIMITER //
+CREATE PROCEDURE sp_i(IN no int4)
+  BEGIN
+  select no + 10;
+  END //
+DELIMITER ;
+
+
+--  Simple procedure, adds one day to time.
+DELIMITER //
+  CREATE PROCEDURE sp_day(out date1 datetime)
+    BEGIN
+    select now + 1 days ;
+    END //
+DELIMITER ;
+
+--  Simple procdure, adds two numbers together.
+
+DELIMITER //
+  CREATE PROCEDURE sp_iio(in no1 int, In no2 int, OUT sout int)
+    BEGIN
+    DECLARE s int DEFAULT 0;
+    select s;
+    END //
+DELIMITER ;
+
+-- another way
+DELIMITER //
+CREATE PROCEDURE sp_ioi(inout inital int, In no2 int)
+  BEGIN
+  let initial = intitial + no2;
+  select initial;
+  END //
+DELIMITER ;
+
+-- simple one inout variables
+
+DELIMITER //
+  CREATE PROCEDURE sp_io(inout no int)
+    BEGIN
+    select no + 10;
+    END //
+DELIMITER ;
+
+
+-- simple one inout variables, with error
+
+DELIMITER //
+  CREATE PROCEDURE sp_errorcheck(inout no int)
+BEGIN
+    IF no is NULL then set no = -1; END IF; 
+    select no;
+    END //
+DELIMITER ;
+
+
+</pre>
 <h1>IN example</h1>
 
 <pre>
