@@ -36,24 +36,32 @@
   <p>
     Simple function. 
 <pre>
-<!--#include virtual="sp.sql" -->
+<!--#include virtual="create_sp.sql" -->
 </pre>
 <h1>IN example</h1>
-<!--#include virtual="i.out" -->
 
 <pre>
-
+<!--#include virtual="i.out" -->
 </pre>
 
 <h1>OUT example</h1>
-
+<pre>
 <!--#include virtual="o.out" -->
-
+</pre>
 
 <h1>INOUT example</h1>
 
-<!--#include virtual="io.out.sql" -->
+<h1>INOUT BUG</h1>
+For the OUT usage in a function, it seems to have historical bugs
+setting the variable to NULL. This will prove you have to submit a variable
+to a function with OUT, it will set it to NULL, and then if you reset its
+value its okay. But, the variable submitted does NOT have to be the same
+variable changed. 
 
+
+<pre>
+<!--#include virtual="io.out.sql" -->
+</pre>
 
 
 
