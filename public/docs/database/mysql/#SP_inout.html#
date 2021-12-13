@@ -46,14 +46,15 @@
 </pre>
 
 <h1>OUT example</h1>
-
+<pre>
 <!--#include virtual="o.out" -->
-
+</pre>
 
 <h1>INOUT example</h1>
 
+<pre>
 <!--#include virtual="io.out.sql" -->
-
+</
 
 
 
