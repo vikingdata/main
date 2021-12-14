@@ -39,7 +39,23 @@ NOTE: Need to check some confusion on "a" and "@a";
     
   </ol>
 
-  <h1>MySQL Stored Procedures</h1>
+  <ol id="mozToc">
+    <!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6--><li><a href="#mozTocId909994">MySQL Stored Procedures
+	r Install</a>
+      <ol>
+	<li><a href="#general">MySQL Stored Procedures</a></li>
+	<li><a href="#in">IN</a></li>
+	<li><a href="#out">OUT and INOUT</a></li>
+	<li><a href="#flow">Flow control</a></li>
+	<li><a href="#error">Error Handling</a></li>
+
+
+      </ol>
+    </li>
+  </ol>
+  
+  
+<a name=general></a>  <h1>MySQL Stored Procedures</h1>
   Create these stored procedure in mysql.
   <p>
     Remember these important tips. Lets take the variable VAR1. It can be
@@ -54,7 +70,8 @@ NOTE: Need to check some confusion on "a" and "@a";
 <pre>
 <!--#include virtual="create_sp.sql" -->
 </pre>
-<h1>IN example</h1>
+
+<a name=in></a><h1>IN example</h1>
 IN variables can be static or environment variables. They are only used in the
 stored procedure. If any evironment variable is used, it is not changed when the stored procedure ends. 
 
@@ -62,7 +79,7 @@ stored procedure. If any evironment variable is used, it is not changed when the
 <!--#include virtual="i.out" -->
 </pre>
 
-<h1>OUT and INOUT example</h1>
+<a name=out></a><h1>OUT and INOUT example</h1>
 The important thing to remember about OUT defined variables are:
 <ol>
   <li> Variables with "@" refer to global variables outside the stored
@@ -84,7 +101,7 @@ The important thing to remember about OUT defined variables are:
 <!--#include virtual="o.out" -->
 </pre>
 
-<h1>Flow Control</h1>
+<a name=flow></a><h1>Flow Control</h1>
 Two different flow controls are used: "if" and "case". 
 
 <pre>
@@ -148,7 +165,7 @@ call sp_flow("a");
     
   </pre>
 
-<h1>Error trapping</h1>
+<a name=error></a><h1>Error trapping</h1>
 
 
 <pre>
