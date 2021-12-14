@@ -78,9 +78,76 @@ The important thing to remember about OUT defined variables are:
 </pre>
 
 <h1>Flow Control</h1>
+Two different flow controls are used: "if" and "case". 
+
+<pre>
+drop procedure if exists sp_flow;
+DELIMITER //
+CREATE PROCEDURE sp_flow(IN n int4)
+  BEGIN
+    DECLARE s VARCHAr(20) default 'unknown';
+
+    IF n > 10 THEN SET s = 'High'; end if;
+    CASE 
+      WHEN n = 10 THEN set s = 'nothing';
+      WHEN n < 10 THEN set s = 'Low';
+      ELSE begin end; 
+    end case;
+    select s;
+  end;
+//
+delimiter ;
+	       
+call sp_flow(11);
+call sp_flow(10);
+call sp_flow(9);
+call sp_flow("a");
+  </pre>
+
+<pre>
+  MariaDB [test_sp]> call sp_flow(11);
+    +------+
+    | s    |
+    +------+
+    | High |
+    +------+
+    1 row in set (0.000 sec)
+
+    Query OK, 0 rows affected (0.000 sec)
+
+    MariaDB [test_sp]> call sp_flow(10);
+    +---------+
+    | s       |
+    +---------+
+    | nothing |
+    +---------+
+    1 row in set (0.000 sec)
+
+    Query OK, 0 rows affected (0.000 sec)
+
+    MariaDB [test_sp]> call sp_flow(9);
+    call sp_flow("a");
+    +------+
+    | s    |
+    +------+
+    | Low  |
+    +------+
+    1 row in set (0.000 sec)
+
+    Query OK, 0 rows affected (0.000 sec)
+
+    MariaDB [test_sp]> call sp_flow("a");
+    ERROR 1366 (22007): Incorrect integer value: 'a' for column ``.``.`n` at row 1
+    
+  </pre>
 
 <h1>Error trapping</h1>
 
+
+<pre>
+<!--#include virtual="error.sql" -->
+
+</pre>
 <h1>Default values</h1>
 
 
