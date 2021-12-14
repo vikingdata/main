@@ -34,6 +34,9 @@ NOTE: Need to check some confusion on "a" and "@a";
 <li>https://www.mysqltutorial.org/mysql-error-handling-in-stored-procedures/
 <li>https://dev.mysql.com/doc/refman/8.0/en/declare-handler.html
   <li>https://dev.mysql.com/doc/refman/8.0/en/condition-handling.html
+<li>https://www.w3resource.com/mysql/mysql-procedure.php#MLST
+
+    
   </ol>
 
   <h1>MySQL Stored Procedures</h1>
@@ -152,6 +155,14 @@ call sp_flow("a");
 <!--#include virtual="error.sql" -->
 </pre>
 
+Notice how "n" becoms NULL when an error occurs. This is very very bad.
+The error trapping still works. But I would recommend:
+<ol>
+  <li>Check the final result.
+  <li> I an error occurs, restore "n" to a backup.
+</ol>
+Those tasks are left to the reader. 
+
 <pre>
 --------------
 call sp_error(1)
@@ -182,7 +193,7 @@ call sp_error(1)
 | n    | n2   | error1 | error2 | s1                                  | s2                            |
 +------+------+--------+--------+-------------------------------------+-------------------------------+
 | NULL |    1 |      0 |      1 | first exception not activated. Good | 2nd exception activated. Good |
-+------+------+--------+--------+-------------------------------------+-------------------------------+
++------+------+--------+--------+-------------------------------------+------OA-------------------------+
 1 row in set (0.001 sec)
 
 Query OK, 0 rows affected (0.001 sec)
@@ -192,7 +203,12 @@ MariaDB [test_sp]>
 
 </pre>
 <h1>Default values</h1>
-
+<ol>
+  <li> You can have default values with delcared variables using DECLARE.
+  <li> You cannot have default values with variables made from IN, OUT,
+    or INOUT. One option is to pass NULL and then have a NULL check
+    if the stored proedure and set the value if NULL. 
+</ol>
 
 
 <hr style="width: 100%; height: 2px;">
