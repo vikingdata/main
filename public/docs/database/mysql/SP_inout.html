@@ -18,7 +18,7 @@
   MySQL stored procedures are easy to understand once you follow the simple rules for
   IN and OUT.
   <ol>
-    <li> IN rquires there to be an input. If you define a default, you don't have to submit inout.
+    <li> IN requires there to be an input. 
     <li>OUT requires you to have output in the charater type defined. HINT: you should
       force a conversation or possibly error out.
     <li> INOUT requires and input and it prints an output.
@@ -29,6 +29,9 @@
       <li>https://dev.mysql.com/doc/connector-net/en/connector-net-tutorials-stored-procedures.html
       <li>https://www.sqlshack.com/learn-mysql-the-basics-of-mysql-stored-procedures/
 <li>https://www.softwaretestinghelp.com/mysql-stored-procedure/
+<li>https://www.mysqltutorial.org/mysql-error-handling-in-stored-procedures/
+<li>https://dev.mysql.com/doc/refman/8.0/en/declare-handler.html
+  <li>https://dev.mysql.com/doc/refman/8.0/en/condition-handling.html
   </ol>
 
   <h1>MySQL Stored Procedures</h1>
@@ -50,29 +53,36 @@
 IN variables can be static or environment variables. They are only used in the
 stored procedure. If any evironment variable is used, it is not changed when the stored procedure ends. 
 
-
 <pre>
 <!--#include virtual="i.out" -->
 </pre>
 
 <h1>OUT and INOUT example</h1>
-Thw important thing to remember about OUT defined variables are:
+The important thing to remember about OUT defined variables are:
 <ol>
   <li> If the variable in the mysql environment exists, it is set to NULL.
   <li> A variable must be submitted to an OUT defined input.
-  <li>A variable submitted to an OUT input variable will be reference and NOT copied. This means any changes to the variable will appear in the envionment
+  <li>A variable submitted to an OUT input variable will be references
+    and NOT copied. This means any changes to the variable will appear in the envionment
     submitted to the procedures.
     </ol>
   <p>
     For OUT, We see the @i1 variable is submitted as "1" to the stored procedure. We see
-    the sp iommediately makes it NULL. At the end it changes it to "3" and
-    the envionment variables @i1 becomes "3".
+    the sp immediately makes it NULL. At the end it changes it to "3" and
+    the environment variables @i1 becomes "3".
   <p>
     For INOUT, @i2 is submitted as "2". It does not change upon entering. It s changed to
     "4" and then the environment variable is changed. 
 <pre>
 <!--#include virtual="o.out" -->
 </pre>
+
+<h1>Flow Control</h1>
+
+<h1>Error trapping</h1>
+
+<h1>Default values</h1>
+
 
 
 <hr style="width: 100%; height: 2px;">
