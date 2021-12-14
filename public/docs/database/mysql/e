@@ -1,0 +1,43 @@
+DELIMITER //
+CREATE PROCEDURE sp_error(IN n int4)
+  BEGIN
+
+  declare error1 int default 1;
+  declare error2 int default 1;
+
+  DECLARE cursor1 CURSOR FOR select 1;
+  DECLARE cursor2 CURSOR FOR select 1;
+
+  open cursor1;
+  DECLARE continue HANDLER FOR SQLEXCEPTION
+    begin
+      select error1, error2;
+    end;   
+  close cursor1;   
+
+  open cursor2;
+  DECLARE continue HANDLER FOR SQLEXCEPTION;
+    set @n = @n + "a";
+    set error2 = 0;
+  close cursor2;
+
+  CASE
+    WHEN error1 = 0 THEN set error1 = 'first exception worked. Good';
+    WHEN error1 = 1 THEN set error1 = 'first execption did not work. Bad';
+    ELSE begin end;
+  end case;
+
+  CASE
+    WHEN error2 = 1 THEN set s = '2nd exception not activated. Good';
+    WHEN error2 = 0 THEN set s = '2nd exception activated. Bad';
+    ELSE begin end;
+   end case;
+
+  select error1, error2; 
+
+end ;
+//
+delimiter ;
+
+call sp_error(1);
+call sp_error("a");
