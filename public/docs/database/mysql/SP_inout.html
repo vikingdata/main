@@ -34,35 +34,45 @@
   <h1>MySQL Stored Procedures</h1>
   Create these stored procedure in mysql.
   <p>
+    Remember these important tips. Lets take the variable VAR1. It can be
+    confusing to remmeber when to use "@VAR1" or "VAR1" at times. 
+    <ol>
+      <li>Whenever you "read" or "select" the variable VAR1 you must use "@VAR1"". This applies to the mysql shell or in stored procedures. 
+      <li>Whenever you set VAR1 in the mysql shells, you must use "@VAR1".
+      <li>Whenevr you set, or declare, or use in proc_parameters (IN, OUT, INOUT) VAR1 in a stored procedure, you must use "VAR1".
+    </ol>
+  <p>
     Simple function. 
 <pre>
 <!--#include virtual="create_sp.sql" -->
 </pre>
 <h1>IN example</h1>
+IN variables can be static or environment variables. They are only used in the
+stored procedure. If any evironment variable is used, it is not changed when the stored procedure ends. 
+
 
 <pre>
 <!--#include virtual="i.out" -->
 </pre>
 
-<h1>OUT example</h1>
+<h1>OUT and INOUT example</h1>
+Thw important thing to remember about OUT defined variables are:
+<ol>
+  <li> If the variable in the mysql environment exists, it is set to NULL.
+  <li> A variable must be submitted to an OUT defined input.
+  <li>A variable submitted to an OUT input variable will be reference and NOT copied. This means any changes to the variable will appear in the envionment
+    submitted to the procedures.
+    </ol>
+  <p>
+    For OUT, We see the @i1 variable is submitted as "1" to the stored procedure. We see
+    the sp iommediately makes it NULL. At the end it changes it to "3" and
+    the envionment variables @i1 becomes "3".
+  <p>
+    For INOUT, @i2 is submitted as "2". It does not change upon entering. It s changed to
+    "4" and then the environment variable is changed. 
 <pre>
 <!--#include virtual="o.out" -->
 </pre>
-
-<h1>INOUT example</h1>
-
-<h1>INOUT BUG</h1>
-For the OUT usage in a function, it seems to have historical bugs
-setting the variable to NULL. This will prove you have to submit a variable
-to a function with OUT, it will set it to NULL, and then if you reset its
-value its okay. But, the variable submitted does NOT have to be the same
-variable changed. 
-
-
-<pre>
-<!--#include virtual="io.out.sql" -->
-</pre>
-
 
 
 <hr style="width: 100%; height: 2px;">

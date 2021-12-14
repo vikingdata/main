@@ -2,7 +2,6 @@
   use test_sp;
   drop procedure if exists n;
   drop procedure if exists sp_i;
-  drop procedure if exists sp_day;
   drop procedure if exists sp_iio;
   drop procedure if exists sp_ioi;
   drop procedure if exists sp_io;
@@ -25,7 +24,10 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE sp_i(IN no1 int4)
   BEGIN
-  select no1 + 10;
+    select 'start', no1;
+    select no1 + 10 into no1;
+    select 'end', no1;
+	 
   END //
 DELIMITER ;
 
@@ -33,11 +35,12 @@ DELIMITER ;
 --  Simple function, adds one day to time.
 drop procedure if exists sp_o;
 DELIMITER //
-  CREATE PROCEDURE sp_o(in no1 int, out VAR1 int, inout VAR2 int)
+  CREATE PROCEDURE sp_o(out VAR1 int, inout VAR2 int)
     BEGIN
+    select 'start', VAR1, VAR2, @GLOBAL1;
     set VAR1 = @GLOBAL1;
-    select -100 into VAR2;
-    select 'done', @VAR1, @VAR2, @temp1, @temp2, @GLOBAL1;
+    select 4 into VAR2;
+    select 'end', VAR1, VAR2, @GLOBAL1;
     END //
 DELIMITER ;
 
@@ -91,7 +94,6 @@ DELIMITER ;
 
   call n();
   call sp_i(1);
-  call sp_day();
 
   set @temp1 = 2000;
   set @temp2 = 2000;
@@ -116,22 +118,15 @@ DELIMITER ;
   call sp_errorcheck(@io);
   select 'ec', @io;
 
-  set @GLOBAL1 = 99; 
+  set @GLOBAL1 = 3; 
+  set @i1 = 1;
+  set @i2 = 2;
+  select "env", @i1, @i2;
+  call sp_o(@i1, @i2);
+  select "env", @i1, @i2;
 
-  set @i1 = 10;
-  set @i2 = 10;
-  set @temp1 = 20;
-  set @temp2 = 20;
-  select "INITIAL", @i1, @i2, @temp1, @temp2;
-  call sp_o(0, @temp1, @temp2);
-  select "r", @i1, @i2, @temp1, @temp2;
-
-  set @i1 = 10;
-  set @i2 = 10;
-  set @temp1 = 20;
-  set @temp2 = 20;
-  select "INITIAL", @i1, @i2, @temp1, @temp2;
-  call sp_o(0 , @i1, @i2);
-  select "r", @i1, @i2, @temp1, @temp2;
-
-      
+  set @i1 = 1;
+  select "env", @i1;
+  call sp_i(@i1);
+  select "env", @i1;
+	  
