@@ -7,10 +7,6 @@
   drop procedure if exists sp_io;
   drop procedure if exists sp_errorcheck;
 
--- we need to define variable for OUT variable.
-set @o = 0;
-set @io = 0;
-
 DELIMITER //
 CREATE PROCEDURE n()
     BEGIN
@@ -51,10 +47,10 @@ DELIMITER //
   CREATE PROCEDURE sp_iio(in no1 int, In no2 int, OUT no3 int, OUT no4 int)
     BEGIN
     DECLARE s int DEFAULT 0;
-    set @s = @no1 + @no2;
-    select @no3 + 1  into @no3;
-    set @no4 = 5;
-    select 'done', @s, @no3, @no1, @no2, @no3, @no4;
+    set s = no1 + no2;
+    select no3 + 1  into no3;
+    set no4 = 5;
+    select 'done', s, no1, no2, no3, no4;
     END //
 DELIMITER ;
       
@@ -63,8 +59,8 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE sp_ioi(inout no1 int, In no2 int)
   BEGIN
-  set @no1 = @no1 + @no2;
-  select 'done', @no1, @no2;
+  set no1 = no1 + no2;
+  select 'done', no1, no2;
 END //
 DELIMITER ;
 
@@ -74,9 +70,8 @@ DELIMITER //
   CREATE procedure sp_io(inout no1 int)
     BEGIN
     declare temp int default 100;
---     set @temp = 200;
-    select @no1 + @temp into @no1;
-    select 'done', @no1, @temp; 
+    select no1 + temp into no1;
+    select 'done', no1, temp; 
 END //
 DELIMITER ;
 
@@ -87,8 +82,8 @@ DELIMITER //
   CREATE PROCEDURE sp_errorcheck(inout no1 int)
 BEGIN
     IF no1 is NULL then set no1 = -1; END IF; 
-    set @no1 = 1000; 
-    select 'done', @no1;
+    set no1 = 1000; 
+    select 'done', no1;
     END //
 DELIMITER ;
 

@@ -14,7 +14,9 @@
   
   </head>
 
-<body lang="en-US" dir="ltr"><h1 class="western">MySQL: Stored Procedures INOUT</h1>
+<body lang="en-US" dir="ltr"><h1 class="western">MySQL: Stored Procedures INOUT
+  </h1>
+NOTE: Need to check some confusion on "a" and "@a";
   MySQL stored procedures are easy to understand once you follow the simple rules for
   IN and OUT.
   <ol>
@@ -60,7 +62,9 @@ stored procedure. If any evironment variable is used, it is not changed when the
 <h1>OUT and INOUT example</h1>
 The important thing to remember about OUT defined variables are:
 <ol>
-  <li> If the variable in the mysql environment exists, it is set to NULL.
+  <li> Variables with "@" refer to global variables outside the stored
+    procedure. Other variables inside the stored procedure have no "@". 
+  <li> If the variable in the mysql environment exists, it is set to NULL. ### CHECK THIS. 
   <li> A variable must be submitted to an OUT defined input.
   <li>A variable submitted to an OUT input variable will be references
     and NOT copied. This means any changes to the variable will appear in the envionment
