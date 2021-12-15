@@ -89,11 +89,10 @@ The important thing to remember about OUT defined variables are:
   <li> Variables with "@" refer to global variables outside the stored
     procedure. Other variables inside the stored procedure have no "@". 
   <li> If the variable in the mysql environment exists, it is set to NULL. ### CHECK THIS. 
-  <li> A variable must be submitted to an OUT defined input.
-  <li>A variable submitted to an OUT input variable will be references
-    and NOT copied. This means any changes to the variable will appear in the envionment
-    submitted to the procedures.
-    </ol>
+  <li> A variable must be submitted to an OUT defined variables. 
+  <li>A variable submitted to OUT beomes NULL and NOT copied. Then the value can be set
+    and exported to the MySQL envionment. 
+        </ol>
   <p>
     For OUT, We see the @i1 variable is submitted as "1" to the stored procedure. We see
     the sp immediately makes it NULL. At the end it changes it to "3" and
