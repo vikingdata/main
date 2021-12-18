@@ -24,6 +24,7 @@
   <li><a href="#s2">Aurora Serverless 2</a></li>
   <li><a href="#multi">Multi Master</a></li>
 <li><a href="#s">SkySQL alternative to Aurora at AWS</a></li>
+<li><a href="#f">Future additions</a></li>
 </ol>
 </ol>
 
@@ -46,6 +47,9 @@
 <li>https://www.dsdata.es/en/SkySQL_synchronous_multi-master_replication
     </ul>
 
+  <li>https://searchcloudcomputing.techtarget.com/answer/When-should-I-use-Amazon-RDS-vs-Aurora-Serverless
+  <li>https://www.educba.com/aws-aurora/
+    
 </uL>
 
 
@@ -72,22 +76,63 @@
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="s1"></a>Aurora Serverless 1</h2>
 
+<ul>
+    <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations
+    <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.how-it-works.html#aurora-serverless.how-it-works.auto-scaling
+<li>https://aws.amazon.com/rds/aurora/serverless/
+<li>https://aws.plainenglish.io/what-is-amazon-aurora-serverless-b48ef15bf703
+  <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations
+</ul>
+
+Aurora Serverless one scales automatically up and down depending on your workloads. It it meant
+for developers to have a scaling database environment that depends on the amount of work
+that needs to be done. If it scales down to 0, you just pay for storage.
+<br>You are charge peer second for ACU. 
+
+<p>
+  Where serverless can shine is when you have periods of lots of work to do. Since it is
+  deisgned      to take care of itself, this can make managment easier.
+    <p>However for data processing, you might want to consider Spark or Snowflake to process
+      data and out the final results in an SQL and data warehouse.
+    <p>
+      Make sure you read about the limitations of Aurora Serverless 1.
+      
+
 <br>
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="s2"></a>Aurora Serverless 2</h2>
+<ul>
+
+  <li>https://www.jeremydaly.com/aurora-serverless-v2-preview/
+</ul>
+At the time of this writing, serverless 2 has more capbilities for
+scaling up and better suited for prod use. It seems twice as expensive
+as serverless 1, but it actually may be more. Scalling can happen in milliseconds. 
+
+    <p>
+      When Serverless 2 is no longer in preview mode, the advantages will be great
+      and there should be less of a need for Serverless 1. 
 
 <br>
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multi"></a>Aurora Multi Master</h2>^
+<uL>
+  <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-multi-master.html
+</ul>
+There are MANY lmitations on muti master Aurora. It meant to be able to have more write
+througput than a single Aurora Primary with read replicas. It is not worth it is most cases.
 
 <br>
 <hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="s"></a>SkySQL: an alternative to Aurora at AWS</h2>^M
+<h2><a class="mozTocH2" name="s"></a>SkySQL: an alternative to Aurora at AWS</h2>
 
 <br>
 <hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="chart"></a></h2>^M
-
+<h2><a class="mozTocH2" name="f"></a>Future Additions</h2>^M
+<ul>
+  <li>Have Python script that makes am Aurora 1 or 2 or 3, of serverless 1 or 2, or multi master.
+    Have it run a task and then destory instance. 
+  </ul>
 
 <hr style="width: 100%; height: 2px;">
 
