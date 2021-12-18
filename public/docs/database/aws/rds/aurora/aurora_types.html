@@ -32,6 +32,7 @@
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="chart"></a>Links</h2>
 <ul>
+  <li>https://calculator.aws/#/createCalculator/AuroraMySQL
   <li>Aurora 1: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.11Updates.html <p>Aurora MySQL 1.x versions are compatible with MySQL 5.6
   <li>Aurora 2: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.20Updates.html <p> Aurora MySQL 2.x versions are compatible with MySQL 5.7 
     <li> Aurora 3: https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.30Updates.html<p>Versions:  Aurora MySQL updates: 2021-11-18 (version 3.01.0, compatible with MySQL 8.0.23)MySQL 8.0.23 
@@ -45,6 +46,7 @@
       <li>https://mariadb.com/products/skysql/comparison/
 	<li>https://www.yahoo.com/now/mariadb-collaborates-aws-deliver-skysql-130000220.html
 <li>https://www.dsdata.es/en/SkySQL_synchronous_multi-master_replication
+<li>https://www.stratoscale.com/blog/dbaas/aurora-vs-rds/
     </ul>
 
   <li>https://searchcloudcomputing.techtarget.com/answer/When-should-I-use-Amazon-RDS-vs-Aurora-Serverless
@@ -61,15 +63,22 @@
 
 <br>
 <hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="a1"></a>Aurora 1</h2>
+<h2><a class="mozTocH2" name="a1"></a>Aurora 1, 2, and 3</h2>
+<ul>
+  <li>https://aws.amazon.com/blogs/database/amazon-aurora-mysql-3-with-mysql-8-0-compatibility-is-now-generally-available/#:~:text=Aurora%20MySQL%203%20introduces%20several,compatibility%20with%20the%20MySQL%208.0.
+</ul>
+<ul>
+  <li> Aurora is a custom engine built buy Amazon which is Mysql or PosgreSQL compatible. It
+    offers many features like auto scaling for diskspace and instances, automatic backups,
+    point in time recovery, and many other features. 
+  <li>Write does not scale horiztonal but vertical.
+  <li>There appears to be no cost different from Aurora 1, 2, and 3. If you are new, go to
+    Aurora 3.
+    <li> Pay attention to limitations of Aurora. 
+  </ul>
 
-<br>
-<hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="a2"></a>Aurora 2</h2>
-
-<br>
-<hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="a3"></a>Aurora 3</h2>
+TODO: list of limitations and gotchas for 1, 2, and 3. List real reasons to go to
+newer versions.
 
 
 <br>
@@ -82,6 +91,7 @@
 <li>https://aws.amazon.com/rds/aurora/serverless/
 <li>https://aws.plainenglish.io/what-is-amazon-aurora-serverless-b48ef15bf703
   <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html#aurora-serverless.limitations
+<li>https://www.jeremydaly.com/aurora-serverless-the-good-the-bad-and-the-scalable/
 </ul>
 
 Aurora Serverless one scales automatically up and down depending on your workloads. It it meant
@@ -96,7 +106,8 @@ that needs to be done. If it scales down to 0, you just pay for storage.
       data and out the final results in an SQL and data warehouse.
     <p>
       Make sure you read about the limitations of Aurora Serverless 1.
-      
+      <p>
+
 
 <br>
 <hr style="width: 100%; height: 2px;">
@@ -125,7 +136,12 @@ througput than a single Aurora Primary with read replicas. It is not worth it is
 <br>
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="s"></a>SkySQL: an alternative to Aurora at AWS</h2>
+<ul>
+  <li>https://mariadb.com/resources/blog/four-things-you-didnt-know-about-amazon-aurora/
 
+</uL>
+
+TODO put more info of SkySQL on there. Put demo available on site. 
 <br>
 <hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="f"></a>Future Additions</h2>^M
@@ -133,6 +149,15 @@ througput than a single Aurora Primary with read replicas. It is not worth it is
   <li>Have Python script that makes am Aurora 1 or 2 or 3, of serverless 1 or 2, or multi master.
     Have it run a task and then destory instance. 
   </ul>
+
+<br>
+<hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="c"></a>Caching and Load Balancing</h2>^M
+Database caching is almost  necessity and also load balancing. Caching makes it so
+you can relieve pressure on the databases in terms of read queries. Load balancing can make
+upgrades and matintence a lot easier.
+    <p>
+      TODO: list benefits and links. 
 
 <hr style="width: 100%; height: 2px;">
 
