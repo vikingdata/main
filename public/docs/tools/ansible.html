@@ -68,6 +68,23 @@ Their roles include : mysql_database, Apache_webserver, ssh. And the modules tel
 roles get executed on those servers. You want you databases to have a database, a webserver,
 ssh, and maybe other stuff like monitoring, backups, etc. 
 
+<h3> Install</h3>
+<pre>
+  apt update
+  apt install software-properties-common
+  add-apt-repository --yes --update ppa:ansible/ansible
+  apt install ansible
+
+  touch /etc/ansible/hosts
+  echo "[one_sever]" >> /etc/ansible/hosts
+  echo "alias one=127.0.0.1" >> /etc/ansible/hosts
+
+  echo "[myself]" >> /etc/ansible/hosts
+  echo "host1 localhost=127.0.0.1" >> /etc/ansible/hosts
+
+  
+</pre>
+
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="basic">Basic commands and configuration</a></h2>
 
@@ -80,6 +97,11 @@ ssh, and maybe other stuff like monitoring, backups, etc.
 </ol>
 
 <h3>Commands</h3>
+Read
+<ol>
+  <li>https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html
+</ol>
+
 <ol>
   <li>Verify servers
   <li>Run simple playbook
