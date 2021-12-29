@@ -109,6 +109,7 @@ Any group command can be made into function like window functions. You have to u
   <li>https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 </ul>
 
+<pre>
 SELECT person, state, CUME_DIST(amount) OVER (PARTITION BY state) as w;
 SELECT person, state, DENSE_RANK(amount) OVER (PARTITION BY state) as w;
 SELECT person, state, FIRST_VALUE(amount) OVER (PARTITION BY state) as w;
