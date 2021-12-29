@@ -172,10 +172,13 @@ We will do the following:
     ALTER TABLE charges ADD COLUMN ignore_me2 int;
 
     begin;
-    insert into charges (1,1), (2,2), (1,3), (2,4);
+    insert into charges values (1,1), (2,2), (1,3), (2,4);
     commit;
 
     show create table charges;
+    select count(1) from charges;
+    show tables;
+    
   </pre>
 <p> Start mysql:   In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
 
