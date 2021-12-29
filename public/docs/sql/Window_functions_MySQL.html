@@ -68,7 +68,21 @@ result. It doesn't change the result.
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="setup"></a>MySQL setup</h2>
+Issue these queries in MySQL prompt
+<pre>
 
+  create database if not exists temp;
+  use temp;
+  drop database if exists MY_STUPID_DATABASE;
+
+  create database if not exists MY_STUPID_DATABASE;
+  use MY_STUPID_DATABASE;
+  
+  create table income (person varchar(64), state varchar(64), amount int);
+  insert into income values ('mark', 'CA', 10), ('john', 'CA', 20), ('heidi','CA', 30),
+  ('Melisa', 'MA', 100), ('Faith', 'MA', 200),('Queen', 'MA', 300),
+  ('Collin', 'IN', 51), ('Tristan', 'OH', 61),('John', 'MA', 71);
+  </pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="functions"></a>
