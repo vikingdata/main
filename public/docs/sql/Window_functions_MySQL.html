@@ -47,7 +47,7 @@
 <h2><a class="mozTocH2" name="do"></a>What window functions do.</h2>
 Window functioning is when you take any group function and display the same
 result in more than one
-line. Normally in a valid per the results are shown one result per line. 
+line. Normally in a valid query the results are shown one result per line. 
 This is true for previous groups functions and what they call Window Functions. I think
 the name Window Functions is bad.
 
@@ -55,13 +55,18 @@ the name Window Functions is bad.
       With window functions, it really just allows you to show the results of the same grouped
       result on multiple lines. For example, I want to show the entire sum of money
       for each state, and everybody in the state. I want to show one person per line and the
-      repeating sum of money the person is on that state. Thus, The group function is calculated
+      repeating sum of money the person is on that state.
+      Thus, the group function is calculated
       and displayed for each person in the state. Normally the sum the money for a state
       us displayed on one line.
       The state and then the sum. But with window functions you can apply
       the result of the sum to more than one line --- For each person in the state. An example
       is shown below plus more window functions. 
+    <p> Why can this be bad? It might be bad because it has to caluclate the sums, and then
+      redo the results with the sum in mutiple lines. This might cause it so be slower.
+      I think they optimize this, but I am sure in some cases it can slow things down. 
 
+      
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="setup"></a>MySQL setup</h2>
 Issue these queries in MySQL prompt
@@ -86,8 +91,15 @@ Window Functioning made with normal (any) group command
 </h2>
 Any group command can be made into function like window functions. You have to use partitions.
     <p>
-      For example: <pre>  SELECT person, state, SUM(amount) OVER (PARTITION BY state) as state_income
-      FROM my_table;</pre>
+      For example: <pre>
+	SELECT person, state, SUM(amount) OVER (PARTITION BY state) as state_income
+        FROM income;
+
+	SELECT person, state, count(amount) OVER (PARTITION BY state) as state_no_of_entries
+	FROM income;
+	
+
+      </pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="functions"></a>New Window functions</h2>
