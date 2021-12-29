@@ -156,15 +156,25 @@ We will do the following:
 <p>
   Save to a file called "stuff.bash  ".
   <pre>
+    date
+    whoami
+    set PTDEBUG =1;
     pt-online-schema-change --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
+    date
     pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    date
     pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
     
     pt-online-schema-change --alter "ADD index id_name, (id, name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    date
     pt-online-schema-change --alter "ADD index id_amount, (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
+    date
     mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table people;"
     mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table charges;"
   </pre>
+<p>
+  Execute file as: " bash stuff.bash > stuff.log 2>&1 "
+  <br>Look at error file: "more stuff.log"
 <p>
   Look at error log with linux command: grep -vi err error.log
 <br><hr style="width: 100%; height: 2px;">
