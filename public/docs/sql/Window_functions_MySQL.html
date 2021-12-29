@@ -89,6 +89,10 @@ Issue these queries in MySQL prompt
 <h2><a class="mozTocH2" name="functions"></a>
 Window Functioning made with normal (any) group command
 </h2>
+<ul>
+  <li>https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html
+</ul>
+
 Any group command can be made into function like window functions. You have to use partitions.
     <p>
       For example: <pre>
@@ -97,13 +101,27 @@ Any group command can be made into function like window functions. You have to u
 
 	SELECT person, state, count(amount) OVER (PARTITION BY state) as state_no_of_entries
 	FROM income;
-	
-
       </pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="functions"></a>New Window functions</h2>
+<ul>
+  <li>https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
+</ul>
 
+SELECT person, state, CUME_DIST(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, DENSE_RANK(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, FIRST_VALUE(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, LAG(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, LAST_VALUE(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, LEAD(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, NTH_VALUE(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, NTILE(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, PERCENT_RANK(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, RANK(amount) OVER (PARTITION BY state) as w;
+SELECT person, state, ROW_NUMBER(amount) OVER (PARTITION BY state) as w;
+
+</pre>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="example"></a>Example code</h2>
 
