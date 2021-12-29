@@ -43,13 +43,15 @@ These are high level steps. We aren't going to go into details with each one.
   <li>Follow procedures to execute changes in prod.
   <li>Make sure all changes are recorded.
   <li>Post error logs to ticket and report in ticket the outcome.
-  <li> If successulf, close ticket.
+  <li> If successful, close ticket.
   <li> If not, follow procedures or rollback based on policy.
-  <li> Database changes and application software upgradee should happen on different
+  <li> Database changes and application software upgradea should happen on different
     days if possible, and not on Fridays or weekends if possible. 
 </ol>
 
-<h3>Setup</h3>
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="setup">Setup </a></h2>
+
 Execute in the mysql shell
 <pre>
   create database if not exists My_STUPID_DATABASE;
