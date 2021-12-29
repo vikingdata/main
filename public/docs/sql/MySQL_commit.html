@@ -67,8 +67,7 @@ Save to a file "my_stuff.sql".
   insert into charges values (1, 10), (2,10), (1, 3), (1, 4), (2,5);
 
   select count(1) from people;
-  select count(1) from charges;
-  
+  select count(1) from charges;  
   create user mark@localhost;
   ALTER USER mark@localhost IDENTIFIED BY 'mark';
   grant all privileges on *.* to mark@localhost;
@@ -76,7 +75,8 @@ Save to a file "my_stuff.sql".
   show grants for mark@localhost;
 </pre>
     <p>
-      Start mysql as: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+      Start mysql as: mysql -u root -p
+      <br> or if not password : mysql -u root -p
     <p>
       Execute the commands:<pre>
 use MY_STUPID_DATABASE;
@@ -157,11 +157,11 @@ We will do the following:
 
 <p>
 
-  <p>
-  In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+<p>
+  Save to a file called: "my_stuff2.sql"
   <pre>
     
-    tee error.log
+    tee error2.log
     use database MY_STUPID_DATABASE ### Yes I did use a second time.;
     select now(), @@hostname, USER();
 
@@ -177,8 +177,15 @@ We will do the following:
 
     show create table charges;
   </pre>
+<p> Start mysql:   In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+
+<p>Execute commands in mysql:
+  <pre>
+    use MY_STUPID_DATABASE
+    source my_stuff2.sql
+    </pre>
 <p>
-  Look at error log with linux command: grep -vi err error.log
+  Look at error log with linux command: grep -vi err error2.log
   
 <p>
   Save to a file called "stuff.bash  ".
