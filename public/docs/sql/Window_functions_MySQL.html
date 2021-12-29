@@ -41,6 +41,7 @@
   <li>https://www.mysqltutorial.org/mysql-window-functions/
   <li>https://www.sqlshack.com/overview-of-mysql-window-functions/
     <li>https://www.section.io/engineering-education/mysql-window-functions/
+<li>https://mode.com/sql-tutorial/sql-window-functions/
 </ul>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -110,18 +111,41 @@ Any group command can be made into function like window functions. You have to u
 </ul>
 
 <pre>
-SELECT person, state, CUME_DIST(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, DENSE_RANK(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, FIRST_VALUE(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, LAG(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, LAST_VALUE(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, LEAD(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, NTH_VALUE(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, NTILE(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, PERCENT_RANK(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, RANK(amount) OVER (PARTITION BY state) as w;
-SELECT person, state, ROW_NUMBER(amount) OVER (PARTITION BY state) as w;
+  SELECT person, state, amount,
+  CUME_DIST()   OVER w AS 'CUME_DIST',
+  DENSE_RANK()   OVER w AS 'DENSE_RANK',
+  PERCENT_RANK()   OVER w AS 'PERCENT_RANK',
+  RANK()   OVER w AS 'RANK',
+  ROW_NUMBER()   OVER w AS 'ROW_NUMBER'
+  from income
+WINDOW w AS (ORDER BY amount)
+;
 
+  SELECT person, state, amount,
+  FIRST_VALUE(amount)   OVER w AS 'FIRST_VALUE',
+  LAST_VALUE(amount)   OVER w AS 'LAST_VALUE',
+  LAG(amount)        OVER w AS 'lag',
+  LEAD(amount)       OVER w AS 'lead',
+  NTH_VALUE(amount, 2)   OVER w AS 'NTH_VALUE',
+  NTILE(4)   OVER w AS 'NTILE'
+  
+  from income
+  WINDOW w AS (PARTITION BY state ORDER BY amount)
+  ;
+
+  SELECT person, state, amount,
+  CUME_DIST()   OVER  (w ORDER BY amount) AS 'CUME_DIST',
+  FIRST_VALUE(amount)   OVER w AS 'FIRST_VALUE'
+  from income
+  WINDOW w AS (PARTITION BY state)
+  ;
+  
+  SELECT person, state, amount,
+  CUME_DIST()   OVER  w AS 'CUME_DIST',
+  FIRST_VALUE(amount)   OVER w2 AS 'FIRST_VALUE'
+  from income
+  WINDOW w AS (order BY state),
+         w2 AS (PARTITION BY state);
 </pre>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="example"></a>Example code</h2>

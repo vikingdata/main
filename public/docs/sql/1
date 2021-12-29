@@ -1,0 +1,12 @@
+Name	Description
+CUME_DIST()	Cumulative distribution value
+DENSE_RANK()	Rank of current row within its partition, without gaps
+FIRST_VALUE()	Value of argument from first row of window frame
+LAG()	Value of argument from row lagging current row within partition
+LAST_VALUE()	Value of argument from last row of window frame
+LEAD()	Value of argument from row leading current row within partition
+NTH_VALUE()	Value of argument from N-th row of window frame
+NTILE()	Bucket number of current row within its partition.
+PERCENT_RANK()	Percentage rank value
+RANK()	Rank of current row within its partition, with gaps
+ROW_NUMBER()
