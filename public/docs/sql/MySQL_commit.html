@@ -202,9 +202,9 @@ We will do the following:
     pt-online-schema-change --dry-run --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
     date
 
-    pt-online-schema-change --dry-run --alter "ADD index name, (name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    pt-online-schema-change --dry-run --alter "ADD index name (name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
     date
-    pt-online-schema-change --dry-run --alter "ADD index id_amount, (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
+    pt-online-schema-change --dry-run --alter "ADD index id_amount (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
     date
 
     # you should reallyt check the dry runs and then do the commits. 
@@ -212,9 +212,9 @@ We will do the following:
     pt-online-schema-change --execute --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
     date
 
-    pt-online-schema-change --execute --alter "ADD index name, (name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    pt-online-schema-change --execute --alter "ADD index name (name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
     date
-    pt-online-schema-change --execute --alter "ADD index id_amount, (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
+    pt-online-schema-change --execute --alter "ADD index id_amount (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
     date
     
     mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE -e "show create table people;"
