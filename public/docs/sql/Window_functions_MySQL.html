@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>SQL: Window Functions</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+    
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>SQL: Window Functions</h1>
+    The purpose of this document is to show how to do window functions. It is also to stop people
+    from asking this in interviews as it is very lame and really a set of functions in MySQL.
+    Are we expected to remember all functions. Yes according to lame people who make lame tests.
+    There is so much with MySQL this is only small part. The reason why it is lame is non-DBAs
+    love to ask about these functions because they don't understand its lame
+    and they want to make themselves feel superior. People look at things to ask about MySQL
+    on the internet because they know nothing usually and want to feel superior. So I hope
+    someone can get use of this. 
+<hr>
+<ol>
+  <li><a href="#mozTocId514232">Links</a></li>
+  <li><a href="#do">What do window functions do</a></li>
+  <li><a href="#setup">The MySQL setup. </a></li>
+  <li><a href="#functions">Example Functions </a></li>
+
+</ol>
+
+<h2><a class="mozTocH2" name="mozTocId514232"></a>No Links</h2>
+<ul>
+  <li>
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="do"></a>What window functions do.</h2>
+Window functions allow you to show calculations after all the data has been read into the
+query. Normally queries read the data as is and cannot order and group the data until the
+end of the query. Data is scanned once and they group or ordered. You cannot normally show
+the results of a grouped function until all the rows have been grouped.
+    <p>
+      With window functions, it really just allows you to show the results of the grouped
+      commands with each line of data. For example, I want to show the entire sum of money
+      for each state, and everybody in the state. I want to show one person per line and the
+      repeating sum of money the person is on that state. Thus, The group function is calculated
+      and displayed for each person in the state. Normally is the sum the money for a state
+      in it one one line. The state and then the sum. But with window functions you can apply
+      the result of the sum to more than one line. For each person in the state. An example
+      is shown below plus more window functions. 
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="techniques"></a>Exmaple functions</h2>
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
