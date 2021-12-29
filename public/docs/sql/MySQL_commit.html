@@ -62,7 +62,7 @@ Save to a file "my_stuff.sql".
   use MY_STUPID_DATABASE;
   
   create table if not exists people (id int,  name varchar(64));
-  create table if not exists charges (id int, amount int);
+  create table if not exists charges (id int, people_id int, amount int);
   insert into people values (1, 'mark'), (2, 'john'), (3, 'you');
   insert into charges values (1, 10), (2,10), (1, 3), (1, 4), (2,5);
 
@@ -172,9 +172,12 @@ We will do the following:
     ALTER TABLE charges ADD COLUMN ignore_me2 int;
 
     begin;
-    insert into charges values (1,1), (2,2), (1,3), (2,4);
+    insert into charges (id, amount) values (1,1), (2,2), (1,3), (2,4);
     commit;
 
+    alter table people CHANGE id id INT AUTO_INCREMENT PRIMARY KEY;
+    alter table charges CHANGE id id INT AUTO_INCREMENT PRIMARY KEY;
+    
     show create table charges;
     select count(1) from charges;
     show tables;
@@ -198,16 +201,13 @@ We will do the following:
     set PTDEBUG =1;
     pt-online-schema-change --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
     date
-    pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
-    date
-    pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
-    
-    pt-online-schema-change --alter "ADD index id_name, (id, name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+
+    pt-online-schema-change --alter "ADD index name, (name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
     date
     pt-online-schema-change --alter "ADD index id_amount, (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
     date
-    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table people;"
-    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table charges;"
+    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE -e "show create table people;"
+    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE -e "show create table charges;"
   </pre>
 <p>
   Execute file as: " bash stuff.bash > stuff.log 2>&1 "
