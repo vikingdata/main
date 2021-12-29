@@ -67,7 +67,7 @@ Execute in the mysql shell
   insert into charges values (1, 10), (2,10), (1, 3), (1, 4), (2,5);
 
   select count(1) from people;
-  select (1) from charges;
+  select count(1) from charges;
   
   create user mark@localhost;
   grant all privileges on *.* to mark@localhost;
