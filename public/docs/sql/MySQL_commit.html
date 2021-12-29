@@ -61,6 +61,10 @@ Execute in the mysql shell
   create table if not exists charges (id int, int amount);
   insert into people (1, 'mark'), (2, 'john'), (3, 'you');
   insert into charges (1, 10), (2,10), (1, 3), (1, 4), (2,5);
+
+  create user mark@localhost;
+  grant all privileges on *.* to mark@localhost;
+  
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -135,8 +139,11 @@ We will do the following:
 </ol>
 
 <p>
+
+  <p>
   In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
   <pre>
+    
     tee error.log
     use database MY_STUPID_DATABASE ### Yes I did use a second time.;
     select now(), @@hostname, USER();
@@ -153,6 +160,9 @@ We will do the following:
 
     show create table charges;
   </pre>
+<p>
+  Look at error log with linux command: grep -vi err error.log
+  
 <p>
   Save to a file called "stuff.bash  ".
   <pre>
@@ -175,8 +185,7 @@ We will do the following:
 <p>
   Execute file as: " bash stuff.bash > stuff.log 2>&1 "
   <br>Look at error file: "more stuff.log"
-<p>
-  Look at error log with linux command: grep -vi err error.log
+
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="other"></a>Other things with ansible</h2>
 
