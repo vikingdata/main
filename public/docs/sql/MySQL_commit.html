@@ -54,11 +54,15 @@ These are high level steps. We aren't going to go into details with each one.
 
 Execute in the mysql shell
 <pre>
+  create database if not exists temp;
+  use temp;
+  drop database if exists MY_STUPID_DATABASE;
+  
   create database if not exists MY_STUPID_DATABASE;
   use MY_STUPID_DATABASE;
   
   create table if not exists people (id int,  name varchar(64));
-  create table if not exists charges (id int, int amount);
+  create table if not exists charges (id int, amount int);
   insert into people (1, 'mark'), (2, 'john'), (3, 'you');
   insert into charges (1, 10), (2,10), (1, 3), (1, 4), (2,5);
 
