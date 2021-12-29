@@ -50,11 +50,11 @@ These are high level steps. We aren't going to go into details with each one.
 </ol>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="setup"><a>Setup</h2>
+<h2><a class="mozTocH2" name="setup"></a>Setup</h2>
 
 Execute in the mysql shell
 <pre>
-  create database if not exists My_STUPID_DATABASE;
+  create database if not exists MY_STUPID_DATABASE;
   use MY_STUPID_DATABASE;
   
   create table if not exists people (id int,  name varchar(64));
@@ -64,12 +64,13 @@ Execute in the mysql shell
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="techniques">Commit techniques</a></h2>
+<h2><a class="mozTocH2" name="techniques"></a>Commit techniques</h2>
 <h3> Source sql file</h3>
 You can do it one of two ways:
 <ul>
   <li>In the mysql prompt "source FILE.sql" will execute commands in the file and keep going even if there are errors.
-  <li> Or "cat FILE.sql | mysql" with mysql options will submit commands to mysql. It should stop on the first error.
+  <li> Or "cat FILE.sql | mysql" with mysql options will submit commands to mysql. It should stop on the first error. I never use this, but you might be able to override
+    this behavior. 
 </ul>
 
 You must be careful with either solutions. Lets assume all the commands work.
@@ -128,12 +129,44 @@ We will do the following:
 <ol>
   <li> Create a new table.
   <li>Add data in a commit block.
-  <li>Use online shcme change to change table.
+  <li>Use online shcema change to change table.
   <li>Lock a table with a schema change.
   <li>Use pt-schema-change to all auto increment and indexes.
 </ol>
 
+<p>
+  In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+  <pre>
+    tee error.log
+    use database MY_STUPID_DATABASE ### Yes I did use a second time.;
+    select now(), @@hostname, USER();
 
+    create table if not exists BLAH (i int);
+    alter table BLAH add column i2 int;
+    
+    ALTER TABLE charges ADD COLUMN ignore_me1 int, ALGORITHM=INSTANT; 
+    ALTER TABLE charges ADD COLUMN ignore_me2 int;
+
+    begin;
+    insert into charges (1,1), (2,2), (1,3), (2,4);
+    commit;
+
+    show create table charges;
+  </pre>
+<p>
+  Save to a file called "stuff.bash  ".
+  <pre>
+    pt-online-schema-change --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
+    pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    pt-online-schema-change --alter " CHANGE id id INT AUTO_INCREMENT PRIMARY KEY" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
+    
+    pt-online-schema-change --alter "ADD index id_name, (id, name)" D=MY_STUPID_DATABASE,t=people -u mark -pmark;
+    pt-online-schema-change --alter "ADD index id_amount, (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
+    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table people;"
+    mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE "show create table charges;"
+  </pre>
+<p>
+  Look at error log with linux command: grep -vi err error.log
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="other"></a>Other things with ansible</h2>
 
