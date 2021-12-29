@@ -52,7 +52,7 @@ These are high level steps. We aren't going to go into details with each one.
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="setup"></a>Setup</h2>
 
-Execute in the mysql shell
+Save to a file "my_stuff.sql".
 <pre>
   create database if not exists temp;
   use temp;
@@ -70,9 +70,19 @@ Execute in the mysql shell
   select count(1) from charges;
   
   create user mark@localhost;
+  ALTER USER mark@localhost IDENTIFIED BY 'mark';
   grant all privileges on *.* to mark@localhost;
-  
+
+  show grants for mark@localhost;
 </pre>
+    <p>
+      Start mysql as: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+    <p>
+      Execute the commands:<pre>
+use MY_STUPID_DATABASE;
+	source my_stuff.sql
+	</pre>
+
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="techniques"></a>Commit techniques</h2>
