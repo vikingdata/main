@@ -1,4 +1,0 @@
-
-
-cat 1.html |sed "s/a target\=\"[a-zA-z]*\" href=\"http[a-zA-Z0-9\=\/\?\:\/\._]*\"//g"  | sed 's/<>//g'> 2.html``
-cat 2.html |sed "s/a href=\"http[a-zA-Z0-9\=\/\?\:\/\._]*\" target\=\"df\"//g"  | sed 's/<>//g'> 3.html``

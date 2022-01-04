@@ -1,6 +1,0 @@
-1. $375 for exam, two exams total.
-2. https://academy.datastax.com/certifications -- links to 5 version help. 
-3. You can take courses on it for free online to study. This links to version 6 which the tests are for version 5.
-https://academy.datastax.com/courses?utm_source=google&utm_medium=cpc&utm_term=dsa&utm_campaign=20141201_na_usca_search_dsa&gclid=EAIaIQobChMIxKCv9b-43QIVR19-Ch38mAUpEAAYASAAEgIIVfD_BwE
-
-   

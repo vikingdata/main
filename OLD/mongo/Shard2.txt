@@ -1,6 +1,0 @@
-
-  # We will setup the config server in a replica set, 
-  # have two replica sets for a shard. 
-  # Shard between the replicat sets. 
-  # move data and show the results. 
-
