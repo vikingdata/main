@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Docker Library</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+    
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Docker Library</h1>
+    The purpose for this document is to create a simple base installatoion with a bunch of
+    scripts to add one service to the installation. Start commands for the service will also
+    exist, but there are better ways than doing it manually. In time, there will be scripts
+    for MySQL with Slaves and NDB and Galera, MariaDB, Spark, mongo, Kakfa, Cassandra, Redis,
+    Mysql with MHA, haproxy and sql proxy and other HA, FO, or scalable solutions.
+    <p>
+      This will mostly be docker and WIndows. It will follow similar steps for Docker Under
+      Linux. For now, this will be Docker running under Windows using the Command Prompt. 
+
+
+<ol>
+  <li><a href="#mozTocId514232">Links</a></li>
+  <li><a href="#base">Base setup</a></li>
+  <li><a href="#mysql">MySQL (slaves, ndb, Galera)</a></li>
+  <li><a href="#spark">Spark</a></li>
+  <li><a href="#mongo">Mongo (replica and shard)</a></li>
+  <li><a href="#kafa">Kafka</a></li>
+  <li><a href="#cassandra">Cassandra</a></li>
+  <li><a href="#redis">redis (with mysql)</a></li>
+  <li><a href="#mysqlha">MySQL (HA, FO, Scalability)</a></li>
+  <li><a href="#anisble">Ansible</a></li>
+  
+</ol>
+
+<br>
+<hr style="width: 100%; height: 2px;">
+<h2><a class="Dockerfile" name="mozTocId514232"></a>Dockerfile</h2>
+
+Over time, a Dockerfile will be added to each section. 
+
+<br>
+<hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="mozTocId514232"></a>Prod and non-prod</h2>
+In a prod environment, Docker is meant to be light running one process. However
+in a non-prod environment, a docker image that can run without and Dockerfile
+is desireable. Hence, we need to add a few things:
+<ul>
+  <li> How to setup an ubuntu image from scratch.
+  <li>Add systemd to the system to have proper runlevels and to start multiple
+    services. Ideally, just like Ubuntu was a VM.
+  <li>How to make lightweight ubuntu images to run in swarm and how to run
+    mutiple dockers efficiently. 
+</ul>
+
+Sections will be added to this document or new documents will be made. 
+
+<br>
+<hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="mozTocId514232"></a>Links</h2>
+<ul>
+<li> Refer to <a href=/docs/tools/docker/DockerInstall.html > Docker Install</a> for Docker links.</li>
+<ul>Docker Links
+  <li><a href="https://stackoverflow.com/questions/25135897/how-to-automatically-start-a-service-when-running-a-docker-container"> Start a service</a></li/>
+<li><a href="https://www.jetbrains.com/help/youtrack/standalone/run-docker-container-as-service.html"> Start service</a>
+  <li><a href="https://docs.docker.com/config/containers/multi-service_container/">Run mutiple services in Docker</a>
+<li><a href="https://docs.docker.com/engine/reference/builder/">DockerFile</a>
+
+<li><a href="https://advancedweb.hu/supervisor-with-docker-lessons-learned/">Supervisor</a>
+  <li><a href="https://riptutorial.com/docker/example/14132/dockerfile-plus-supervisord-conf">Another supervisor</a>
+  <li><a href="https://askubuntu.com/questions/1297226/how-to-run-systemctl-command-inside-docker-container">Systemctl</a>
+<li><a href="https://serverfault.com/questions/607769/running-systemd-inside-a-docker-container-arch-linux">Systemd</a>
+<li><a href="https://www.edureka.co/community/63212/how-can-i-install-systemctl-tool-in-docker-container">Another systemctl</a>
+</ul>
+
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="base">Base</a></h2>
+
+On command prompt in Windows
+<pre>
+  docker pull ubuntu
+  docker  create -it --name ubuntu_base ubuntu
+  docker start ubuntu_base
+  docker exec -it ubuntu_base bash 
+</pre>
+
+    <p>
+      You should be connected to the docker container. Now run these commands in docker container. You will have to restart the services. I recommend always installing
+      ssh. There are better ways to get the services to start, but I am keeping this
+    simple. </p>
+
+<pre>
+  apt-get update; apt-get install -y vim
+
+  # After vi installed, create a file with the rest of the
+  # following and do "bash <FILE>"
+  # these updates will take a while
+  apt-get install -y screen apache2 tmux 
+  apt-get install -y ubuntu-system-service postfix
+  apt-get install -y gnupg gnupg1 gnupg2 software-properties-common
+  apt-get install -y wget curl python2 sudo tmux
+
+  apt-get -y install iproute2 sysstat iftop nmon atop
+  apt-get -y install net-tools lsof dnsutils firewalld
+  apt install -y man-db manpages-posix
+
+  # This installs ssh with a simple username of mark and password mark.
+  # If you stop the container you will need to restart sshd. 
+  apt-get -y install openssh-server
+  echo "" >> /etc/ssh/sshd_config
+  echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+  
+  service ssh start
+  useradd -m -s /bin/bash mark
+  echo 'mark:mark' | sudo chpasswd
+  echo 'root:root' | sudo chpasswd
+  
+  # This will take a long time, commentind out for now.
+  apt-get install -y man
+  apt-get install -y golang-go
+  apt-get install -y python2
+  apt-get install -y tripwire
+
+  #optional. emacs and unminimize will take a long time.  
+  apt-get install policycoreutils selinux-utils selinux-basics -y
+   apt-get install emacs -y
+   unminimize
+
+  apt-get install -y perl    
+  apt-get install -y golang-go
+  apt-get install -y default-jre
+  apt-get install -y openjdk-11-jre-headless
+  apt-get install -y openjdk-8-jre-headless
+    apt-get install -y  nodejs npm python-software-properties
+    # This should leave the docker container back to the command prompt.
+
+    #PMM
+
+#    apt-get install -y lsb-release
+#    wget -O - 'https://repo.proxysql.com/ProxySQL/repo_pub_key' | apt-key add -
+#    echo deb https://repo.proxysql.com/ProxySQL/proxysql-2.2.x/$(lsb_release -sc)/ ./ | tee
+#    apt-get update
+#    apt-get -y install proxysql
+
+    apt update
+    apt install software-properties-common
+    add-apt-repository --yes --update ppa:ansible/ansible
+    apt install ansible
+  
+      # salt server
+#    add-apt-repository ppa:saltstack/salt
+#    apt-get update
+#    apt-get install salt-master
+
+      # salt client
+#    apt-get install salt-minion
+#    vim /etc/salt/minion
+#    master: saltmaster.yourserver.com
+#    service salt-minion restart
+
+     # for nagios4 -- nagios4 messes up apache -- fix
+#    apt-get -y  install build-essential libgd-dev
+#    apt install nagios4
+
+    # for grafana
+    apt-get -y install apt-utils
+    apt-get install -y apt-transport-https
+    apt-get install -y software-properties-common wget
+    wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+    echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+    apt-get update
+    apt-get install grafana
+
+      # for cacti
+    apt -y install php php-{mysql,curl,net-socket,gd,intl,pear,imap,memcache,pspell,tidy,xmlrpc,snmp,mbstring,gmp,json,xml,common,ldap}
+    apt install libapache2-mod-php
+    apt install snmp snmpd snmp-mibs-downloader rrdtool
+    apt-get install -y git
+
+    apt-get -y install mlocate 
+    updatedb
+    
+    exit
+
+</pre>
+<p>
+  Get back to the command prompt and do these commands.
+  <pre>
+    docker stop ubuntu_base
+    docker commit ubuntu_base ubuntu_base_image
+
+    docker  create -it  -p 8001:80 -p 2200:22 -p 3106:3306 -v "c:\tmp";/windows --name example ubuntu_base_image
+    docker start example
+    docker exec -it example bash 
+  </pre>
+<p>
+  Inside Docker if you just started the container. 
+  <pre>
+    service ssh start
+    service apache2 start
+    </pre>
+</p>
+<p>
+  Now you are ready to create other docker images with other services.
+  </p>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="mysql"></a>MySQL (slaves, NDB, Galera)</h2>
+Command prompt commands. We make a port for the master and slave, ndb, and
+galera.
+<pre>
+  docker create -it -p 8000:80 -p 2200:22 -p 4306:3306 -p 4307:3307 -p 4406:3406 -p 4506:3506 --name mysql -v "c:\tmp";/windows ubuntu_base_image
+  docker  start mysql
+  docker exec -it mysql bash
+</pre>
+
+
+Commands in bash prompt to container. 
+<pre>
+  apt install -y mariadb-server python3-pip
+  service mysql start
+  sleep 2
+  service mysql status
+  mysql -u root -e "select 'database is up', now()"
+  apt-get install python3-mysqldb
+
+#  sudo apt-get install percona-toolkit
+  wget https://downloads.percona.com/downloads/percona-toolkit/3.3.1/binary/debian/focal/x86_64/percona-toolkit_3.3.1-1.focal_amd64.deb
+  dpkg -i percona-toolkit_3.3.1-1.focal_amd64.deb
+  
+  service ssh start
+</pre>
+
+my.cnf files and start files for slaves, ndb, and galera
+<pre>
+
+</pre>
+
+commands to run
+<pre>
+
+</pre>
+
+  
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="spark"></a>Spark</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="mongo"></a>Mongo</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="kafka"></a>Kafka</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="cassandra"></a>Cassandra</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="redis"></a>Redis</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="mysqlha"></a>MySQL (HA, FO, and scalability)</h2>
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
