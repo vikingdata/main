@@ -227,7 +227,8 @@ MariaDB [test_sp]>
   <li> You can have default values with delcared variables using DECLARE.
   <li> You cannot have default values with variables made from IN, OUT,
     or INOUT. One option is to pass NULL and then have a NULL check
-    if the stored proedure and set the value if NULL. 
+    in the stored proedure and set the value if it is NULL. NOTE: The variable
+    will be NULL by default is not declared. Best to set it to NULL to make sure. 
 </ol>
 
 

@@ -26,7 +26,11 @@
 
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
 <ul>
-  </ul>
+  <li>https://aws.amazon.com/getting-started/hands-on/migrate-rdsmysql-to-auroramysql/
+<li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Migrating.html
+<li>https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/migrate-an-on-premises-mysql-database-to-aurora-mysql.html
+<li>https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.Procedural.Importing.Other.html
+</ul>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="rep"></a> Setting up replication to RDS MySQL or RDS Aurora</h2>
@@ -34,12 +38,39 @@
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="restore"></a>Restore to RDS MySQL or Aurora</h2>
+You have four choices:
+<ol>
+  <li>An optional choice to restore to EC2. 
+  <li> Restore to RDS
+  <li>Restore to Aurora
+</ol>
+    <p>
+      <h3> EC2  </h3>
+      <ol>
+	<li>Restore using mysqldump
+	<li>Restore from Percona innodb Backup.
+      </ol>
+      
+	</ol>
+    <p>
+      <h3> RDS  </h3>
+      You have to restore using mysqldump. 
+    <p>
+      <h3> Aurora</h3>
+      <ol>
+	<li>Restore to Aurora from mysqldump
+	<li>Restore to Aurora from an RDS MySQL snaoshot
+	<li>Restore to Aurora from an an RDS Read Replica
+	  </ol>
+      
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="snapshot"></a>Snapshot RDS MySQL to Aurora</h2>
+This is only if you did not restore to Aurora directly. 
 
-  <br><hr style="width: 100%; height: 2px;">
+<br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="mm"></a>Setup Master Master replication</h2>
+Use these steps to setup replication to EC2, RDS, or Aurora.
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="switchover"></a>Switchover</h2>
