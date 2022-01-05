@@ -48,7 +48,7 @@ This document is constantly changing.
 <li>https://www.digitalocean.com/community/tutorials/how-to-prepare-for-your-mysql-5-7-upgrade
 	</ul>
     </ul>
-  <li> Disadvantages and advantges and potential problems with Table Partioning.
+  <li> Disadvantages and advantages and potential problems with Table Partioning.
     <ul> 
       <li> Bad queries without using using the field for partitioning can scan al partitions.
       <li> If you do use only one partition, but not an index, it it scan the whole partition.
@@ -91,6 +91,70 @@ This document is constantly changing.
 	  <li>https://fromdual.com/limitations-of-galera-cluster
 	</ul>
       </ul>
+
+  <li> MySQL Scaling. 
+    <ul>
+      <li>None
+	<ul>
+	  <li>Oracle Fabric: not a fan of. It has had issues and nobody uses it. 
+	</ul>
+	
+      <li> ALL
+	<ul>
+	  <li>SkySQL -- service.
+	    <li>MaxScale : Each system must have a unique database name. 
+	  <li>Optimize queries, config, system config, use the correct table engine.
+	  <li>Delete data no longer needed and remove data to archive.
+	  <li> PlanetScale: I never used this.
+	  <li>NDB engine, but everyone has problems making this scale.
+	    <li>Shard-query : More for big OLAP queries and not normal OLTP.
+	      <li>ProxySQL : Different sharding techniques have limitations. 
+	</ul>
+	
+      <li> Horizontal Reads
+	<ul>
+	  <li>Add more slaves or nodes.
+	  <li>Caching is scalable with Redis or other.
+	  <li>Load balancing can help so that one slave is not over used.
+	  <li>Table partitioning is sort of vertical scaling. 
+	  <li> Software Sharding. 
+	</ul>
+	
+      <li> Vertical Reads
+	<ul>
+	  <li>More powerful systems
+	</ul>
+
+      <li> Vertical Writes. 
+	<ul>
+	  <li>More powerful systems. 
+	</ul>
+
+      <li> Horizontal WritesB
+	<ul>
+	  <li> Software sharing. Shard by mod, by lookup key, or other. 
+	    <li> 
+	  <li>Limited scalability with Galera Cluster. 
+	</ul>
+	
+      <li>Links
+	<ul>
+	  <li>https://levelup.gitconnected.com/mysql-sharding-tutorial-7340d2c26a3e
+<li>https://planetscale.com/blog/learn-horizontal-scaling-on-planetscaledb-with-vitess-rate-puppies-in-a-rust-app-with-sharded-mysql-database
+<li>https://medium.com/pinterest-engineering/sharding-pinterest-how-we-scaled-our-mysql-fleet-3f341e96ca6f
+  <li>https://hevodata.com/learn/understanding-mysql-sharding-simplified/#:~:text=MySQL%20allows%20users%20to%20change,can%20leverage%20the%20new%20Schemas.
+<li>https://www.digitalocean.com/community/tutorials/understanding-database-sharding
+<li>https://mariadb.com/resources/blog/cloud-scale-is-beyond-sharding/
+<li>  https://mariadb.com/kb/en/mariadb-maxscale-14/maxscale-simple-sharding-with-two-servers/
+  <li>https://mariadb.com/resources/blog/schema-sharding-with-mariadb-maxscale-2-1-part-1/
+<li>https://proxysql.com/documentation/how-to-setup-proxysql-sharding/
+<li>https://www.percona.com/blog/2014/07/11/managing-shards-mysql-databases-mysql-fabric-2/
+<LI>https://www.percona.com/blog/2016/08/30/mysql-sharding-with-proxysql/
+<LI>https://archive.fosdem.org/2017/schedule/event/mysql_proxy_war/
+	</ul>
+	
+    </ul>
+    
   <li>Galera Geo backup, M-M
     <ul>
       <li>Links
