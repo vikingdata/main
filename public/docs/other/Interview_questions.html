@@ -30,47 +30,61 @@ This document is constantly changing.
 <h2><a class="mozTocH2" name="mysql"></a>MySQL</h2>
 <ul>
   <li>Many issues upgrading old MySQL to newer MySQL
-    <li> Disadvantages and advantges and potential problems with Table Partioning. 
-
-    <li>Galera scalability
-      <ul>
-	<li> Galera is vertical scaling, config, load balancing, cache etc but it is NOT
+  <li> Disadvantages and advantges and potential problems with Table Partioning.
+    <ul> 
+      <li> Bad queries without using using the field for partitioning can scan al partitions.
+      <li> If you do use only one partition, but not an index, it it scan the whole partition.
+      <li>Cannot foriegn keys, full test indexes, use Declared variables, user variables, stored procedures, stored functions, loadable functions, plugins.
+      <li>DDL changes may cause locks. Lock the table for any reason is bad.
+      <li>Each partition is really its own table. This can affect
+	open table cache, open files, buffers for each table, etc. 
+	<li>
+	<li> Links
+	<ul>
+	  <li>https://dev.mysql.com/doc/mysql-partitioning-excerpt/8.0/en/partitioning-limitations.html
+	    
+	</ul>
+    </ul>
+    
+  <li>Galera scalability
+    <ul>
+      <li> Galera is vertical scaling, config, load balancing, cache etc but it is NOT
 	  good at horicontal scaling.
-	<li> Add a cache, like Redis or other cache. 
-	<li>More powerful systems --- only goes so far
-	<li>Optimize queries, cofig, etc
-	<li>Relax config options to prevent nodes getting kicked out. 
-	<li> Add more nodes: This is controversial.
-	<li>Make sure you are using fast ethernet cards, fast IO, and lots of memory to hold
+      <li> Add a cache, like Redis or other cache. 
+      <li>More powerful systems --- only goes so far
+      <li>Optimize queries, cofig, etc
+      <li>Relax config options to prevent nodes getting kicked out. 
+      <li> Add more nodes: This is controversial.
+      <li>Make sure you are using fast ethernet cards, fast IO, and lots of memory to hold
 	  data. You want more memory in case another node fails. It then has to hold more
 	  data in ram. 
-	<li>Add proper load balancing with detection of hot nodes.
+      <li>Add proper load balancing with detection of hot nodes.
 	  Have all writes go to one node.
-	<li> Use a MySQL slave off one of the those for time insentive queries for ETL queries./
-	  <li>Add node which takes no queries for backups. 
-	  <li> Links:
-	    <ul>
-	      <li>https://medium.com/swlh/nodejs-mariadb-galera-is-it-a-right-choice-for-scalable-ecommerce-api-9288aa682145
-		<li> Simple article: https://www.cyberciti.biz/faq/howto-install-configure-mariadb-galera-master-cluster-ubuntulinux/
-		<li> I am not sure this article is up to date: https://proxysql.com/blog/effortlessly-scaling-out-galera-cluster-with-proxysql/
-	      <li> Use SkySQL https://mariadb.com/products/skysql/docs/design/scalability/galera/
-<li>https://dba.stackexchange.com/questions/122951/scaling-for-mariadb-percona-galera-scaling
-<li>https://dba.stackexchange.com/questions/104221/9-node-percona-xtradb-cluster/104222#1042
-<li>https://fromdual.com/limitations-of-galera-cluster
-	    </ul>
-      </ul>
-    <li>Galera Geo backup, M-M
-      <ul>
-	<li>Links
+      <li> Use a MySQL slave off one of the those for time insentive queries for ETL queries./
+      <li>Add node which takes no queries for backups. 
+      <li> Links:
 	<ul>
-	<li>Okay video: https://www.youtube.com/watch?v=nxa2uq7VSjs</li>
+	  <li>https://medium.com/swlh/nodejs-mariadb-galera-is-it-a-right-choice-for-scalable-ecommerce-api-9288aa682145
+	  <li> Simple article: https://www.cyberciti.biz/faq/howto-install-configure-mariadb-galera-master-cluster-ubuntulinux/
+	  <li> I am not sure this article is up to date: https://proxysql.com/blog/effortlessly-scaling-out-galera-cluster-with-proxysql/
+	  <li> Use SkySQL https://mariadb.com/products/skysql/docs/design/scalability/galera/
+	  <li>https://dba.stackexchange.com/questions/122951/scaling-for-mariadb-percona-galera-scaling
+	  <li>https://dba.stackexchange.com/questions/104221/9-node-percona-xtradb-cluster/104222#1042
+	  <li>https://fromdual.com/limitations-of-galera-cluster
 	</ul>
-</ul>
+      </ul>
+  <li>Galera Geo backup, M-M
+    <ul>
+      <li>Links
+	<ul>
+	  <li>Okay video: https://www.youtube.com/watch?v=nxa2uq7VSjs</li>
+	</ul>
+    </ul>
 
     <li>No downtime and tables must remain the same geo.
       <ul>
 	<li> Apply backward capatible changes before app changes.
-	  <li>Others options?
+	<li>Others options?
 	</ul>
 </ul>
 
