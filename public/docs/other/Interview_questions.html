@@ -30,6 +30,24 @@ This document is constantly changing.
 <h2><a class="mozTocH2" name="mysql"></a>MySQL</h2>
 <ul>
   <li>Many issues upgrading old MySQL to newer MySQL
+    <ul>
+      <li>The upgrade path may be long if upgrading a very old version to new version.
+      <li>Charatcer sets may change: datetime, timestp, UTF etc. Check notes.
+      <li>Some upgrades required a table check and rebuild. Once done, take a backup of it
+	and restore for other slaves or master, etc.
+      <li>Replication ususally only works from previous version. Replications settings
+	may also have changed. Do not replicate from newer version to older version ever. 
+      <li>Config, query words, etc may have changed or been depreciated.
+      <li>Other things may have changed, like passwords, authetication, SQL strict mode.
+      <li>Query plans mys have changes, or queries on the new version may behave differently.
+      <li>Queries may return different results.  
+	
+      <li> Links
+	<ul>
+	  <li> https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-upgrade.html
+<li>https://www.digitalocean.com/community/tutorials/how-to-prepare-for-your-mysql-5-7-upgrade
+	</ul>
+    </ul>
   <li> Disadvantages and advantges and potential problems with Table Partioning.
     <ul> 
       <li> Bad queries without using using the field for partitioning can scan al partitions.
