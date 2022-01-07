@@ -7,9 +7,10 @@
     
   </head>
   <body>
-
+<center>
     <!--#include virtual="/include/body_header.html" -->
-    
+    <i><b>by Mark Nielsen<br>Copyright Jan 2022</b></i></center><br><br>
+
     
     <h1><a class="mozTocH1" name="mozTocId909994"></a>MySQL Upgrade and Migration</h1>
     This is to help with MySQL Upgrades on a single box and to migrate it another another l
@@ -30,7 +31,7 @@
 
 <ul>
   <li>The upgrade path may be long if upgrading a very old version to new version.
-  <li>Charatcer sets may change: datetime, timestp, UTF etc. Check notes.
+  <li>Character sets may change: datetime, timestp, UTF etc. Check notes.
   <li>Some upgrades required a table check and rebuild. Once done, take a backup of it
     and restore for other slaves or master, etc.
   <li>Replication ususally only works from previous version. Replications settings
