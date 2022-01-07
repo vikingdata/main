@@ -66,10 +66,10 @@ Most used tools
     Just the numbers of rows that are different. 
   <li>pt-sync
     <br>I find this tool can be very useful with all the options.
-    “BIDIRECTIONAL SYNCING” seems new and I am not sure how useful it is. 
-    <br>NOTE: If there is valid data on the Slave, this will destroy it.
+    “BIDIRECTIONAL SYNCING” seems new and I am not sure how useful it isA. 
+    <br>NOTE: If there is valid data on the Slave, this will destory it.
     Get data off the slave before running this.
-      <br>How can data get on the slave? Replication errors and the person who started replication let the last command fly. Someone logged in as root and made changes. There are multiple
+      <br>How can data get on the slave? Replication errors and the person whoistarted replication let the last command fly. Someone logged in as root and made changes. There are multiple
       masters for this server --- this can be dangerous if so. An application wrote to the slave
       when it should not of -- did you turn read the global read-only variable?
       <br> I wrote a python script
@@ -81,14 +81,14 @@ Most used tools
       
 </ul>
 <p>
-  Useful tools you will probably need to use. This is ONLY my preference. You may
+  Useful tools you will probably ned to use. This is ONLY my preference. You may
   find some of these tools useful for yourself that I don't. 
 <ul>
   <li>pt-index-usage <br> This can be useful to run queries from a log to analyze how queries
-    use the indexes. This can be used for debugging.
+    use the indexes. This can be used for debuggin.
   <li>pt-diskstats
     <br>NOTE: For debugging why a query isn't working, I look at disk IO and space, memory
-    and memory config for MySQL, cpu usage, load, network speed and latency and hitting
+    and memory config for MySQL, cpu usage, load, network speed and latancy and hitting
     a bottleneck, account permissions, and others things. A complete tool or set of tools
     is desired. 
   <li>pt-variable-advisor
