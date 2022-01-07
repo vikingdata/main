@@ -9,7 +9,6 @@
   <body>
 <center>
     <!--#include virtual="/include/body_header.html" -->
-    <i><b>by Mark Nielsen<br>Copyright Oct 2021</b></i></center><br><br>
 
     <center>
       <h1><a class="mozTocH1" name="mozTocId909994"></a>Percona Toolkit : Most command uses with MySQL</h1>
@@ -41,7 +40,8 @@
     <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="tools"></a>Tools</h2>
 
-Most used tools
+Most used tools. A few of them I wrote python programs for to achieve the same desire before
+they existed, but usually they have many more options. 
 <ul>
   <li>pt-online-schema-change <br> If you have never used this a DBA, practice it.
     Even though you have inline schema changes which don't lock tables, not everything
@@ -58,16 +58,8 @@ Most used tools
     info, you are recording the binlog info of the master (because this is a slave).
     Thus you can restore this as a slave of the original master, or as a slave
     to the server you ran this program on (effectively a slave of a slave). This
-    command is useful if you want to replicate to the original master when restored. 
-  <li>pt-query-digest <br> I recommend this tool. But there are other tools to use
-    to make slow reports. I made one 10 years ago that didn't a better job than
-    ANY slow log report from any tool. They miss one important concept. 
-  <li>pt-table-checksum <br> I use this a lot just to see if there are differences.
-    <br>NOTE: I think this doesn't tell you the primary keys of which tables are different.
-    Just the numbers of rows that are different. 
-  <li>pt-sync
-    <br>I find this tool can be very useful with all the options.
-    “BIDIRECTIONAL SYNCING” seems new and I am not sure how useful it is. 
+can be very useful with all the options.
+    BIDIRECTIONAL SYNCING seems new and I am not sure how useful it is. 
     <br>NOTE: If there is valid data on the Slave, this will destroy it.
     Get data off the slave before running this.
       <br>How can data get on the slave? Replication errors and the person who started replication let the last command fly. Someone logged in as root and made changes. There are multiple

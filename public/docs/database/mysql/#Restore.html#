@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>MySQL Backup and Restore</title>
+    
+  </head>
+  <body>
+<center>
+    <!--#include virtual="/include/body_header.html" -->
+
+    <center><h1>MySQL Backup and Restore</h1></center>
+    <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
+<hr>
+<ol>
+  <li><a href="#links">Links</a>
+  <li><a href="#backup"></a>
+  <li><a href="#restore"></a>
+  <li><a href="#common"></a>
+    
+</ol>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+
+<ul>
+  <li>https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html
+    <li>
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="" name="backups"></a>Backups</h2>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="" name="restore"></a>Restore</h2>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="" name="common"></a>Common Methods</h2>
+
+<h3>AWS</h3>
+<ul>
+    <li> On EC2 instancesm treat them like any other box with the options below.
+    <li>RDS MySQL and RDS Aurora have automatic backups. Restoration is easy. 
+</ul>
+
+<h3>Backups</h3>
+This is for your own servers. 
+<ul>
+  <li> It is recommened to make backups from a slave. You should routinely tun Percona Checksum
+    on Masters and Slaves to make sure they are in sync. When backings up from a slave you want to record the Master binlog position and the Slave binlog position.:
+    <ul>
+      <li>mysqldump: 
+    </ul>
+</ul>
+<h3>Restore</h3>
+<ul>
+  <li> On EC2 instancesm treat them like any other box with the options below.
+</ul>
+
+<h3>AWS</h3>
+<ul>
+  <li> On EC2 instancesm treat them like any other box with the options below.
+  <li>RDS Mysql
+    <li>RDS Aurora has automatic backups with time
+</ul>
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
