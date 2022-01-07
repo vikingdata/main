@@ -60,12 +60,23 @@ Useful tools you will probably ned to use.
     is desired. 
 </ul> 
 <p>
-Less Uses tools
+Less Used tools
 
 <ul>
   <li> pt-archiver : You can do this manually with a cronjob. You don't need this. But its nice.
   <li>pt-config-diff : Less useful if you have automated installs. But it can be used to check
     servers for alarms. If someone changes things, you want to know about it.
+  <li>pt-duplicate-key-checker : When trying to optimize tables, removing useless
+    indexes might be nice. Run this as an alarm every in a while and not at night. 
+  <li>pt-heartbeat : Look at pacemaker.
+  <li>pt-kill : Very nice program. For me I generally don't need it. What I do is writes
+    a python program which shows the highest time on queries first,
+    or use Solar Winds or Relic or another tool, 
+    or use this bash command just to quickly scan the processlist:
+    <pre>
+     echo PASSWORD="bad_password"  
+     mysql -u root -p$PASSWORD -e "show full processlist" - grep -iv "sleep" | less
+      </pre>  
 </ul>
 
 
