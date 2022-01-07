@@ -14,7 +14,8 @@
       <h1><a class="mozTocH1" name="mozTocId909994"></a>Percona Toolkit : Most command uses with MySQL</h1>
     </center>
     <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
-    This is just about using the toolkit with MySQL. Another article will cover the use
+    This is just about using the toolkit with MySQL and what I have used.
+    This will not cover all the tools. Another article will cover the use
     with MongoDB. Also, this toolkit can be used in the cloud, and sometimes DaaS with AWS RDS.
     Also, the toolkit may have changed after this article was made. I might update this
     article once a year. 
@@ -34,7 +35,9 @@
 <li>https://www.youtube.com/watch?v=dLBOabteIPo
 <li>https://www.percona.com/doc/percona-xtrabackup/LATEST/index.html
   <li>https://www.percona.com/doc/percona-xtrabackup/2.3/xtrabackup_bin/xbk_option_reference.html
-<br><hr style="width: 100%; height: 2px;">
+
+
+    <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="tools"></a>Tools</h2>
 
 Most used tools
@@ -60,16 +63,22 @@ Most used tools
     ANY slow log report from any tool. They miss one important concept. 
   <li>pt-table-checksum <br> I use this a lot just to see if there are differences.
     <br>NOTE: I think this doesn't tell you the primary keys of which tables are different.
-    Just the numbers of rows that are different. I wrote a python script
-    back in 2008 which tells you the exact rows by primary key or unique index
-    which is not the same -- quickly with low impact. It had other
-    capabilities. I made it VERY VERY easy to sync the servers. Better than pt-sync
-    in my opinion.
+    Just the numbers of rows that are different. 
   <li>pt-sync
-    <br>NOTE: If there is valid data on the Slave, this will destory it. Get data off the slave before running this.
+    <br>I find this tool can be very useful with all the options.
+    “BIDIRECTIONAL SYNCING” seems new and I am not sure how useful it isA. 
+    <br>NOTE: If there is valid data on the Slave, this will destory it.
+    Get data off the slave before running this.
       <br>How can data get on the slave? Replication errors and the person whoistarted replication let the last command fly. Someone logged in as root and made changes. There are multiple
       masters for this server --- this can be dangerous if so. An application wrote to the slave
       when it should not of -- did you turn read the global read-only variable?
+      <br> I wrote a python script
+      back in 2008 which tells you the exact rows by primary key or unique index
+      which is not the same -- quickly with low impact. It had other
+      capabilities. I made it VERY VERY easy to sync the servers. Better than pt-sync
+      in my opinion. From the keys you can determine if the Slave or Master is correct.
+      Sometimes you have to go by key to key to see which one is correct. 
+      
 </ul>
 <p>
   Useful tools you will probably ned to use. This is ONLY my preference. You may
@@ -82,11 +91,21 @@ Most used tools
     and memory config for MySQL, cpu usage, load, network speed and latancy and hitting
     a bottleneck, account permissions, and others things. A complete tool or set of tools
     is desired. 
+  <li>pt-variable-advisor
+    <br> I find this tool useful and use it every once in a while. Other tools
+    can do a similar thing.
+  <li>pt-stalk <br>
+    I find this tool useful, but I usually write a Lambda or Python script to
+    fine tune the detection of problems and how it should be displayed. Still, to a
+    non programmer this is a useful tool. 
 </ul> 
 <p>
 Less Used tools
 
 <ul>
+  <li>https://www.percona.com/doc/percona-toolkit/LATEST/pt-visual-explain.html <br>
+    You might find this tool very useful if you are not used to "explain QUERY "
+    in MySQL. I find it useful sometimes. 
   <li> pt-archiver <br> You can do this manually with a cronjob. You don't need this. But its nice.
   <li>pt-config-diff <br> Less useful if you have automated installs. But it can be used to check
     servers for alarms. If someone changes things, you want to know about it.
