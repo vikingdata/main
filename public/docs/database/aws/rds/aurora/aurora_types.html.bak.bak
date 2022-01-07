@@ -68,10 +68,10 @@
   <li>https://aws.amazon.com/blogs/database/amazon-aurora-mysql-3-with-mysql-8-0-compatibility-is-now-generally-available/#:~:text=Aurora%20MySQL%203%20introduces%20several,compatibility%20with%20the%20MySQL%208.0.
 </ul>
 <ul>
-  <li> Aurora is a custom engine built buy Amazon which is Mysql or PostgreSQL compatible. It
+  <li> Aurora is a custom engine built buy Amazon which is Mysql or PosgreSQL compatible. It
     offers many features like auto scaling for diskspace and instances, automatic backups,
     point in time recovery, and many other features. 
-  <li>Write does not scale horizontal but vertical.
+  <li>Write does not scale horiztonal but vertical.
   <li>There appears to be no cost different from Aurora 1, 2, and 3. If you are new, go to
     Aurora 3.
     <li> Pay attention to limitations of Aurora. 
@@ -97,11 +97,11 @@ newer versions.
 Aurora Serverless one scales automatically up and down depending on your workloads. It it meant
 for developers to have a scaling database environment that depends on the amount of work
 that needs to be done. If it scales down to 0, you just pay for storage.
-<br>You are charge per second for ACU. 
+<br>You are charge peer second for ACU. 
 
 <p>
   Where serverless can shine is when you have periods of lots of work to do. Since it is
-  designed      to take care of itself, this can make management easier.
+  deisgned      to take care of itself, this can make managment easier.
     <p>However for data processing, you might want to consider Spark or Snowflake to process
       data and out the final results in an SQL and data warehouse.
     <p>
@@ -116,9 +116,9 @@ that needs to be done. If it scales down to 0, you just pay for storage.
 
   <li>https://www.jeremydaly.com/aurora-serverless-v2-preview/
 </ul>
-At the time of this writing, serverless 2 has more capabilities for
+At the time of this writing, serverless 2 has more capbilities for
 scaling up and better suited for prod use. It seems twice as expensive
-as serverless 1, but it actually may be more. Scaling can happen in milliseconds. 
+as serverless 1, but it actually may be more. Scalling can happen in milliseconds. 
 
     <p>
       When Serverless 2 is no longer in preview mode, the advantages will be great
@@ -130,8 +130,8 @@ as serverless 1, but it actually may be more. Scaling can happen in milliseconds
 <uL>
   <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-multi-master.html
 </ul>
-There are MANY limitations on muti master Aurora. It meant to be able to have more write
-throughput than a single Aurora Primary with read replicas. It is not worth it is most cases.
+There are MANY lmitations on muti master Aurora. It meant to be able to have more write
+througput than a single Aurora Primary with read replicas. It is not worth it is most cases.
 
 <br>
 <hr style="width: 100%; height: 2px;">
@@ -147,7 +147,7 @@ TODO put more info of SkySQL on there. Put demo available on site.
 <h2><a class="mozTocH2" name="f"></a>Future Additions</h2>^M
 <ul>
   <li>Have Python script that makes am Aurora 1 or 2 or 3, of serverless 1 or 2, or multi master.
-    Have it run a task and then destroy instance. 
+    Have it run a task and then destory instance. 
   </ul>
 
 <br>
@@ -155,7 +155,7 @@ TODO put more info of SkySQL on there. Put demo available on site.
 <h2><a class="mozTocH2" name="c"></a>Caching and Load Balancing</h2>^M
 Database caching is almost  necessity and also load balancing. Caching makes it so
 you can relieve pressure on the databases in terms of read queries. Load balancing can make
-upgrades and martinets a lot easier.
+upgrades and matintence a lot easier.
     <p>
       TODO: list benefits and links. <br> Add in example cache and load balance example. 
 

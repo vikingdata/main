@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
-	<title>odendata Editing web pages with server side includes : part 1</title>
+	<title>odebndata Editing web pages with server side includes : part 1</title>
 	<meta name="generator" content="LibreOffice 7.2.0.4 (Windows)"/>
 	<meta name="created" content="2021-09-14T02:27:47.801000000"/>
 	<meta name="changed" content="2021-09-14T03:18:15.979000000"/>
@@ -95,7 +95,7 @@ efficient programming for webpages.
 	like Confluence. I love the free service of Confluence but I had a
 	heck of a time letting the public have read access --- thought its
 	suppose to be easy. And multiple times my free account was
-	terminated because I didn't&rsquo;t log in in a while. I can&rsquo;t
+	terminated because I didn&rsquo;t log in in a while. I can&rsquo;t
 	have that. 
 	</p>
 	<li><p>BTW, this solution sucks. I will be looking for WYSIWYG
@@ -201,11 +201,11 @@ and install Apache includes</h3>
 			which is easiest. 
 			</p>
 			<ul>
-				<li><p>In Apache under the document directory</p>
+				<li><p>In Apache under the document diretory</p>
 				<ul>
 					<li><p>Options +Includes</p>
 					<li><p style="margin-bottom: 0in">You must include this to allow
-					.htaccess files. It it suggested you limit this only to certain
+					.htacess files. It it suggesed you limit this only to certain
 					directories. 
 					</p>
 					<li><p>Example: 

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>MySQL Upgrade and Migration</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+    
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>MySQL Upgrade and Migration</h1>
+    This is to help with MySQL Upgrades on a single box and to migrate it another another l
+    location. For example, you want to upgrade and migrate your data to an AWS EC2 instance
+    which will later be needed to migrate to Aurora. Or you are getting better servers and
+    you want to migrate the data and you might as well upgrade it. 
+    <hr>
+    <ol>
+      <li><a href="#links">Links</a>
+  <li><a href="#questions">Questions and concerns</a>
+  <li><a href="#practices">Good practices when upgrading</a></li>
+  <li><a href="#techniques">Different techniques to use</a></li>
+  <li><a href="#linuxsre">Common solutions </a></li>
+</ol>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="concersn"></a>Upgrade concerns</h2>
+
+<ul>
+  <li>The upgrade path may be long if upgrading a very old version to new version.
+  <li>Charatcer sets may change: datetime, timestp, UTF etc. Check notes.
+  <li>Some upgrades required a table check and rebuild. Once done, take a backup of it
+    and restore for other slaves or master, etc.
+  <li>Replication ususally only works from previous version. Replications settings
+    may also have changed. Do not replicate from newer version to older version ever. 
+  <li>Config, query words, etc may have changed or been depreciated.
+  <li>Other things may have changed, like passwords, authetication, SQL strict mode.
+  <li>Query plans mys have changes, or queries on the new version may behave differently.
+  <li>Queries may return different results.  
+</ul>
+
+
+Links
+<ul>
+  <li>https://www.percona.com/blog/2014/09/19/mysql-upgrade-best-practices/
+  <li> https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-utilities-upgrade.html
+  <li>https://www.digitalocean.com/community/tutorials/how-to-prepare-for-your-mysql-5-7-upgrade
+</ul>
+</ul>
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>

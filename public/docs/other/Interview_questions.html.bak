@@ -29,13 +29,13 @@ This document is constantly changing. Expect spelling errors and such.
   <li>Many issues upgrading old MySQL to newer MySQL
     <ul>
       <li>The upgrade path may be long if upgrading a very old version to new version.
-      <li>Character sets may change: datetime, timestp, UTF etc. Check notes.
+      <li>Charatcer sets may change: datetime, timestp, UTF etc. Check notes.
       <li>Some upgrades required a table check and rebuild. Once done, take a backup of it
 	and restore for other slaves or master, etc.
-      <li>Replication usually only works from previous version. Replications settings
+      <li>Replication ususally only works from previous version. Replications settings
 	may also have changed. Do not replicate from newer version to older version ever. 
       <li>Config, query words, etc may have changed or been depreciated.
-      <li>Other things may have changed, like passwords, authentication, SQL strict mode.
+      <li>Other things may have changed, like passwords, authetication, SQL strict mode.
       <li>Query plans mys have changes, or queries on the new version may behave differently.
       <li>Queries may return different results.  
 	
@@ -45,11 +45,11 @@ This document is constantly changing. Expect spelling errors and such.
 <li>https://www.digitalocean.com/community/tutorials/how-to-prepare-for-your-mysql-5-7-upgrade
 	</ul>
     </ul>
-  <li> Disadvantages and advantages and potential problems with Table Partitioning.
+  <li> Disadvantages and advantages and potential problems with Table Partioning.
     <ul> 
-      <li> Bad queries without using using the field for partitioning can scan all partitions.
+      <li> Bad queries without using using the field for partitioning can scan al partitions.
       <li> If you do use only one partition, but not an index, it it scan the whole partition.
-      <li>Cannot foreign keys, full test indexes, use Declared variables, user variables, stored procedures, stored functions, loadable functions, plugins.
+      <li>Cannot foriegn keys, full test indexes, use Declared variables, user variables, stored procedures, stored functions, loadable functions, plugins.
       <li>DDL changes may cause locks. Lock the table for any reason is bad.
       <li>Each partition is really its own table. This can affect
 	open table cache, open files, buffers for each table, etc. 
@@ -61,21 +61,21 @@ This document is constantly changing. Expect spelling errors and such.
 	</ul>
     </ul>
     
-  <li>Galera Scalability
+  <li>Galera scalability
     <ul>
       <li> Galera is vertical scaling, config, load balancing, cache etc but it is NOT
-	  good at horizontal scaling.
+	  good at horicontal scaling.
       <li> Add a cache, like Redis or other cache. 
       <li>More powerful systems --- only goes so far
-      <li>Optimize queries, config, etc
+      <li>Optimize queries, cofig, etc
       <li>Relax config options to prevent nodes getting kicked out. 
       <li> Add more nodes: This is controversial.
-      <li>Make sure you are using fast Ethernet cards, fast IO, and lots of memory to hold
+      <li>Make sure you are using fast ethernet cards, fast IO, and lots of memory to hold
 	  data. You want more memory in case another node fails. It then has to hold more
 	  data in ram. 
       <li>Add proper load balancing with detection of hot nodes.
 	  Have all writes go to one node.
-      <li> Use a MySQL slave off one of the those for time insensitive queries for ETL queries./
+      <li> Use a MySQL slave off one of the those for time insentive queries for ETL queries./
       <li>Add node which takes no queries for backups. 
       <li> Links:
 	<ul>
@@ -127,7 +127,7 @@ This document is constantly changing. Expect spelling errors and such.
 	  <li>More powerful systems. 
 	</ul>
 
-      <li> Horizontal Writes
+      <li> Horizontal WritesB
 	<ul>
 	  <li> Software sharing. Shard by mod, by lookup key, or other. 
 	    <li> 
@@ -160,9 +160,9 @@ This document is constantly changing. Expect spelling errors and such.
 	</ul>
     </ul>
 
-    <li>No downtime and tables must remain the same Geo.
+    <li>No downtime and tables must remain the same geo.
       <ul>
-	<li> Apply backward compatible changes before app changes.
+	<li> Apply backward capatible changes before app changes.
 	<li>Others options?
 	</ul>
 </ul>

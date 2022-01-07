@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
+	<title>__template_title__</title>
+	<meta name="generator" content="LibreOffice 7.2.0.4 (Windows)"/>
+	<meta name="created" content="2021-09-14T02:27:47.801000000"/>
+	<meta name="changed" content="2021-09-16T15:03:14.840000000"/>
+	<style type="text/css">
+		@page { size: 8.5in 11in; margin: 0.79in }
+		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
+		h1 { margin-bottom: 0.08in; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Arial", sans-serif; font-size: 16pt; font-weight: bold }
+		h1.cjk { font-family: "Microsoft YaHei"; font-size: 16pt; font-weight: bold }
+		h1.ctl { font-family: "Lucida Sans"; font-size: 16pt; font-weight: bold }
+		h2 { margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic; font-weight: bold }
+		h2.cjk { font-family: "Microsoft YaHei"; font-size: 14pt; font-style: italic; font-weight: bold }
+		h2.ctl { font-family: "Lucida Sans"; font-size: 14pt; font-style: italic; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><h1 class="western">
+Docker : 1</h1>
+  <p>by Mark Nielsen
+    <br>copyright @2021
+<br/>
+
+</p>
+<div id="Table of Contents1" dir="ltr">
+	<div id="Table of Contents1_Head" dir="ltr"><p style="line-height: 100%; margin-top: 0.17in; margin-bottom: 0.08in; page-break-after: avoid">
+		<font face="Liberation Sans, sans-serif"><font size="4" style="font-size: 16pt"><b>Table
+		of Contents</b></font></font></p>
+	</div>
+	<p lang="zxx" style="line-height: 100%; margin-bottom: 0in"><a href="#__RefHeading___Toc105_1073845202">Docker
+	: 1	1</a></p>
+	<p lang="zxx" style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc107_1073845202">Links	1</a></p>
+	<p lang="zxx" style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc109_1073845202">Installing Docker	1</a></p>
+	<p lang="zxx" style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc111_1073845202">Downloading and using
+	Ubuntu Image	1</a></p>
+	<p lang="zxx" style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc113_1073845202">Creating your own image
+	and using it	1</a></p>
+	<p lang="zxx" style="line-height: 100%; margin-left: 0.2in; margin-bottom: 0in">
+	<a href="#__RefHeading___Toc115_1073845202">Conclusion	1</a></p>
+</div>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc107_1073845202"></a>Links</h2>
+<ul>
+	<li><p><a href="https://docs.docker.com/get-docker/">https://docs.docker.com/get-docker/</a></p>
+	<ul>
+		<li><p>Follow the documentation to install Docker for your
+		operating system. It is assumed you get get it installed. 
+		</p>
+	</ul>
+	<li><p><a href="https://www.youtube.com/watch?v=fqMOX6JJhGo">https://www.youtube.com/watch?v=fqMOX6JJhGo</a></p>
+	<li><p><a href="https://www.youtube.com/watch?v=fqMOX6JJhGo">https://www.youtube.com/watch?v=fqMOX6JJhGo</a></p>
+	<li><p><a href="https://docs.docker.com/engine/reference/commandline/docker/">https://docs.docker.com/engine/reference/commandline/docker/</a></p>
+	<li><p>https://towardsdatascience.com/15-docker-commands-you-should-know-970ea5203421</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc109_1073845202"></a>Installing
+Docker 
+</h2>
+<p>You want to start using Docker&rsquo;s starting webpages:
+<a href="https://docs.docker.com/get-started">https://docs.docker.com/get-started</a></p>
+<ul>
+	<li><p>In the DOS prompt: 
+	</p>
+	<ul>
+		<li><p>docker run -d -p 80:80 docker/getting-started</p>
+		<li><p>This will download an image and run a container off of the
+		image. 
+		</p>
+		<li><p>After it is running in the your browsers go to
+		<a href="http://127.0.0.1/">http://127.0.0.1/</a> or
+		<a href="http://localhost/">http://localhost</a></p>
+		<ul>
+			<li><p>The container is running on port 80 the default web port on
+			your computer. 
+			</p>
+		</ul>
+	</ul>
+	<li><p>If installing on Windows</p>
+	<ul>
+		<li><p><a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package">https://docs.microsoft.com/en-us/windows/wsl/install-win10#step-4---download-the-linux-kernel-update-package</a></p>
+		<li><p>And of course being windoze you have to reboot. How
+		annoying. 
+		</p>
+		<li><p>I manged not to reboot somehow in windows. 
+		</p>
+		<li><p>If you are using windows, commands are issued in the DOS
+		prompt and not the GUI in this document. 
+		</p>
+	</ul>
+</ul>
+<h2 class="western">Downloading and using Ubuntu Image</h2>
+<p>Now you want to stop the getting started image and use your own. 
+</p>
+<ul>
+	<li><p>Make sure you are signed into Docker. 
+	</p>
+	<li><p>DOS commands:</p>
+	<ul>
+		<li><p>docker pull ubuntu</p>
+		<ul>
+			<li><p>This downloads an a very basic ubuntu image. We will be
+			installing lots of packages afterwards. This image will be used to
+			make are first container</p>
+		</ul>
+		<li><p>Make a container and connect to it</p>
+		<li><p>Download lots of packages</p>
+		<li><p>Make an Image</p>
+		<li><p>Make a permenant container of your image for your
+		development environment.</p>
+		<ul>
+			<li><p>Note: If done in a professional way, you should combine git
+			and ansible and other tools to make your dev envrionment. 
+			</p>
+			<li><p></p>
+		</ul>
+	</ul>
+</ul>
+<h2 class="western"><a name="__RefHeading___Toc113_1073845202"></a>Creating
+your own image and using it</h2>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western"><a name="__RefHeading___Toc115_1073845202"></a>Conclusion</h2>
+
+<h2 class="western"><a name="__RefHeading___Toc113_1073845202"></a>Creating^M
+  your own image and using it</h2>
+
+
+<h2 class="western"><a name="__RefHeading___Toc113_1073845202"></a></h2>
+
+</body>
+</html>

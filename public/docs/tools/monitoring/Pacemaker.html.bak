@@ -13,7 +13,7 @@
     
     <h1><a class="mozTocH1" name="mozTocId909994"></a>Pacemaker</h1>
     The purpose of this is to migration data from a MySQL Master on your own server or
-    an EC2 server to Aurora. 
+    an EC2 server to Auora. 
 <hr>
 <ol>
   <li><a href="#links">Links</a></li>

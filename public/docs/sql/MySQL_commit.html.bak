@@ -12,7 +12,7 @@
     
     <h1><a class="mozTocH1" name="mozTocId909994"></a>SQL: MySQL commit</h1>
 The purpose of this document is to show to commit data (schema or data) in  production
-environment for one MySQL server. Each company has its own procedure. We will cover
+environment for one MySQL server. Each company has its own prodcedure. We will cover
 generic procedures. 
 <hr>
 <ol>
@@ -45,7 +45,7 @@ These are high level steps. We aren't going to go into details with each one.
   <li>Post error logs to ticket and report in ticket the outcome.
   <li> If successful, close ticket.
   <li> If not, follow procedures or rollback based on policy.
-  <li> Database changes and application software upgrade should happen on different
+  <li> Database changes and application software upgradea should happen on different
     days if possible, and not on Fridays or weekends if possible. 
 </ol>
 
@@ -117,7 +117,7 @@ Doing it this is either way you need to be careful of:
   <li>Any schema changes. They can commit changes and also cause locks. 
   <li>Data or schema changes may lock queries.
   <li>Data or schema changes can use of diskspace.
-  <li> It might be wise to break up sql files to commit to data and schema separately and
+  <li> It might be wise to break up sql files to commit to data and schema separetly and
     to do a different sql file for each ticket. 
 </ol>
 
@@ -129,7 +129,7 @@ Doing it this is either way you need to be careful of:
 Some schema changes can be made without locking, without creating a new table, and does not block queries.
 Different versions of MySQL allow different DDL operations without hassle.
 However, the operations my slow down the system. Online DDL Operations is used a lot
-and very beneficial and can be combined with the sql change files.
+and very benefincial and can be combined with the sql change files.
 
 <h4> Percona online schema changes</h4>
 <ul>
@@ -138,7 +138,7 @@ Percona online schema change creates a temporary new table, populates the new ta
 swaps the tables, and usually deletes the now old table.
 </ul>
 <p>
-  This technique can be used for almost all schema changes. There are some
+  This technique can be used for almost all schama changes. There are some
   exceptions, like if triggers exist. Also, some versions make only work with some
   versions of MySQL. 
 <p>
@@ -150,7 +150,7 @@ We will do the following:
 <ol>
   <li> Create a new table.
   <li>Add data in a commit block.
-  <li>Use online schema change to change table.
+  <li>Use online shcema change to change table.
   <li>Lock a table with a schema change.
   <li>Use pt-schema-change to all auto increment and indexes.
 </ol>
@@ -183,7 +183,7 @@ We will do the following:
     show tables;
     
   </pre>
-<p> Start mysql:   In mysql shell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
+<p> Start mysql:   In mysql schell: mysql -v -v -v -u mark -pmark MY_STUPID_DATABASE
 
 <p>Execute commands in mysql:
   <pre>
@@ -207,7 +207,7 @@ We will do the following:
     pt-online-schema-change --dry-run --alter "ADD index id_amount (id, amount)" D=MY_STUPID_DATABASE,t=charges -u mark -pmark;
     date
 
-    # you should really check the dry runs and then do the commits. 
+    # you should reallyt check the dry runs and then do the commits. 
 
     pt-online-schema-change --execute --alter "ADD COLUMN ignore_me_pt1 INT" D=MY_STUPID_DATABASE,t=charges  -u mark -pmark;
     date

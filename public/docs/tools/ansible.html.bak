@@ -16,7 +16,7 @@
       <li>Install server and client on the same computer.
       <li> Run a command for ansible to do basic commands.
       <li>Run ansible to install and configure a new MySQL Master and Slave. It will be configured to stop if any installation exists and report and error. 
-      <li>Other things about Ansible.
+      <li>Other things about Anisble.
 	</ul>
 <hr>
 <ol>
@@ -43,7 +43,7 @@
 </ul>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="install">Architecture, Install, and General Configuration</a></h2>
+<h2><a class="mozTocH2" name="install">Architeture, Install, and General Configuration</a></h2>
 Please read:
 <ol>
   <li>https://docs.ansible.com/ansible/latest/dev_guide/overview_architecture.html
@@ -51,13 +51,13 @@ Please read:
 </ol>
 For architecture, please read the online docs. In general:
 <ol>
-  <li>Inventory : "Names" for groups of servers. Like Database, webserver, etc. Variables
-    for the servers can be defined within the inventory file or in other sub-directories. 
+  <li>Inventory : "Names" for groups of servers. Like Database, webServer, etc. Variables
+    for the servers can be defined within the inventory file or in other subdirectories. 
   <li> Roles : What you define the "Groups" you defined in inventory. For example, the
     database group in the inventory should have a database role. Based on roles, different
     modules may be used or behave differently. 
   <li>Modules
-  <li>Playbooks : The roles define with modules to use and how, then get the list of commands from modules, and apply to the servers in a group from the inventory. 
+  <li>Playbooks : The roles define with modules to use and how, then get the list of commands from modules, and apply to the servers in a gorup from the inventory. 
   <li>Tasks : Stuff you do on servers. This can be be by applying modules to servers from the
     roles defined for groups. You can issue commands manually. 
   <li> Variables : Variables are defined for hosts which can affect how modules do stuff to
@@ -128,7 +128,7 @@ ansible myself -a " uptime"          # Get the uptime for this server
 cd /usr/lib/python3/dist-packages/ansible/modules/
 echo "#!/usr/bin/python
 
-from ansible.module_utils.basic import Ansible Module
+from ansible.module_utils.basic import AnsibleModule
 
 def run_module():
 # This gets the args for the module.

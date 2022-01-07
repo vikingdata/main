@@ -97,7 +97,7 @@ newer versions.
 Aurora Serverless one scales automatically up and down depending on your workloads. It it meant
 for developers to have a scaling database environment that depends on the amount of work
 that needs to be done. If it scales down to 0, you just pay for storage.
-<br>You are charge per second for ACU. 
+<br>You are charge peer second for ACU. 
 
 <p>
   Where serverless can shine is when you have periods of lots of work to do. Since it is

@@ -13,7 +13,7 @@
     
     <h1><a class="mozTocH1" name="mozTocId909994"></a>AWS: Migration Aurora</h1>
     The purpose of this is to migration data from a MySQL Master on your own server or
-    an EC2 server to Aurora. 
+    an EC2 server to Auora. 
 <hr>
 <ol>
   <li><a href="#links">Links</a></li>
@@ -59,7 +59,7 @@ You have four choices:
       <h3> Aurora</h3>
       <ol>
 	<li>Restore to Aurora from mysqldump
-	<li>Restore to Aurora from an RDS MySQL snapshot
+	<li>Restore to Aurora from an RDS MySQL snaoshot
 	<li>Restore to Aurora from an an RDS Read Replica
 	  </ol>
       

@@ -62,8 +62,8 @@ the name Window Functions is bad.
       The state and then the sum. But with window functions you can apply
       the result of the sum to more than one line --- For each person in the state. An example
       is shown below plus more window functions. 
-    <p> Why can this be bad? It might be bad because it has to calculate the sums, and then
-      redo the results with the sum in multiple lines. This might cause it so be slower.
+    <p> Why can this be bad? It might be bad because it has to caluclate the sums, and then
+      redo the results with the sum in mutiple lines. This might cause it so be slower.
       I think they optimize this, but I am sure in some cases it can slow things down. 
 
       
