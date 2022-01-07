@@ -12,8 +12,11 @@
     
     
     <h1><a class="mozTocH1" name="mozTocId909994"></a>Percona Toolkit : Most command uses with MySQL</h1>
+    <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center>
     This is just about using the toolkit with MySQL. Another article will cover the use
     with MongoDB. Also, this toolkit can be used in the cloud, and sometimes DaaS with AWS RDS.
+    Also, the toolkit may have changed after this article was made. I might update this
+    article once a year. 
 <hr>
 <ol>
   <li><a href="#links">Links</a>
@@ -49,7 +52,12 @@ Useful tools you will probably ned to use.
 <ul>
   <li>pt-index-usage : This can be useful to run queries from a log to analyze how queries
     use the indexes. This can be used for debuggin.
-   </ul> 
+  <li>pt-diskstats
+    <br>NOTE: For debugging why a query isn't working, I look at disk IO and space, memory
+    and memory config for MySQL, cpu usage, load, network speed and latancy and hitting
+    a bottleneck, account permissions, and others things. A complete tool or set of tools
+    is desired. 
+</ul> 
 <p>
 Less Uses tools
 
