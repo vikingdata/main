@@ -75,7 +75,7 @@ Less Used tools
     or use this bash command just to quickly scan the processlist:
     <pre>
      echo PASSWORD="bad_password"  
-     mysql -u root -p$PASSWORD -e "show full processlist" - grep -iv "sleep" | less
+     mysql -u root -p$PASSWORD -e "show full processlist" | grep -i "sleep" | less
       </pre>  
 </ul>
 
