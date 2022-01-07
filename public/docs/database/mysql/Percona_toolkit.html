@@ -32,7 +32,31 @@
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="tools"></a>Tools</h2>
 
+Most used tools
 <ul>
+  <li>pt-online-backup
+  <li>pt-checksum
+    <br>NOTE: This doesn't tell you the primary keys of which tables are different.
+    Just the numbers of rows that are different. 
+  <li>pt-sync
+    <br>NOTE: If there is valid data on the Slave, this will destory it. Get data off the slave before running this.
+      <br>How can data get on the slave? Replication errors and the person whoistarted replication let the last command fly. Someone logged in as root and made changes. There are multiple
+      masters for this server --- this can be dangerous if so. An application wrote to the slave
+      when it should not of -- did you turn read the global read-only variable?
+</ul>
+<p>
+Useful tools you will probably ned to use.
+<ul>
+  <li>pt-index-usage : This can be useful to run queries from a log to analyze how queries
+    use the indexes. This can be used for debuggin.
+   </ul> 
+<p>
+Less Uses tools
+
+<ul>
+  <li> pt-archiver : You can do this manually with a cronjob. You don't need this. But its nice.
+  <li>pt-config-diff : Less useful if you have automated installs. But it can be used to check
+    servers for alarms. If someone changes things, you want to know about it.
 </ul>
 
 
