@@ -39,11 +39,11 @@
 
 Most used tools
 <ul>
-  <li>pt-online-schema-change : If you have never used this a DBA, practice it.
+  <li>pt-online-schema-change <br> If you have never used this a DBA, practice it.
     Even though you have inline schema changes which don't lock tables, not everything
     is lock free in MySQL. This tool is vital for schema changes in prod without
     downtime and being safe. I highly recommend this tool. 
-  <li>percona ExtraBackup: Not part of the toolset but I am including because it
+  <li>percona ExtraBackup<br> Not part of the toolset but I am including because it
     is not usefu. This tool is VERY VERY useful for making backups. It doesn't
     block the server. It will slow down the IO. This tools also makes it easy to restore a server. It is saved in binary format, so copy it to the new server in the data
     directory, and making a few changes like accounts and replication you can restore
@@ -54,11 +54,11 @@ Most used tools
     info, you are recording the binlog info of the master (because this is a slave).
     Thus you can restore this as a slave of the original master, or as a slave
     to the server you ran this program on (effectively a slave of a slave). This
-    command is usefil if you want to replicate to the original master when restored. 
-  <li>pt-query-digest : I recommend this tool. But there are other tools to use
+    command is useful if you want to replicate to the original master when restored. 
+  <li>pt-query-digest <br> I recommend this tool. But there are other tools to use
     to make slow reports. I made one 10 years ago that didn't a better job than
     ANY slow log report from any tool. They miss one important concept. 
-  <li>pt-table-checksum : I use this a lot just to see if there are differences.
+  <li>pt-table-checksum <br> I use this a lot just to see if there are differences.
     <br>NOTE: I think this doesn't tell you the primary keys of which tables are different.
     Just the numbers of rows that are different. I wrote a python script
     back in 2008 which tells you the exact rows by primary key or unique index
@@ -75,7 +75,7 @@ Most used tools
   Useful tools you will probably ned to use. This is ONLY my preference. You may
   find some of these tools useful for yourself that I don't. 
 <ul>
-  <li>pt-index-usage : This can be useful to run queries from a log to analyze how queries
+  <li>pt-index-usage <br> This can be useful to run queries from a log to analyze how queries
     use the indexes. This can be used for debuggin.
   <li>pt-diskstats
     <br>NOTE: For debugging why a query isn't working, I look at disk IO and space, memory
@@ -87,21 +87,21 @@ Most used tools
 Less Used tools
 
 <ul>
-  <li> pt-archiver : You can do this manually with a cronjob. You don't need this. But its nice.
-  <li>pt-config-diff : Less useful if you have automated installs. But it can be used to check
+  <li> pt-archiver <br> You can do this manually with a cronjob. You don't need this. But its nice.
+  <li>pt-config-diff <br> Less useful if you have automated installs. But it can be used to check
     servers for alarms. If someone changes things, you want to know about it.
-  <li>pt-duplicate-key-checker : When trying to optimize tables, removing useless
+  <li>pt-duplicate-key-checker <br> When trying to optimize tables, removing useless
     indexes might be nice. Run this as an alarm every in a while and not at night. 
-  <li>pt-heartbeat : Look at pacemaker.
-  <li>pt-kill : Very nice program. For me I generally don't need it. What I do is writes
+  <li>pt-heartbeat <br> Look at pacemaker.
+  <li>pt-kill <br> Very nice program. For me I generally don't need it. What I do is writes
     a python program which shows the highest time on queries first,
     or use Solar Winds or Relic or another tool, 
-    or use this bash command just to quickly scan the processlist:
+    or use this bash command just to quickly scan the processlist<br>
     <pre>
      echo PASSWORD="bad_password"  
      mysql -u root -p$PASSWORD -e "show full processlist" | grep -i "sleep" | less
     </pre>
-  <li>pt-mysql-summary : Nice and useful for reports, but doesn't have everything
+  <li>pt-mysql-summary <br> Nice and useful for reports, but doesn't have everything
     I want. 
 </ul>
 
