@@ -8,9 +8,13 @@
   <body>
 
     <!--#include virtual="/include/body_header.html" -->
-    
-    
+
+
+<center>    
 <h1><a class="mozTocH1" name="mozTocId909994"></a>Docker Install</h1>
+<i><b>by Mark Nielsen<br>Copyright June 2021</b></i></center><br><br>
+
+
 NOTE: I am being VERY VERY unorthodox. I am putting SEVERAL programs running in a DOCKER instance.
 Their way of doing things means you have one DOCKER per service or software. I put all in one which is NOT what you are suppose to do. Don't care. Let me shoot myself in the foot.
 Although I agree with their way 99% of the time, I want this to be easy for me and
@@ -155,7 +159,7 @@ stopped. </li>
 commands into a window.</li>
 <li>Do these commands:</li>
 <ol>
-<li>docker pull ubuntu</li>
+<li>docker pull Ubuntu</li>
 <ol>
 <li>This
 download the base image for Ubuntu.&nbsp;</li>
@@ -163,14 +167,14 @@ download the base image for Ubuntu.&nbsp;</li>
 <li>docker images</li>
 <ol>
 <li>This lists on the images available. You should see
-"ubuntu". </li>
+"Ubuntu". </li>
 </ol>
 <li>docker ps -a</li>
 <ol>
 <li>Show all containers, even if they are not running</li>
 </ol>
 <li>docker&nbsp; create -it --name odendata_base
-ubuntu&nbsp;</li>
+Ubuntu&nbsp;</li>
 <ol>
 <li>This creates and starts our container. &nbsp;"-it"
 keeps the container running even if there is nothing to do.&nbsp;</li>
@@ -187,7 +191,7 @@ keeps the container running even if there is nothing to do.&nbsp;</li>
 </ol>
 <li>docker exec -it odendata_base bash</li>
 <ol>
-<li>Connect to containter&nbsp;</li>
+<li>Connect to container&nbsp;</li>
 </ol>
 <li>Install packages I suggest and other commands. It might
 ask you some questions like timezone questions.
