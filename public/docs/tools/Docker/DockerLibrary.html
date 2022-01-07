@@ -9,15 +9,17 @@
 
     <!--#include virtual="/include/body_header.html" -->
     
-    
+<center>    
     <h1><a class="mozTocH1" name="mozTocId909994"></a>Docker Library</h1>
-    The purpose for this document is to create a simple base installatoion with a bunch of
+    <i><b>by Mark Nielsen<br>Copyright June 2021, Jan 2022</b></i></center><br><br>
+
+    The purpose for this document is to create a simple base installation with a bunch of
     scripts to add one service to the installation. Start commands for the service will also
     exist, but there are better ways than doing it manually. In time, there will be scripts
     for MySQL with Slaves and NDB and Galera, MariaDB, Spark, mongo, Kakfa, Cassandra, Redis,
     Mysql with MHA, haproxy and sql proxy and other HA, FO, or scalable solutions.
     <p>
-      This will mostly be docker and WIndows. It will follow similar steps for Docker Under
+      This will mostly be docker and Windows. It will follow similar steps for Docker Under
       Linux. For now, this will be Docker running under Windows using the Command Prompt. 
 
 
@@ -46,13 +48,13 @@ Over time, a Dockerfile will be added to each section.
 <h2><a class="mozTocH2" name="mozTocId514232"></a>Prod and non-prod</h2>
 In a prod environment, Docker is meant to be light running one process. However
 in a non-prod environment, a docker image that can run without and Dockerfile
-is desireable. Hence, we need to add a few things:
+is desirable. Hence, we need to add a few things:
 <ul>
-  <li> How to setup an ubuntu image from scratch.
+  <li> How to setup an Ubuntu image from scratch.
   <li>Add systemd to the system to have proper runlevels and to start multiple
     services. Ideally, just like Ubuntu was a VM.
-  <li>How to make lightweight ubuntu images to run in swarm and how to run
-    mutiple dockers efficiently. 
+  <li>How to make lightweight Ubuntu images to run in swarm and how to run
+    multiple dockers efficiently. 
 </ul>
 
 Sections will be added to this document or new documents will be made. 
@@ -65,7 +67,7 @@ Sections will be added to this document or new documents will be made.
 <ul>Docker Links
   <li><a href="https://stackoverflow.com/questions/25135897/how-to-automatically-start-a-service-when-running-a-docker-container"> Start a service</a></li/>
 <li><a href="https://www.jetbrains.com/help/youtrack/standalone/run-docker-container-as-service.html"> Start service</a>
-  <li><a href="https://docs.docker.com/config/containers/multi-service_container/">Run mutiple services in Docker</a>
+  <li><a href="https://docs.docker.com/config/containers/multi-service_container/">Run multiple services in Docker</a>
 <li><a href="https://docs.docker.com/engine/reference/builder/">DockerFile</a>
 
 <li><a href="https://advancedweb.hu/supervisor-with-docker-lessons-learned/">Supervisor</a>
@@ -82,8 +84,8 @@ Sections will be added to this document or new documents will be made.
 
 On command prompt in Windows
 <pre>
-  docker pull ubuntu
-  docker  create -it --name ubuntu_base ubuntu
+  docker pull Ubuntu
+  docker  create -it --name Ubuntu_base ubuntu
   docker start ubuntu_base
   docker exec -it ubuntu_base bash 
 </pre>
@@ -119,7 +121,7 @@ On command prompt in Windows
   echo 'mark:mark' | sudo chpasswd
   echo 'root:root' | sudo chpasswd
   
-  # This will take a long time, commentind out for now.
+  # This will take a long time, commenting out for now.
   apt-get install -y man
   apt-get install -y golang-go
   apt-get install -y python2
