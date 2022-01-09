@@ -10,7 +10,7 @@
 
     <!--#include virtual="/include/body_header.html" -->
 
-    <center><h1>MySQL Replicaiton Setup</h1></center>
+    <center><h1>MySQL Replication Setup</h1></center>
     <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
 
     This is going to be a different setup. We are manually going to start MySQL mutiple times.
@@ -45,22 +45,104 @@ and then set the files permissions.
   chown -R mysql.mysql /var/log/mysql
   chown -R mysql.mysql /data/mysql
 </pre>
-
+<p>
+  We are setting up two severs if Master - Master setup. Each master will have a slave
+  with delayed replication. Each master will have a normal slave.
+  Both masters will require the transaction to be comitted
+  before there is a return to the application. All writes should go to one master so that
+  the other responds quickly. 
 
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="start"></a>Start MySQL</h2>
 
+For the first time only:
+<pre>
+
+
+</pre>
+
+After each time you start Docker or the server:
+<pre>
+
+
+
+</pre>
+
+
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="setup"></a>Setup Mariadb</h2>
 
+Setup accounts on all servers.
+<pre>
+
+</pre>
+
+Setup test database and tables.
+<pre>
+
+</pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="rep"></a>Setup Replication</h2>
 
+Setup replication on each server. 
+<pre>
+
+</pre>
+
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="check"></a>Check replication</h2>
 
+Run commands on both masters.
+<pre>
+
+
+</pre>
+
+Check the data
+<pre>
+# This checks the data is on each aerver. 
+
+
+# Insert data on one master and test the delay
+# on the delayed slave. 
+
+</pre>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="other"></a>Other Stuff</h2>
+Convert replication to GTID.
+<pre>
+
+</pre>
+
+<p>
+  Take backup of delayed Slave with "show master status" of the slave
+  and "show slave status". The backup will be encrypted and compressed.
+<p>
+  First setup encrytion with gpg. 
+  <pre>
+
+    </pre>
+<p>
+  Now do a mysqldump backup.
+
+  <pre>
+
+  </pre>
+<p>
+  Now do a Xtrabackup compressed encrypted backup.
+<p>
+  Install software
+  <pre>
+
+  </pre>
+<p>
+Do backup. 
+  <pre>
+
+    </pre>
 <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
 
