@@ -48,6 +48,14 @@ and then set the files permissions.
   # uncomment to run the tar file.
   # tar -xcvf mysql_rep_files.tgz /
 
+  mkdir -p /var/log/mysql
+  cd /var/log/mysql
+  mkdir -p mysql1 mysql2 mysql3 mysql4 mysql5 mysql6
+
+  mkdir -p /data/mysql
+  cd /data/mysql
+  mkdir -p mysql1 mysql2 mysql3 mysql4 mysql5 mysql6
+  
   chown -R mysql.mysql /var/log/mysql
   chown -R mysql.mysql /data/mysql
 </pre>
