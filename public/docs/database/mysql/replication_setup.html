@@ -59,17 +59,18 @@ and then set the files permissions.
   export web=http://odendata.com/docs/database/mysql/rep1/data/mysql
 
   for i in 1 2 3 4 5 6; do
-    export dest=/data/mysql/mysql$i/my.cnf
+    dest=/data/mysql/mysql$i/my.cnf
     webcnf=$web/mysql$i/my.cnf
-    wget -o $dest $wencnf
+    echo " wget -vo $dest $webcnf"
+    wget -O $dest $webcnf
   done
+  
 
   mkdir -p /opt/odendata/mysql
-
-  for i in Intialize.sh  Make_cnf.sh  Replication.sh  my_template.cnf ; do
-    dest=/opt/odendata/mysql
+  for f in Intialize.sh  Make_cnf.sh  Replication.sh  my_template.cnf ; do
+    dest=/opt/odendata/mysql/$f
     web=http://odendata.com/docs/database/mysql/rep1/opt/odendata/mysql/$f
-    wget -o $dest/$f $web/$f 
+    wget -O $dest $web 
   done
   chown -R mysql.mysql /var/log/mysql
   chown -R mysql.mysql /data/mysql
