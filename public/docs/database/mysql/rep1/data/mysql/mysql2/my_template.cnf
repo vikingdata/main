@@ -1,0 +1,27 @@
+[mysqld]
+
+bind-address             = 127.0.0.1
+server-id                = __NO__
+log_bin                  = /var/log/mysql/mysql__NO__/mysql-bin.log
+
+# CREATE USER 'rep'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'rep';
+# FLUSH PRIVILEGES;
+
+#CHANGE REPLICATION SOURCE TO
+#SOURCE_HOST='127.0.0.1',
+#SOURCE_USER='rep',
+#SOURCE_PASSWORD='rep',
+#SOURCE_LOG_FILE='mysql-bin.000003',
+#SOURCE_LOG_POS=899;
+
+port                           = 330__NO__
+socket                         = /tmp/mysql__NO__.sock
+
+log_bin                  =       /var/log/mysql/mysql__NO__/binlogs/mysql-bin.log
+log-error                      = /var/log/mysql/mysql__NO__/error.log
+general_log_file               = /var/log/mysql/mysql__NO__/general.log
+log_slave_updates              = 1
+
+# only on delayed slaves.
+#CHANGE MASTER TO MASTER_DELAY = 10;
+
