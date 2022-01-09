@@ -1,6 +1,7 @@
 [mysqld]
 
 
+pid-file = /tmp/mysql__no__.pid
 user                     = mysql
 bind-address             = 127.0.0.1
 server-id                = __NO__
@@ -16,7 +17,15 @@ server-id                = __NO__
 #SOURCE_LOG_POS=899;
 
 general_log = 1
+
+innodb_data_home_dir                = /var/lib/mysql/mysql__NO__
 innodb_buffer_pool_size             = 134217
+innodb_buffer_pool_filename         = /var/lib/mysql/mysql__NO__/ib_buffer_pool
+innodb_data_file_path               = /var/lib/mysql/mysql__NO__/ibdata1
+innodb_log_group_home_dir           = /var/lib/mysql/mysql__NO__
+innodb_file_per_table=ON
+
+
 socket =                      /tmp/mysql__NO__.sock
 
 port                           = 330__NO__
