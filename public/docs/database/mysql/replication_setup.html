@@ -88,12 +88,14 @@ and then set the files permissions.
 
 For the first time only:
 <pre>
-<!--#include virtual="rep1/help_files/Intialize.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Intialize.sh" -->
 </pre>
 
-After each time you start Docker or the server:
+After each time you start Docker or the server. Its amazing
+all the articles about starting MySQL manually is not manually.
+A service script is not manuallycd 
 <pre>
-<!--#include virtual="rep1/help_files/Start.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Start.sh" -->
 </pre>
 
 
@@ -102,12 +104,12 @@ After each time you start Docker or the server:
 
 Setup accounts on all servers.
 <pre>
-<!--#include virtual="rep1/help_files/Accounts.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Accounts.sh" -->
 </pre>
 
 Setup test database and tables.
 <pre>
-<!--#include virtual="rep1/help_files/tables.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/tables.sh" -->
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -116,7 +118,7 @@ Setup test database and tables.
 Setup replication on each server. 
 <br>NOTE: MariaDB 10.3.3 has semi-syncronous replication built-in if you want it.
 <pre>
-<!--#include virtual="rep1/help_files/Replication.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Replication.sh" -->
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -124,26 +126,26 @@ Setup replication on each server.
 
 Run commands on both masters.
 <pre>
-<!--#include virtual="rep1/help_files/Commands2.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Commands2.sh" -->
 
 </pre>
 
 Check the data
 <pre>
 # This checks the data is on each aerver. 
-<!--#include virtual="rep1/help_files/Check1.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Check1.sh" -->
 
 # Insert data on one master and test the delay
 # on the delayed slave. 
 
-<!--#include virtual="rep1/help_files/Commands1.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Commands1.sh" -->
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="other"></a>Other Stuff</h2>
 Convert replication to GTID.
 <pre>
-<!--#include virtual="rep1/help_files/Convert.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Convert.sh" -->
 </pre>
 
 <p>
@@ -158,12 +160,12 @@ Convert replication to GTID.
   Now do a mysqldump backup.
 
   <pre>
-<!--#include virtual="rep1/help_files/dump.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/dump.sh" -->
   </pre>
 <p>
   Now do a Xtrabackup compressed encrypted backup.
   <pre>
-<!--#include virtual="rep1/help_files/Xtra.sh" -->
+<!--#include virtual="rep1/opt/odendata/mysql/Xtra.sh" -->
   </pre>
 <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->

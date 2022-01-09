@@ -1,8 +1,9 @@
 [mysqld]
 
+
+user                     = mysql
 bind-address             = 127.0.0.1
 server-id                = __NO__
-log_bin                  = /var/log/mysql/mysql__NO__/mysql-bin.log
 
 # CREATE USER 'rep'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY 'rep';
 # FLUSH PRIVILEGES;
@@ -13,6 +14,10 @@ log_bin                  = /var/log/mysql/mysql__NO__/mysql-bin.log
 #SOURCE_PASSWORD='rep',
 #SOURCE_LOG_FILE='mysql-bin.000003',
 #SOURCE_LOG_POS=899;
+
+general_log = 1
+innodb_buffer_pool_size             = 134217
+socket =                      /tmp/mysql__NO__.sock
 
 port                           = 330__NO__
 socket                         = /tmp/mysql__NO__.sock
