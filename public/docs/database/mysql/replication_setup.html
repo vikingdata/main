@@ -56,8 +56,22 @@ and then set the files permissions.
   cd /data/mysql
   mkdir -p mysql1/binlogs mysql2/binlogs mysql3/binlogs mysql4/binlogs mysql5/binlogs mysql6/binlogs
 
-  
-  
+http://odendata.com/docs/database/mysql/rep1/data/mysql/mysql1/my.cnf
+  export web=http://odendata.com/docs/database/mysql/rep1/data/mysql/mysql1/my.cnf
+
+  for i in 1 2 3 4 5 6; do
+    export dest=/data/mysql/mysql$i/my.cnf
+    webcnf=$web/mysql$i/my.cnf
+    wget -o $dest $wencnf
+  done
+
+  mkdir -p /opt/odendata/help_files
+
+  for i in Intialize.sh  Make_cnf.sh  Replication.sh  my_template.cnf ; do
+    dest=/opt/odendata/mysql
+    web=http://odendata.com/docs/database/mysql/rep1/opt/odendata/mysql/$f
+    wget -o $dest/$f $web/$f 
+  done
   chown -R mysql.mysql /var/log/mysql
   chown -R mysql.mysql /data/mysql
 </pre>
