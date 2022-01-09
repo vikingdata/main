@@ -4,6 +4,10 @@
 # defined in my.cnf.
 # When I look at the buglist, it might have already been addressed.
 
+# Theser are the files appearing in /var/lib/mysql when they shouldn't be. 
+#ib_buffer_pool  ibdata1
+#aria_log.00000001   ib_logfile0     multi-master.info  tc.log
+#aria_log_control    ib_logfile1     
 
 rm -f /var/lib/mysql/*
 
