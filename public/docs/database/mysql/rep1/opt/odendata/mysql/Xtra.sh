@@ -14,7 +14,9 @@ mariabackup --defaults-file=/data/mysql/mysql1/my.cnf \
 	   --user=root --compress --backup \
 	   --slave-info \
 	   --target-dir=/backups/mysql/mysql1/mysql1_$d \
-	   --socket=/tmp/mysql1.sock
+	   --socket=/tmp/mysql1.sock \
+	   --compress
+				      
 
 exclude="--exclude=gtid*,innodb*,transaction*"
 S=/data/mysql/mysql1/data/mysql
