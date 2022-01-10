@@ -51,11 +51,11 @@ and then set the files permissions.
 
   mkdir -p /var/log/mysql
   cd /var/log/mysql
-  mkdir -p mysql1mysql2 mysql3 mysql4 mysql5 mysql6
-  
+  mkdir -p mysql1/relay mysql2/relay mysql3/relay mysql4/relay mysql5/relay mysql6/relay
+  mkdir -p mysql1/binlogs mysql2/binlogs mysql3/binlogs mysql4/binlogs mysql5/binlogs mysql6/binlogs
+    
   mkdir -p /data/mysql
   cd /data/mysql
-  mkdir -p mysql1/binlogs mysql2/binlogs mysql3/binlogs mysql4/binlogs mysql5/binlogs mysql6/binlogs
   mkdir -p mysql1/data mysql2/data mysql3/data mysql4/data mysql5/data mysql6/data
   
   export web=http://odendata.com/docs/database/mysql/rep1/data/mysql
