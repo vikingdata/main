@@ -2,11 +2,13 @@
 
 sql="create database if not exists test_od;"
 
-sql2="use test_od;
+sql2="
+use test_od;
+drop table if exists hosts;
  create table if not exists hosts (
 host varchar(64),
 date_insert timestamp,
- PRIMARY KEY ( host )
+index ( host, date_insert )
 );
 "
 
