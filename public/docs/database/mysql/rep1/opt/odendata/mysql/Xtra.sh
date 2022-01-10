@@ -1,14 +1,3 @@
-
-# If we need to install percona
-#wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
-#dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb
-#percona-release enable-only tools release
-#apt-get update
-#apt-get -y install percona-xtrabackup-24
-#apt-get -y install percona-xtrabackup-80
-#apt-get -y install qpress
-
-
 # This is mariabdb, so we have to use mariadb-backup
 
 apt-get install mariadb-backup
