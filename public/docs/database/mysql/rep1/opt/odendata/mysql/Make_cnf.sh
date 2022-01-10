@@ -16,9 +16,6 @@ for i in 1 2 3 4 5 6; do
     elif  [[  $i = 3 || $i = 4  ]] ; then
 	sed -i "s/# rpl_semi_sync_slave_enabled=ON/ rpl_semi_sync_slave_enabled=ON/g" $f
 	echo "slave semi $i "
-    else
-	sed -i "s/#CHANGE MASTER TO MASTER_DELAY = 10;/CHANGE MASTER TO MASTER_DELAY = 10;/g" $f
-	echo "delayed $i"
     fi
 
 done
