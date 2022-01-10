@@ -134,23 +134,13 @@ Run commands on both masters.
 
 Check the data
 <pre>
-# This checks the data is on each aerver. 
+# This checks the data is on each server. 
+# Also test the delayed reaction.
 <!--#include virtual="rep1/opt/odendata/mysql/Check1.sh" -->
-
-# Insert data on one master and test the delay
-# on the delayed slave. 
-
-<!--#include virtual="rep1/opt/odendata/mysql/Commands1.sh" -->
-</pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="other"></a>Other Stuff</h2>
-Convert replication to GTID.
-<pre>
-<!--#include virtual="rep1/opt/odendata/mysql/Convert.sh" -->
-</pre>
 
-<p>
   Take backup of delayed Slave with "show master status" of the slave
   and "show slave status". The backup will be encrypted and compressed.
 <p>
@@ -169,7 +159,14 @@ Convert replication to GTID.
   <pre>
 <!--#include virtual="rep1/opt/odendata/mysql/Xtra.sh" -->
   </pre>
-<hr style="width: 100%; height: 2px;">
+
+
+  Convert replication to GTID.
+  <pre>
+    <!--#include virtual="rep1/opt/odendata/mysql/Convert.sh" -->
+  </pre>
+
+  <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
 
 </body></html>
