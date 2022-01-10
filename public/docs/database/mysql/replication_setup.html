@@ -22,7 +22,7 @@
       later, but for now these are tested commands. All the commands can be executed in
       the bash prompt and not the mysql prompt. 
     <p>
-      This is for Ubunut 20.04 and MariaDB  10.3.32. 
+      This is for Ubunut 20.04 and MariaDB  10.6 
     
     <hr>
 <ol>
@@ -41,6 +41,7 @@
   <li>https://dev.mysql.com/doc/mysql-replication-excerpt/8.0/en/replication-semisync.html
     <li>https://dev.mysql.com/doc/refman/5.6/en/replication-delayed.html
 <li>https://www.tutorialspoint.com/mysql/mysql-create-tables.htm
+<li>https://www.gnupg.org/documentation/manuals/gnupg-devel/Unattended-GPG-key-generation.html
 </ul>
 
 
@@ -151,13 +152,10 @@ Check the replication
 
 
   Take backup of delayed Slave with "show master status" of the slave
-  and "show slave status". The backup will be encrypted and compressed.
+and "show slave status". The backup will be compressed. There will be another
+article on encryption of backups. 
 <p>
-  First setup encrytion with gpg. 
-  <pre>
 
-    </pre>
-<p>
   Now do a mysqldump backup.
 
   <pre>
