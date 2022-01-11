@@ -13,7 +13,23 @@
     <center><h1>MySQL Backup and Restore</h1></center>
     <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
     This should cover  mysqldump, xtrabackup, binary,
-    snaphots via LVM or KVM, mariabackup but not anything to do with the Cloud. 
+    snaphots via LVM or KVM, mariabackup but not anything to do with the Cloud. All the baclup
+    sections will include there sample restore commands. 
+    <p>
+      People often forget about restores. Here are important points:
+      <ul>
+	<li> No one ever asks about restores, so who are cares about backups? The requirements of
+	  the restore determine how you perform which backup.
+	<li>How long will the restore take?
+	<li>Did the backup include all replication info for a proper restore?
+	<li>Is the data 100% accurate for the restore? Did you compare Master to Slave data?
+	<li>Do you have proper procedure for restore? This should include proper procedure
+	  for backups.
+	<li>Is diskspace for backups enough and being monitored? If no, your restores will
+	  suffer.
+	<li>Do you keep backups back in time according to requirements? If no then you can't
+	  restore data for the requirements. 
+	</ul>
     <p>In general, here is a breakdown of the different backups.
       <ul>
 	<li>ALL: If made right all can be compressed and encrypted. All can be done non-locking
@@ -28,17 +44,18 @@
 	  It creates a binary backup for quick restore. Can include binlog of master or slave
 	  if you backup from a master ot slave. Can error out easier than other backups methods
 	  but usually never causes a problem and is the most widely used default when setup
-	  correctly. I highly recommend using a Slave. 
+	  correctly. I highly recommend using a Slave. This is used for larger databases.
+	  Can still be time consuming for really large systems. 
 	<li>Binary: Its a hard backup. You do not need any software. But you should shut down
 	  the server. Its better to use snapshots. Snapshots are the same as Binary backups
-	  for the most part.
+	  for the most part. This is rarely ever used. 
 	<li>Snapshot: Very similar to binary backups. However the snapshot is an ENTIRE filesystem.
 	  If you take a snapshot and then do a binary backup of mysql only it is effectively
 	  the same as a binary backup. The big advantage here is there is little downtime.
 	  The amount of downtime is basically the time it is to setup the snapshot which is
 	  normally quick. Thus, always use on a Slave decidated for backups or one you take
 	  out of your load balancer. It will use a lot of IO if you are making a copy of the
-	  snaphot to a backup device. 
+	  snaphot to a backup device. This is used for VERY big databases. 
       </ul>
     <hr>
 <ol>
