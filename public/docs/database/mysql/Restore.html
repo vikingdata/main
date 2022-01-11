@@ -7,66 +7,71 @@
     
   </head>
   <body>
-<center>
+
     <!--#include virtual="/include/body_header.html" -->
 
     <center><h1>MySQL Backup and Restore</h1></center>
-    <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
-<hr>
+    <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
+    This should cover  mysqldump, xtrabackup, binary,
+    snaphots via LVM or KVM, mariabackup but not anything to do with the Cloud. 
+    <p>In general, here is a breakdown of the different backups.
+      <ul>
+	<li>ALL: If made right all can be compressed and encrypted. All can be done non-locking
+	  or sub second downtime. I recommend to always backup on a slave. I always recommend
+	  to compare data from Master to the Slave, like using Percona pt-table-checksum.
+	<li>mysqldump, xtrabackup, and mariabackup and maybe snapshots can do incremental
+	  backups. 
+	<li>MySQLDump: The dump is text. If there is an error in the dump you can
+	  edit it diretly. Easy to compress. But takes a long time for the backup to run
+	  and restore. Can be impractical for large databases.
+	<li> xtrabackup and mariabackup: One is for Percona and the other for MariaDB.
+	  It creates a binary backup for quick restore. Can include binlog of master or slave
+	  if you backup from a master ot slave. Can error out easier than other backups methods
+	  but usually never causes a problem and is the most widely used default when setup
+	  correctly. I highly recommend using a Slave. 
+	<li>Binary: Its a hard backup. You do not need any software. But you should shut down
+	  the server. Its better to use snapshots. Snapshots are the same as Binary backups
+	  for the most part.
+	<li>Snapshot: Very similar to binary backups. However the snapshot is an ENTIRE filesystem.
+	  If you take a snapshot and then do a binary backup of mysql only it is effectively
+	  the same as a binary backup. The big advantage here is there is little downtime.
+	  The amount of downtime is basically the time it is to setup the snapshot which is
+	  normally quick. Thus, always use on a Slave decidated for backups or one you take
+	  out of your load balancer. It will use a lot of IO if you are making a copy of the
+	  snaphot to a backup device. 
+      </ul>
+    <hr>
 <ol>
   <li><a href="#links">Links</a>
-  <li><a href="#backup"></a>
-  <li><a href="#restore"></a>
-  <li><a href="#common"></a>
-    
+  <li><a href="#dump">mysqldump</a>
+  <li><a href="#hot">xtrabackup and mariabackup
+  <li><a href="#hard">binary
+  <li><a href="#snapshot">snaphots via LVM or KVM
 </ol>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
 
 <ul>
-  <li>https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html
-    <li>
-</ul>
 
-<br><hr style="width: 100%; height: 2px;">
-<h2><a class="" name="backups"></a>Backups</h2>
+</ul>
 
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="" name="restore"></a>Restore</h2>
-
+<h2><a class="mozTocH2" name="dump"></a></h2>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="" name="common"></a>Common Methods</h2>
+<h2><a class="mozTocH2" name="hot"></a></h2>
 
-<h3>AWS</h3>
-<ul>
-    <li> On EC2 instancesm treat them like any other box with the options below.
-</ul>
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="hard"></a></h2>
 
-<h3>Backups</h3>
-<ul>
-  <li> On EC2 instancesm treat them like any other box with the options below.
-</ul>
-<h3>Restore</h3>
-<ul>
-  <li> On EC2 instancesm treat them like any other box with the options below.
-</ul>
-
-<h3>AWS</h3>
-<ul>
-  <li> On EC2 instancesm treat them like any other box with the options below.
-  <li>RDS Mysql
-    <li>RDS Aurora has automatic backups with time
-</ul>
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="snapshot"></a></h2>
 
 
 
-
-
-
-<hr style="width: 100%; height: 2px;">
+  <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
 
 </body></html>
