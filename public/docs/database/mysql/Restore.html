@@ -14,7 +14,16 @@
     <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
     This should cover  mysqldump, xtrabackup, binary,
     snaphots via LVM or KVM, mariabackup but not anything to do with the Cloud. All the baclup
-    sections will include there sample restore commands. 
+    sections will include there sample restore commands.
+    <p>
+      In case you are wondering. Oracle bought MySQL for years and did very little with it for years.
+      They might have done that because it competed with Oracle database, but now Oracle
+      has seemed to be doing a lot with it. This gave Percona and MariaDB time to rise
+      and make improvements and become popular as they are offshoots of MySQL.
+      Nobody uses Oracle MySQL except Oracle diehards. Percona was the default for many years
+      and will likely be a strong player for many years to come. MariaDB seems to be getting
+      very popular lately and one of the cofounders of MySQL leads it. SkySQL from MariaDB
+      is a database service which shows GREAT promise. 
     <p>
       People often forget about restores. Here are important points:
       <ul>
@@ -39,12 +48,14 @@
 	  backups. 
 	<li>MySQLDump: The dump is text. If there is an error in the dump you can
 	  edit it diretly. Easy to compress. But takes a long time for the backup to run
-	  and restore. Can be impractical for large databases.
+	  and restore. Can be impractical for large databases. You cannot edit data in other
+	  backups like you can with text backups. One byte error on binary backups ruin
+	  the backups. Always good to do text backups for emergencies. 
 	<li> xtrabackup and mariabackup: One is for Percona and the other for MariaDB.
 	  It creates a binary backup for quick restore. Can include binlog of master or slave
-	  if you backup from a master ot slave. Can error out easier than other backups methods
-	  but usually never causes a problem and is the most widely used default when setup
-	  correctly. I highly recommend using a Slave. This is used for larger databases.
+	  if you backup from a master to slave. Can error out easier than other backups methods
+	  but usually never causes a problem and is the most widely used default.
+	  I highly recommend using a Slave. This is used for larger databases.
 	  Can still be time consuming for really large systems. 
 	<li>Binary: Its a hard backup. You do not need any software. But you should shut down
 	  the server. Its better to use snapshots. Snapshots are the same as Binary backups
@@ -60,11 +71,13 @@
     <hr>
 <ol>
   <li><a href="#links">Links</a>
+    <li><a href="#binlog">Binlog backups and Time Travel</a>
   <li><a href="#dump">mysqldump</a>
   <li><a href="#hot">xtrabackup and mariabackup
   <li><a href="#hard">binary
   <li><a href="#snapshot">snaphots via LVM or KVM
 </ol>
+
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
@@ -73,6 +86,8 @@
 
 </ul>
 
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="binlog"></a>Binlog backups and Time Travel</h2>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="dump"></a></h2>
