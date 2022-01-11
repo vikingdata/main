@@ -7,7 +7,7 @@ mysql_install_db --user=mysql --datadir=/data/mysql/mysql1/data \
 
 
 mysql_install_db --user=mysql --datadir=/data/mysql/mysql2/data \
-		 --defaults-file=/data/mysql/mysql3/my.cnf
+		 --defaults-file=/data/mysql/mysql2/my.cnf
 
 mysql_install_db --user=mysql --datadir=/data/mysql/mysql3/data \
 		 --defaults-file=/data/mysql/mysql3/my.cnf
