@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
     <!--#include virtual="/include/header.html" -->
-    
+     
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 <title>MySQL Backup and Restore</title>
     
@@ -131,7 +131,7 @@ Backups
     wrong you can assume your data is corrupt. 
 </ul>
       
-
+ 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="binlog"></a>Binlog backups and Time Travel</h2>
 In MySQL, you should do the following with binlogs:
@@ -153,12 +153,89 @@ In MySQL, you should do the following with binlogs:
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="dump"></a></h2>
+I am not going to get into this except to say, stop mysql replcation, do show slave
+status and show master status, take backup, then start mysql. You can start mysql replication
+after the mysqldump starts. The mysqldump will be single-transaction.
+
+<pre>
+mysql -u root -e "stop slave io_thread"
+sleep 5
+# NOTE: You should really so a check that the io_thread and sql_thread are the same. 
+mysql -u root -e "stop slave sql_thread"
+
+d=`date +%y%m%d_%H%M%S`
+h=/backups/mysql/mysql3/$d
+f=/backups/mysql/mysql3/$d/mysql1_$d
+mkdir -p $h
+
+mysql -u root -e "show slave status\G" > $h/show_slave_status.info
+mysql -u root -e "show master status\G" > $h/show_master_status.info
+
+options=" --all-databases --single-transaction --master-data"
+mysqldump -u root $optionsA -S /tmp/mysql3.sock | gzip  > $f.gz
+</pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="hot"></a></h2>
+Both XtraBackup and MariaBackup both create binary copies of the database, but only
+the innodb files. Copy over the "mysql" directory also. There are tools to do complete
+backups but the innodb files tend to be the most important and the information in the
+"mysql" database and be restored -- accounts, etc.
+<p>
+Both are very similar. 
+  <p>
+MariaBackup
+<pre>
+  <!--#include virtual="database/mysql/rep1/opt/odendata/mysql/Xtra.sh" -->
+</pre>
+<p>
+  XtraBackup for Percona MySQL
+  <pre>
 
-<br><hr style="width: 100%; height: 2px;">
+    # We can use xtrrabackup or innobackupex
+    # If xtrabackup, you should also backup the mysql database.
+    mkdir -p /backups/mysql/mysql1
+
+    d=`date +%y%m%d_%H%M%S`
+     xtrabackup --defaults-file=/data/mysql/mysql1/my.cnf \
+    --datadir=/data/mysql/mysql1/data \
+    --user=root --compress --backup \
+    --slave-info \
+    --target-dir=/backups/mysql/mysql1/mysql1_$d \
+    --socket=/tmp/mysql1.sock \
+    --compress
+
+    exclude="--exclude=gtid*,innodb*,transaction*"
+    S=/data/mysql/mysql1/data/mysql
+    D=/backups/mysql/mysql1/mysql1_$d/MYSQL_copy
+
+    mkdir -p /backups/mysql/mysql1/mysql1_$d/MYSQL_copy
+    rsync -av $exlude $S $D
+    
+    </pre>
+  <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="hard"></a></h2>
+Simple binary backup. 
+<pre>
+  d=`date +%y%m%d_%H%M%S`
+  h=/backups/mysql/mysql3/$d
+  mkdir -p $h
+  
+  # kill mysql
+  # This won't work on my server because I don't use service.
+  service mysql stop
+  # I do this
+  # pid = `cat /tmp/mysql3/sock`
+  # kill $pid
+  # sleep 10
+
+  rsync -av /data/mysql/mysql3/* /backups/mysql/mysql3/$d/
+  service start mysql
+
+  # For my server. 
+  # mysqld --defaults-file=/data/mysql/mysql3/my.cnf &
+  # sleep 5
+</pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="snapshot"></a></h2>
