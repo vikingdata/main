@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Linux install: Stupid Laptop</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+
+    <center><h1>	MySQL Linux install: Stupid Laptop</h1></center>
+    <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
+    This is not going to be a full installation tutorial. Its just how I installed Linux Mint on
+    my laptop. I had problems. I will leave the normal full installation steps to the
+    normal webopages. I felt it was important to record this stupidity.A
+
+<ol>
+  <li><a href="#links">Links</a>
+  <li><a href="#stupid">Stupid Laptop</a>
+</ol>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+
+<ul>
+  <li>https://linuxmint.com/download.php
+    <li>https://linuxmint.com/edition.php?id=293x
+    <li>https://linuxmint-installation-guide.readthedocs.io/en/latest/
+  <li>https://windowsreport.com/disable-bitlocker-windows-8/
+    
+
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="stupid"></a>Stupid Laptop</h2>
+Of course most laptop makers mostly ignore Linux which makes life hard for real
+computer geeks. Here is the stuff I had to do.
+
+<ol>
+  <li> Downkloaded iso : https://mirrors.sonic.net/mint/isos/stable/20.3/linuxmint-20.3-mate-64bit.iso
+  <li>Windows, right clicked on iso and burned DVD.
+    <li>In laptop, pressed f12 to get to the configuration of the laptop. 
+    <li> Changed to boot off of DVD first. Then change the storage controller from RAID
+      to the other one. Why have raid on a single disk laptop when 99.9% of laptops never use
+      raid, I don't know. Turned off the secure boot.
+    <li>Now Windoze won't boot. It was probably because I disabled raid. B
+      I undid everything but keep secure boot off.
+    <li>Realized in Linux Mint installation I had to turn of Windows Biut Locker, which
+      I can turn back on probably after installtion.
+    <li>Undid almost everything but safe boot in the BIOS.
+    <li>Windows is now the default, but I can select single boot off the DVD in the future.
+    <li>Got into Windoze and turned off bitlocker. But this took a while to decrypt
+      everything. 
+    <li> Restarted and got back into Linux Mint. Installed Linux Mint.
+      <li>The MBR now lets me select Windoze or Linux Mint at boot time. 
+</ol>
+
+  <hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
