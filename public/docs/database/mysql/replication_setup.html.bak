@@ -13,7 +13,7 @@
     <center><h1>MySQL Replication Setup</h1></center>
     <center><i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
 
-    This is going to be a different setup. We are manually going to start MySQL multiple times.
+    This is going to be a different setup. We are manually going to start MySQL mutiple times.
     We are not going to use start files, but do everything manual --- because I am lazy
     and don't want to write service files and because Docker doesn't run service unless
     you set it up right.
@@ -22,7 +22,7 @@
       later, but for now these are tested commands. All the commands can be executed in
       the bash prompt and not the mysql prompt. 
     <p>
-      This is for Ubuntu 20.04 and MariaDB  10.6 
+      This is for Ubunut 20.04 and MariaDB  10.6 
     
     <hr>
 <ol>
@@ -76,7 +76,7 @@ and then set the files permissions.
   
 
   mkdir -p /opt/odendata/mysql
-  for f in Initialize.sh  Make_cnf.sh  Replication.sh  my_template.cnf ; do
+  for f in Intialize.sh  Make_cnf.sh  Replication.sh  my_template.cnf ; do
     dest=/opt/odendata/mysql/$f
     web=http://odendata.com/docs/database/mysql/rep1/opt/odendata/mysql/$f
     wget -O $dest $web 
@@ -88,7 +88,7 @@ and then set the files permissions.
 <p>
   We are setting up two severs if Master - Master setup. Each master will have a slave
   with delayed replication. Each master will have a normal slave.
-  Both masters will require the transaction to be committed
+  Both masters will require the transaction to be comitted
   before there is a return to the application. All writes should go to one master so that
   the other responds quickly. 
 
@@ -104,7 +104,7 @@ For the first time only:
 
 After each time you start Docker or the server. Its amazing
 all the articles about starting MySQL manually is not manually.
-A service script is not manually 
+A service script is not manuallycd 
 <table border=0><tr><td width="10%"><td>
 <pre>
 <!--#include virtual="rep1/opt/odendata/mysql/Start.sh" -->
@@ -130,7 +130,7 @@ Setup test database and tables.
 <h2><a class="mozTocH2" name="rep"></a>Setup Replication</h2>
 
 Setup replication on each server. 
-<br>NOTE: MariaDB 10.3.3 has semi-synchronous replication built-in if you want it.
+<br>NOTE: MariaDB 10.3.3 has semi-syncronous replication built-in if you want it.
 <table border=0><tr><td width="10%"><td><pre>
 <!--#include virtual="rep1/opt/odendata/mysql/Replication.sh" -->
 </pre>

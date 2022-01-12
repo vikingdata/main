@@ -7,6 +7,7 @@
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
     <title>MySQL: Stored Procedures INOUT</title>
 
+
 </head>
 <body>
 
@@ -15,35 +16,18 @@
   </head>
 
 <body lang="en-US" dir="ltr">
-
-  <ol id="mozToc">
-    <!--mozToc h1 1 h2 2 h3 3 h4 4 h5 5 h6 6--><li><a href="#mozTocId909994">
-	MySQL Stored Procedures</a>
-      <ol>
-	<li><a href="#links">Links</a>
-	<li><a href="#general">MySQL Stored Procedures</a></li>
-	<li><a href="#in">IN</a></li>
-	<li><a href="#out">OUT and INOUT</a></li>
-	<li><a href="#flow">Flow control</a></li>
-	<li><a href="#error">Error Handling</a></li>
-
-
-      </ol>
-    </li>
-  </ol>
-  
-
-<a name=links></a>  <h1 class="western">MySQL: Stored Procedures INOUT
+<center>
+   <h1 class="western">MySQL: Stored Procedures INOUT
   </h1>
-NOTE: Need to check some confusion on "a" and "@a";
-  MySQL stored procedures are easy to understand once you follow the simple rules for
-  IN and OUT.
+  <i><b>by Mark Nielsen<br>Copyright Dec 2021</b></i></center><br><br>
+
   <ol>
     <li> IN requires there to be an input. 
     <li>OUT requires you to have output in the character type defined. HINT: you should
       force a conversation or possibly error out.
     <li> INOUT requires and input and it prints an output.
   </ol>
+<p>
   For more information read:
   <ol>
     <li>https://dev.mysql.com/doc/refman/8.0/en/create-procedure.html
@@ -58,16 +42,16 @@ NOTE: Need to check some confusion on "a" and "@a";
 </ol>
 
   
-  
+ <hr> 
 <a name=general></a>  <h1>MySQL Stored Procedures</h1>
   Create these stored procedure in mysql.
   <p>
     Remember these important tips. Lets take the variable VAR1. It can be
-    confusing to remmeber when to use "@VAR1" or "VAR1" at times. 
+    confusing to remember when to use "@VAR1" or "VAR1" at times. 
     <ol>
       <li>Whenever you "read" or "select" the variable VAR1 you must use "@VAR1"". This applies to the mysql shell or in stored procedures. 
       <li>Whenever you set VAR1 in the mysql shells, you must use "@VAR1".
-      <li>Whenevr you set, or declare, or use in proc_parameters (IN, OUT, INOUT) VAR1 in a stored procedure, you must use "VAR1".
+      <li>Whenever you set, or declare, or use in proc_parameters (IN, OUT, INOUT) VAR1 in a stored procedure, you must use "VAR1".
     </ol>
   <p>
     Simple function. 
@@ -77,7 +61,7 @@ NOTE: Need to check some confusion on "a" and "@a";
 
 <a name=in></a><h1>IN example</h1>
 IN variables can be static or environment variables. They are only used in the
-stored procedure. If any evironment variable is used, it is not changed when the stored procedure ends. 
+stored procedure. If any environment variable is used, it is not changed when the stored procedure ends. 
 
 <pre>
 <!--#include virtual="i.out" -->
@@ -90,8 +74,8 @@ The important thing to remember about OUT defined variables are:
     procedure. Other variables inside the stored procedure have no "@". 
   <li> If the variable in the mysql environment exists, it is set to NULL. ### CHECK THIS. 
   <li> A variable must be submitted to an OUT defined variables. 
-  <li>A variable submitted to OUT beomes NULL and NOT copied. Then the value can be set
-    and exported to the MySQL envionment. 
+  <li>A variable submitted to OUT becomes NULL and NOT copied. Then the value can be set
+    and exported to the MySQL environment. 
         </ol>
   <p>
     For OUT, We see the @i1 variable is submitted as "1" to the stored procedure. We see
@@ -175,7 +159,7 @@ call sp_flow("a");
 <!--#include virtual="error.sql" -->
 </pre>
 
-Notice how "n" becoms NULL when an error occurs. This is very very bad.
+Notice how "n" becomes NULL when an error occurs. This is very very bad.
 The error trapping still works. But I would recommend:
 <ol>
   <li>Check the final result.

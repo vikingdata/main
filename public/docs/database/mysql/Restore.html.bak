@@ -13,7 +13,7 @@
     <center><h1>MySQL Backup and Restore</h1></center>
     <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
     This should cover  mysqldump, xtrabackup, binary,
-    snapshots via LVM or KVM, mariabackup but not anything to do with the Cloud. All the backup
+    snaphots via LVM or KVM, mariabackup but not anything to do with the Cloud. All the baclup
     sections will include there sample restore commands.
     <p>
       In case you are wondering. Oracle bought MySQL for years and did very little with it for years.
@@ -47,7 +47,7 @@
 	<li>mysqldump, xtrabackup, and mariabackup and maybe snapshots can do incremental
 	  backups. 
 	<li>MySQLDump: The dump is text. If there is an error in the dump you can
-	  edit it directly. Easy to compress. But takes a long time for the backup to run
+	  edit it diretly. Easy to compress. But takes a long time for the backup to run
 	  and restore. Can be impractical for large databases. You cannot edit data in other
 	  backups like you can with text backups. One byte error on binary backups ruin
 	  the backups. Always good to do text backups for emergencies. 
@@ -64,20 +64,20 @@
 	  If you take a snapshot and then do a binary backup of mysql only it is effectively
 	  the same as a binary backup. The big advantage here is there is little downtime.
 	  The amount of downtime is basically the time it is to setup the snapshot which is
-	  normally quick. Thus, always use on a Slave dedicated for backups or one you take
+	  normally quick. Thus, always use on a Slave decidated for backups or one you take
 	  out of your load balancer. It will use a lot of IO if you are making a copy of the
-	  snapshot to a backup device. This is used for VERY big databases. If you do your
+	  snaphot to a backup device. This is used for VERY big databases. If you do your
 	  snapshotting in a VM environment, you might be able to restore a server very fast. 
       </ul>
     <hr>
 <ol>
   <li><a href="#links">Links</a>
-  <li><a href="#best">Best Practices</a>
+  <li><a href="#best">Best Practies</a>
   <li><a href="#binlog">Binlog backups and Time Travel</a>
   <li><a href="#dump">mysqldump</a>
   <li><a href="#hot">xtrabackup and mariabackup
   <li><a href="#hard">binary
-  <li><a href="#snapshot">snapshots via LVM or KVM
+  <li><a href="#snapshot">snaphots via LVM or KVM
 </ol>
 
 
@@ -102,12 +102,12 @@
 
 Backups
 <ul>
-  <li> Backups should be done ONLY in a prod environment for prod systems.
+  <li> Backups should be done ONLY in a prod enviroment for prod systems.
   <li>A restore policy, requirements, and procedures should be documented and approved.
     <li>You should be backing up binlogs so you can do time travel. 
     <li>Backups should be done in a certain amount of time and track how long the backups
       take and if they use a lot of resources to do them.
-    <li>Backup all data, so if using xtrabackups or mariadbbackup, Mark you copy all non-innodb
+    <li>Backup all data, so if using xtrabackups or mariadbbackup, mak you copy all non-innodb
       tables.
     <li> You should be backing up other things like configurations, error logs, etc.
     <li>Misc stuff should put into rotation like logrotate. Set logrotate for slow, general,
@@ -138,8 +138,8 @@ In MySQL, you should do the following with binlogs:
 <ul>
   <li>Rotate binlogs so that old binlogs get removed. Easiest way is to
     "set expire_logs_days=30" in Mysql.
-  <li>Backup binlogs of any master except the current one. Trick, flush the logs
-    and then backup all logs but the current one. Also, rsync or only backup new logs
+  <li>Backup binlogs of any master except the currnet one. Trick, flush the logs
+    and then backup all logs but the currnet one. Also, rsync or only backup new logs
     created.
   <li>Do the same to the backup MySQL server for its binlogs or any server where
     you need to save binlogs according to its replication position.
