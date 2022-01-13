@@ -52,12 +52,34 @@ computer geeks. Here is the stuff I had to do.
     <li>Undid almost everything but safe boot in the BIOS.
     <li>Windows is now the default, but I can select single boot off the DVD in the future.
     <li>Got into Windoze and turned off bitlocker. But this took a while to decrypt
-      everything. 
-    <li> Restarted and got back into Linux Mint. Installed Linux Mint.
+      everything. It took hours to decrypt.
+    <li>I went back to turn off VMD config and used the older hard drivers. This made Windows
+      non bootable. To heck with it. I will just delete the partitions. 
+      <li>Linux Mint didn't have the drivers to use VMD for storage, so I used Ubuntu MATE. 
+    <li> In
       <li>The MBR now lets me select Windoze or Linux Mint at boot time. 
 </ol>
 
-  <hr style="width: 100%; height: 2px;">
+I could have done the Ubuntu Mate install, but it wouldn't run, It was very slow. Also,
+you have to choose a good password for LinuxMint or it might not set the password and you won't
+be able to login in.
+    <p>
+      Here is a trick to take care of the password.
+      <ul>
+	<li> Boot off the cdrom.
+	<li>Opwn terminal.
+	<li> Go to root: su -l bash or sudo bash
+	<li> adduser mark --- and set the password
+	<li>mount the drive from the hard drive which was /dev/sda2: <pre>mkdir -p /mnt/2
+	    mount /dev/sda2 /mnt/2</pre>
+	<li>Look at /etc/shadow and copy the line for "mark" into /mnt/2/etc/shadow for th user mark. You can use vi.
+	<li>unmount the drive: umount /mnt/2
+	  <li>Reboot and your password was changed.
+
+
+	</ul>
+
+<hr style    ="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
 
 </body></html>
