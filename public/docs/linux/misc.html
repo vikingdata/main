@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Linux: Misc</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+
+    <center><h1>Linux Misc</h1></center>
+    <center><i><b>by Mark Nielsen<br>Copyright 2021</b></i></center><br><br>
+    Just things I encounter in Linux I don't do often but is very helpful. This willl continue to
+    grow over time. 
+
+<ol>
+  <li><a href="#links">Links</a>
+  <li><a href="#swapfile">Adding swap file</a>
+</ol>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+
+<ul>
+<li>https://www.howtogeek.com/455981/how-to-create-a-swap-file-on-linux/
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="swapfile"></a>Adding swap file</h2>
+Check if /swapfile exists and if it is not in /etc/fstab. If it is not.....
+<pre>
+  swapoff -a
+  dd if=/dev/zero of=/swapfile bs=1024 count=8048576
+  mkswap /swapfile
+  chmod 600 /swapfile
+  echo "/swapfile    none    swap    sw    0    0" >> /etc/fstab
+  swapon -a
+  swapon -s
+</pre>
+
+<hr style    ="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
