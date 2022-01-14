@@ -21,6 +21,9 @@
 <ol>
   <li><a href="#links">Links</a>
   <li><a href="#setup">Setup and Install</a>
+  <li><a href="#prohects">First projects</a>
+    <li><a href="#pipline">Simple Pipeline project</a>
+    
 </ol>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -29,11 +32,12 @@
 <ul>
   <li>https://www.jenkins.io/doc/book/installing/
    <li>https://www.jenkins.io/doc/book/installing/linux/#debianubuntu 
+<li>https://mohitgoyal.co/2017/02/11/create-a-first-basic-job-in-jenkins/
 </ul>
 
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="links"></a>Setup and Install</h2>
+<h2><a class="mozTocH2" name="setup"></a>Setup and Install</h2>
 <ul>
   <li><pre>
       curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
@@ -60,6 +64,26 @@
   <li> Click on "Start using Jenkins".
     
 </ul>
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="project"></a>First Project</h2>
+<ul>
+  <li>Login to the main jenkinds page.
+  <li>Click on "Create a job"
+  <li>Enter "First"
+  <li>Under the next menu, skip most of it and go to "Build" and select "Execute shell".
+  <li>Under the box "Command" enter the following and save:<pre>pwd
+      ls -al</pre>
+  <li>Click "Build Now" from the lest hand menu.
+  <li>You can follow the instructions in the webpage in the link to see the results
+    and such. 
+</ul>
+You can created your first job and ran it.
+    <p>
+      Now we want to interact with a MySQL server. 
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="pipeline"></a>Simple Pipeline</h2>
+This section will be completed in the future.       
 
 <hr style    ="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
