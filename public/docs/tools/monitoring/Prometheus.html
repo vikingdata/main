@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Prometheus</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+    <center>    
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Prometheus</h1>
+    <i><b>by Mark Nielsen<br>Copyright Dec 2022</b></i></center><br><br>
+    The purpose of this doc is just to get Prometheus installed and monitoring mysql and apache
+    and maybe something else. 
+
+    <hr>
+<ol>
+  <li><a href="#links">Links</a></li>
+  <li><a href="#setup">Install Prometheus</a>
+  <li><a href="#configure">Configure</a>
+</ol>
+
+
+
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+<ul>
+<li>https://prometheus.io/docs/prometheus/latest/installation/
+<li>https://scalegrid.io/blog/how-to-monitor-mysql-deployments-with-prometheus-and-grafana-at-scalegrid/
+  <li>https://geekflare.com/prometheus-grafana-setup-for-linux/
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="install"></a>Install Prometheus</h2>
+First of all you need docker running. The easiest is to use a Docker Image.
+<pre>
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    ## NOTE: I am running Linux Mint, so I have to manually put in the equiv ubuntu lsb release
+  echo   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+    focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io
+
+  docker run hello-world
+
+  docker ps -a
+  docker rm competent_davinci
+  
+  docker images
+  docker rmi hello-world
+</pre>
+
+Now we install Prometheus
+<ul>
+  <li> docker run -p 9090:9090 prom/prometheus
+  <li> Goto the web browser at your ip address are port 9090 like : http://192.168.1.100:9090
+  <li>Now you want to create your own prometheus configuration file and mount it from your host
+    <pre>
+      
+      mkdir  /etc/prometheus/
+      touch /etc/prometheus/prometheus.yml
+      docker stop nostalgic_mcnulty
+
+        # Your prometheus file might be in a different place. 
+      cp /var/lib/docker/overlay2/8a3ad98dedf35668a02389f2fcdb2e56cb1f5098d75d5123eb45147612b3b6b6/diff/etc/prometheus/prometheus.yml /etc/prometheus/prometheus.yml
+      docker create -it -p 9090:9090 -v /tmp/root:/tmp/root --name my_prometheus  -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+      docker start my_prometheus
+    </pre>
+  <li>Go to the host server and port 9090: http://192.168.1.100:9090
+</ul>
+
+On the host computer:
+
+<pre>
+  mkdir /root/p
+  cd /root/p
+  wget https://github.com/prometheus/node_exporter/releases/download/v*/node_exporter-*.*-amd64.tar.gz
+
+  docker exec -it my_prometheus sh
+
+
+  /bin/prometheus -h
+  </pre>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="configure"></a>Configure</h2>
+  
+
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>

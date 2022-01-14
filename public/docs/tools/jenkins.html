@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>Jebkins Install</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+
+    <center><h1>Jenkins</h1></center>
+    <center><i><b>by Mark Nielsen<br>Copyright 2022</b></i></center><br><br>
+    I will do the basic steps for installation. I will make another document or
+    add to this document for more advanced stuff. I think docker images
+    are more meant for advanced users since you know how it works, do you can
+    use it easily. Lets first start as this is your first exposure. We will
+    use ubuntu. 
+
+<ol>
+  <li><a href="#links">Links</a>
+  <li><a href="#setup">Setup and Install</a>
+</ol>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+
+<ul>
+  <li>https://www.jenkins.io/doc/book/installing/
+   <li>https://www.jenkins.io/doc/book/installing/linux/#debianubuntu 
+</ul>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="links"></a>Setup and Install</h2>
+<ul>
+  <li><pre>
+      curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+      /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+      echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+      https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+      /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+      apt-get update
+      apt-get -y install jenkins
+      apt-get -y  install openjdk-11-jdk
+      
+      # Note this password
+      cat /var/lib/jenkins/secrets/initialAdminPassword
+      </pre>
+  <li>Go to your browser and use this password to start. My example : http://192.168.1.6:8080/   -- your computer will have a different ip address.
+  <li>Select install suggested plugins. I will later install more like the ssh plugin.
+  <li>Create a administrator account when the plugins are done. 
+    
+</ul>
+
+<hr style    ="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
