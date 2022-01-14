@@ -36,14 +36,31 @@ There are other reasons why Docker on Linux seems to be easier to manage.
       operating system, but meant to run specific programs.
     <p>
       I want to run the GUI programs, so I need to run XWindows on the laptop and have it go
-      through ssh and appear on Windoze. Follow the steps in the first link under Links.
-      <br>
+      through ssh and appear on Windoze. Follow the steps in the first link under Links. I opted
+      for less security. I just run vncserver on Linux and used a vnc client on windows. 
+    <p>On Linux
+      <ul><li>Run: apt install xfce4 xfce4-goodies
+	<li>Run: apt install tightvncserver
+<li> RUn vncserver and it may ask for a password: vncserver
+      </ul>
+    <p>On Windoze:
+      <ul>
+	<li>Download 64 but version from https://www.tightvnc.com/download.php
+	<li> Install the client.   Requires java, so I installed java. 
+	<li> I ran tightvnc-jviewer.jar under nossh directory,
+	  enterd in my ipadress192.168.1.100 and the port 5901.
+	<li>Then it asked for the password I set when running vncserver on linux, and it
+	  was fine.
+	<li>I wasn't concerned about security that much because I behind a private network
+	  where you have to connect to the private network. 
+      </ul>
     <p>
       
       Here is the pre-setup
       <ul>
 	<li>Sofware:<pre>	    apt-get -y  install cpu-checker   </pre>
-	<li> Run "egrep -c '(vmx|svm)' /proc/cpuinfo" and a two points. The answers had to be more
+	<li> Run "egrep -c '(vmx|svm)' /proc/cpuinfo" and two issues.
+	  The answer has to be more
 	  than 0 and hardware virutationization must be turned on in the hardware. Mine was 4.
 	<li>Run: "kvm-ok" and I got the output <pre>
 	    INFO: /dev/kvm exists
@@ -65,7 +82,9 @@ There are other reasons why Docker on Linux seems to be easier to manage.
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
 
 <ul>
-  <li>https://seanthegeek.net/234/graphical-linux-applications-bash-ubuntu-windows/
+<li>  https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04
+<li>https://www.tightvnc.com/download.php
+<li>https://seanthegeek.net/234/graphical-linux-applications-bash-ubuntu-windows/
   <li>https://help.ubuntu.com/community/KVM/Installation
 <li>https://linuxmint.com/download_all.php
 </ul>
