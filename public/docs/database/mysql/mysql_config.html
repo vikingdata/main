@@ -33,13 +33,49 @@
   <li>https://mariadb.com/kb/en/galera-cluster-system-variables/https://mariadb.com/kb/en/galera-cluster-system-variables/
   <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Reference.html
     <li>https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Reference.html#AuroraMySQL.Reference.ParameterGroups
+https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-performance/
+    <li>https://www.psce.com/en/blog/2012/04/12/how-to-install-and-configure-a-linux-server-for-mysql/
+      <li>https://www.samsung.com/semiconductor/global.semi.static/best-practices-for-mysql-with-ssds-0.pdf
+      <li>https://www.virtual-dba.com/blog/linux-os-and-file-system-tuning-for-database-servers/
+<li>https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/storage_administration_guide/xfsmounting
 </ul>
-
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="linux"></a>Linux</h2>
+<ul>
+  <li>You should have twice the ram, cpu, diskspace, and IO you think you need
+    for the next 3 years.
+  <li>Swalpiness to be set to 1 : <pre>echo 1 > /proc/sys/vm/swappiness</pre>
+    <br> NOTE: You should have a swap partition. The Linux system needs it and if
+    memory gets into a bad state a swap partition might save you. Always monitor
+    the swap partition. 
+  <li> You might to use the XFS, etc4, or other filesystems.
+    <ul>
+      <li>EXT4 and XFS: notime --- this speeds up a database so that it doesn't write to disk
+	each time something accesses the file. 
+      <li>EXT4 and XFS: obarrier: "use this only if the disk has battery backup or is ssd."
+	Tis is quoted from one of the docs above. 
+      <li>EXT4: data=writeback : This appears to be minor.
+    </ul>
 
-
+    
+  <li>You might want to mount a ramdisk for tmp directory of creationg of files
+    (for example internal temp tables) or for a database where you will recreate
+    an empty schema on database. Any data lots of a restart can be gotten again.
+    We aware of replication (you might want it on the slaves too).
+  <li>Disk Subsystem – I/O scheduler : none or deadline. You may want to
+    analyze the best one as the Percona doc says.
+  <li>For disks,
+    <br>The best disks in a RAID 5 or RAID 10 ir probably the best.
+    <br>Often "data" usually has it own partition and "logs"
+    have their own partition. If you
+    do LVM snapshotting, you might want the data and binlogs on the same partition. 
+    <br>When you mount the partitions fro ata and logs you might want to remote the
+    <br>Use SSD or high performance disks. 
+    <br>Mount a NFS or attached storage or a high performance for doing backups
+    and restores    to all the servers even it is inactive for the most part. 
+  <li>You want your clock times sycned. 
+    </ul>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#mysql"></a>MySQL, Percona, MariaDB</h2>
 
