@@ -139,6 +139,21 @@ shardng, etc. I might add more variables here in the future.
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#galera"></a>Galera</h2>
+I don't have much to say on Galera right now. I only have had a few instances
+where I had to figure out issues.
+
+<ul>
+  <li>Try to write all writes to one node.
+  <li>Try to do single row inserts, deletes, and selects.
+  <li>Use a Slave off of one of the nodes for time insensitive selects.
+  <li>A 4th node might be good for backups.
+    <li>Load balance the selects. Might not want to default to the write node. 
+  <li> Increase the amount of timeouts might help to prevent a node from being
+    kicked out. 
+  <li> gcache.size=1G  or more to allow downtime and then to reconnect.
+    
+<li> You might also want to check out: Parallel Slave Threads,  
+</ul>
 
 
 <hr style    ="width: 100%; height: 2px;">
