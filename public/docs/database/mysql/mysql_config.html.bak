@@ -38,7 +38,7 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
       <li>https://www.virtual-dba.com/blog/linux-os-and-file-system-tuning-for-database-servers/
 <li>https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/storage_administration_guide/xfsmounting
 <li>https://dev.mysql.com/doc/refman/8.0/en/innodb-multiple-buffer-pools.html
-<li>Use a diagnosis tool  <br>https://www.pcwdld.com/mysql-monitoring-tools
+<li>Use a diganosis tool  <br>https://www.pcwdld.com/mysql-monitoring-tools
   <li>https://seo-explorer.io/blog/five-ways-to-improve-mysql-select-speed-part-1/
 <li>https://www.percona.com/blog/2014/01/28/10-mysql-performance-tuning-settings-after-installation/
 <li>https://severalnines.com/database-blog/mysql-performance-cheat-sheet
@@ -54,26 +54,27 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
     <br> NOTE: You should have a swap partition. The Linux system needs it and if
     memory gets into a bad state a swap partition might save you. Always monitor
     the swap partition. 
-  <li> You might to use the XFS, ext4, or other filesystems.
+  <li> You might to use the XFS, etx4, or other filesystems.
     <ul>
       <li>EXT4 and XFS: notime --- this speeds up a database so that it doesn't write to disk
 	each time something accesses the file. 
       <li>EXT4 and XFS: obarrier: "use this only if the disk has battery backup or is ssd."
-	This is quoted from one of the docs above. 
+	Tis is quoted from one of the docs above. 
       <li>EXT4: data=writeback : This appears to be minor.
     </ul>
     
-  <li>You might want to mount a ramdisk for tmp directory of Creation of files
+  <li>You might want to mount a ramdisk for tmp directory of creationg of files
     (for example internal temp tables) or for a database where you will recreate
     an empty schema on database. Any data lots of a restart can be gotten again.
     We aware of replication (you might want it on the slaves too).
   <li>Disk Subsystem – I/O scheduler : none or deadline. You may want to
     analyze the best one as the Percona doc says.
   <li>For disks,
-    <br>The best disks in a RAID 5 or RAID 10 is probably the best.
+    <br>The best disks in a RAID 5 or RAID 10 ir probably the best.
     <br>Often "data" usually has it own partition and "logs"
     have their own partition. If you
     do LVM snapshotting, you might want the data and binlogs on the same partition. 
+    <br>When you mount the partitions fro ata and logs you might want to remote the
     <br>Use SSD or high performance disks. 
     <br>Mount a NFS or attached storage or a high performance for doing backups
     and restores    to all the servers even it is inactive for the most part. 
@@ -82,7 +83,7 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
     </ul>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#mysql"></a>MySQL, Percona, MariaDB</h2>
-We will include INNODB settings in the lists below. We manually add sections
+We will include INNODB settings in the lists below. We mau add sections
 for other engines later. 
 
 <h3>Very important configurations</h3>
@@ -99,7 +100,7 @@ for other engines later.
     to have small innodb logs if you have good failover technology. You might want to
     GTID, automatic failovers, and semisynchronous replication.
   <li> sync
-  <li>You should have multiple buffer pools for innodb. "1" per gig is good.
+  <li>You should have mutiple buffer pools for innodb. "1" per gig is good.
   <li>Make one file per table for innodb is turned on.
   <li> Make sure your table cache is big enough for all tables and table partitions.
   <li>Make sure the amount of memory to innodb buffer pool covers all hot data if your
@@ -107,7 +108,7 @@ for other engines later.
   <li>Use a diagnosis tool like Solar Winds. Not a configuration change but can lead
     to configuration changes.
   <li> You might want to configure indirect things like slow logs and
-    Performance Schema correctly.
+    Performane Schema correctly.
   <li>skip_name_resolve makes it faster.
   <li>Some other variables: thread_cache_size, max_connections, turn off query cache,
     thread_pool_size, temp tables (tmp_table_size, max_heap_table_size),
@@ -121,12 +122,12 @@ for other engines later.
 <h3>Temporary Speed Boost</h3>There are times when you need a speed boost. This can be the master or on a Slave.
 If this becomes a regular habit, consider setting the server for upgrading,
 horizontal scaling, or vertical scaling, a cache like Redis, load balancing,
-sharding, etc. I might add more variables here in the future. 
+shardng, etc. I might add more variables here in the future. 
 
     <p>
       <ul>
 	<li> innodb_flush_log_at_trx_commit=2 for normal use. If you want to speed it up
-	  temporarily you can set it to 0, but that's dangerous. "1" is actually safest. 
+	  temporarily you can set it to 0, but thats dangerous. "1" is actually safest. 
 	<li> sync_binlog is normally 1, set it to 0 to speed a Slave up temporarily.
 	  Setting higher than 1 make it faster, maybe, and it will effect
 	  binlog_group_commit_sync_delay.
