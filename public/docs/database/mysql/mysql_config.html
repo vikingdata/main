@@ -116,10 +116,10 @@ for other engines later.
     max_allowed_packet (if you have big data), innodb_flush_method,
     innodb_adaptive_flushing,  slave_compressed_protocol( might help),
     <li> Use multi-threaded replication and maybe slave_parallel_type = LOGICAL_CLOCK;
+<li>Increasing threads for read, write, purge, concurrency. 
 </ul>
 
-<h3>Temporary Speed Boost</h3>
-There are times when you need a speed boost. This can be the master or on a Slave.
+<h3>Temporary Speed Boost</h3>There are times when you need a speed boost. This can be the master or on a Slave.
 If this becomes a regular habit, consider setting the server for upgrading,
 horizontal scaling, or vertical scaling, a cache like Redis, load balancing,
 shardng, etc. I might add more variables here in the future. 
@@ -136,16 +136,6 @@ shardng, etc. I might add more variables here in the future.
 	  systems can also provide information on this. 
 
 	</ul>
-
-<h3>Other things</h3>
-<ul>
-  <li>Make sure you have enough threads for
-
-</ul>
-
-      
-<br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="#aurora"></a>Aurora</h2>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#galera"></a>Galera</h2>
