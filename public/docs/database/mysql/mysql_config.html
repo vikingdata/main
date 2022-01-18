@@ -19,7 +19,6 @@
   <li><a href="#links">Links</a>
    <li><a href="#linux">Linux system configuration</a>
   <li><a href="#mysql">MySQL, Percona, MariaDB</a>
-  <li><a href="#aurora">Aurora</a>
     <li><a href="#galera">Galera</a>
     
 </ol>
@@ -38,6 +37,12 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
       <li>https://www.samsung.com/semiconductor/global.semi.static/best-practices-for-mysql-with-ssds-0.pdf
       <li>https://www.virtual-dba.com/blog/linux-os-and-file-system-tuning-for-database-servers/
 <li>https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/storage_administration_guide/xfsmounting
+<li>https://dev.mysql.com/doc/refman/8.0/en/innodb-multiple-buffer-pools.html
+<li>Use a diganosis tool  <br>https://www.pcwdld.com/mysql-monitoring-tools
+  <li>https://seo-explorer.io/blog/five-ways-to-improve-mysql-select-speed-part-1/
+<li>https://www.percona.com/blog/2014/01/28/10-mysql-performance-tuning-settings-after-installation/
+<li>https://severalnines.com/database-blog/mysql-performance-cheat-sheet
+<li>https://orangematter.solarwinds.com/2017/01/13/solving-mysql-replication-lag-with-logical_clock-and-calibrated-delay/
 </ul>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -45,11 +50,11 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
 <ul>
   <li>You should have twice the ram, cpu, diskspace, and IO you think you need
     for the next 3 years.
-  <li>Swalpiness to be set to 1 : <pre>echo 1 > /proc/sys/vm/swappiness</pre>
+  <li>Swappiness to be set to 1 : <pre>echo 1 > /proc/sys/vm/swappiness</pre>
     <br> NOTE: You should have a swap partition. The Linux system needs it and if
     memory gets into a bad state a swap partition might save you. Always monitor
     the swap partition. 
-  <li> You might to use the XFS, etc4, or other filesystems.
+  <li> You might to use the XFS, etx4, or other filesystems.
     <ul>
       <li>EXT4 and XFS: notime --- this speeds up a database so that it doesn't write to disk
 	each time something accesses the file. 
@@ -57,7 +62,6 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
 	Tis is quoted from one of the docs above. 
       <li>EXT4: data=writeback : This appears to be minor.
     </ul>
-
     
   <li>You might want to mount a ramdisk for tmp directory of creationg of files
     (for example internal temp tables) or for a database where you will recreate
@@ -74,12 +78,72 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
     <br>Use SSD or high performance disks. 
     <br>Mount a NFS or attached storage or a high performance for doing backups
     and restores    to all the servers even it is inactive for the most part. 
-  <li>You want your clock times sycned. 
+  <li>You want your clock times sycned.
+
     </ul>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#mysql"></a>MySQL, Percona, MariaDB</h2>
+We will include INNODB settings in the lists below. We mau add sections
+for other engines later. 
 
+<h3>Very important configurations</h3>
+<ul>
+  <li>Not really a configuration, but run "explain" on queries and analyze your slow
+    log. Queries might not use indexes right, might have temporary tables that right to
+    disk, buffers (join, read, write, sort, etc)
+    might be big enough, there might be an "or" condition in a join, or
+    many others reasons why it is not efficient.
+  <li>Make sure you innodb buffer pool uses 75% of ram.
+  <li>Make sure you have big innodb logs. If they are small and fill up queries
+    go slow. Some people like small logs so failovers happen quick. But if the logs
+    are big enough a failover might not have to happen. There is no logical reason why
+    to have small innodb logs if you have good failover technology. You might want to
+    GTID, automatic failovers, and semisynchronous replication.
+  <li> sync
+  <li>You should have mutiple buffer pools for innodb. "1" per gig is good.
+  <li>Make one file per table for innodb is turned on.
+  <li> Make sure your table cache is big enough for all tables and table partitions.
+  <li>Make sure the amount of memory to innodb buffer pool covers all hot data if your
+    data is bigger than the amount of ram.
+  <li>Use a diagnosis tool like Solar Winds. Not a configuration change but can lead
+    to configuration changes.
+  <li> You might want to configure indirect things like slow logs and
+    Performane Schema correctly.
+  <li>skip_name_resolve makes it faster.
+  <li>Some other variables: thread_cache_size, max_connections, turn off query cache,
+    thread_pool_size, temp tables (tmp_table_size, max_heap_table_size),
+    table_open_cache, table_open_cache, table_definition_cache,
+    max_allowed_packet (if you have big data), innodb_flush_method,
+    innodb_adaptive_flushing,  slave_compressed_protocol( might help),
+    <li> Use multi-threaded replication and maybe slave_parallel_type = LOGICAL_CLOCK;
+</ul>
 
+<h3>Temporary Speed Boost</h3>
+There are times when you need a speed boost. This can be the master or on a Slave.
+If this becomes a regular habit, consider setting the server for upgrading,
+horizontal scaling, or vertical scaling, a cache like Redis, load balancing,
+shardng, etc. I might add more variables here in the future. 
+
+    <p>
+      <ul>
+	<li> innodb_flush_log_at_trx_commit=2 for normal use. If you want to speed it up
+	  temporarily you can set it to 0, but thats dangerous. "1" is actually safest. 
+	<li> sync_binlog is normally 1, set it to 0 to speed a Slave up temporarily.
+	  Setting higher than 1 make it faster, maybe, and it will effect
+	  binlog_group_commit_sync_delay.
+	<li> Run pt-stalk when problems occur. It may help. Not really a speed
+	  boot now, but it may help for the future. Solar Winds and other monitoring
+	  systems can also provide information on this. 
+
+	</ul>
+
+<h3>Other things</h3>
+<ul>
+  <li>Make sure you have enough threads for
+
+</ul>
+
+      
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="#aurora"></a>Aurora</h2>
 
