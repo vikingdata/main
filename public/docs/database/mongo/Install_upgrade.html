@@ -73,8 +73,11 @@ apt-get update
 
   # also this would work
 apt-get install -y mongodb-org
+sleep 5
 
-sleep 10
+service mongod restart
+
+sleep 5
 
 # Test some commands
 mongo --eval "printjson(db.serverStatus())"
@@ -92,12 +95,29 @@ apt-get remove  mongodb-database-tools mongodb-mongosh mongodb-org-database \
   mongodb-org-database-tools-extra mongodb-org-mongos mongodb-org-server \
   mongodb-org-shell mongodb-org-tools mongodb-org
 
+rm -vrf /var/lib/mongodb
+rm -rf /etc/mongo
 </pre>
 <p>
 Now install 4.4
 
 <pre>
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
 
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+
+apt-get update
+
+apt-get install -y mongodb-org=4.4.11 mongodb-org-server=4.4.11 \
+   mongodb-org-shell=4.4.11 mongodb-org-mongos=4.4.11\
+   mongodb-org-tools=4.4.11
+sleep 5
+
+service mongod restart
+sleep 2
+
+eep 10
+mongo --eval "Date()"
 <pre>
 
 <p>
@@ -109,8 +129,9 @@ Now make some stuff
 <p>
 Now upgrade the standalone server. 
 <pre>
-
-
+mongo --eval "use Junk"
+mongo --eval 'db.Junk.insert( { "junk":1, "junkid" : 1 } ) '
+mongo --eval 'db.Junk.junk.createIndex(  { "junkid": 1  }, { unique: true, sparse: true  }) '
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
