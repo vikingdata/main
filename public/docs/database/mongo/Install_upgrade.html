@@ -170,15 +170,59 @@ I really don't want to figure this out. Try to figure how to upgrade to 4.4 and 
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrading Replica Set</h2>
-First, lets setup a cluster.
+First, lets setup a cluster. We are also going to some fun unecessary commands. 
 <pre>
 <!--#include virtual="files/replica1.txt" -->
 </pre>
 
+<p>
+Since we have all the mongo servers using the same binary, we have to shutdown all
+the servers. Normally, you would shutdown one server at a time and upgrade and restart
+mongodb. You would start with the secondaries, then the primary and make the original
+primary server primary again. 
+Here we will just do one big pgrade. 
+<p>
+We start with 4.4
+<pre>
+ps auxw  | grep mongod
+
+killall mongod
+
+sleep 10
+
+ps auxw  | grep mongod
+
+ apt-get install -y mongodb-org=5.0.5 mongodb-org-database=5.0.5 \
+  mongodb-org-server=5.0.5 mongodb-org-shell=5.0.5 \
+  mongodb-org-mongos=5.0.5 mongodb-org-tools=5.0.5 mongodb-org=5.0.5
+
+apt list --installed | grep -i mongo
+service mongod restart
+sleep 5
+
+mongo --port 3001 --eval "rs.status()" | grep name
+
+</pre>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrding Shards</h2>
+<h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrading Shards</h2>
 
+With sharding you do he following which follows mongodb notes on upgrading 
+sharding. I would do it in a different order than whats documented unless you want 
+little downtime, then the documentation is fine. 
+<ul>
+<li>Schedule downtime. 
+<li>Disable the balancer. 
+<li>Stop mongos services. 
+<li>Upgrade mongos.
+<li>Stop config servers. 
+<li>Upgrade config servers. 
+<li>Upgrade each replica set and restart the replica sets. Look at error logs. 
+<li>Start config servers. Look at error logs. 
+<li>Start the mongos services. Look at error logs. 
+<li>Enable the balancer. 
+<li>Test and verify before ending downtime. 
+</ul>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="weird"></a>Weird or gotchas</h2>

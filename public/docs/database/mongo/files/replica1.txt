@@ -34,6 +34,11 @@ sleep 2
   # Look at the status
 mongo --port 3001 --eval "rs.status()"
 
+echo "Let us sleep a really long time, 30 seconds"
+sleep 30
+
+/home/mark/temp# mongo --port 3001 --eval "rs.status()" | grep -i state
+
   # Lets setup the functions. 
 echo "
 cfg = rs.conf();
