@@ -96,7 +96,7 @@ You can do it one of two ways:
     this behavior. 
 </ul>
 
-You must be careful with either solutions. Lets assume all the commands work.
+You must be careful with either solution. Lets assume all the commands work.
 Should log all commands. In general
 <uL>
   <li> mysql should be executed as "mysql -v -v -v"
@@ -109,6 +109,9 @@ Should log all commands. In general
       # Your commands, not schema changes.
 
       commit;
+
+      # Now do your schema changes OUTSIDE of any commit block.
+      # You may have several commit blocks, schema changes should be outside of them.
     </pre>
     <li>Analyze the error log with "grep -i err error.log" and look for any errors. NOTE: you may get false errors. 
     <li> Feel free is to discuss your own requirements. 

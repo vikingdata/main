@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Mongo: Install and Upgrade</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+   <center> 
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Mongo: Install and Upgrade</h1>
+    <i><b>by Mark Nielsen<br>Copyright August 2021</b></i></center><br><br>
+   You can install Mongo from scratch and also upgrade Mong in thie document.
+   In general, if you go the upgrade path, you have to be careful to not jump with
+   upgrades to far. Check the version upgrade documentation. 
+<hr>
+<ol>
+  <li><a href="#mozTocId514232">No Links</a></li>
+  <li><a href="#problems">Potential problems upgrading</a></li>
+  <li><a href="#install">Simple install. </a></li>
+  <li><a href="#simpleuprade">Simple Upgrade</a></li>
+  <li><a href="#mutipleupgrades">Mutiple version upgrade. </a></li>
+<li><a href="#weird">Weird stuff or gotchas</a>
+</ol>
+
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+<ul>
+<li>https://docs.mongodb.com/manual/release-notes/
+  </ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="Problems"></a>Potential problems upgrading</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="install"></a>Simple Install</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="simpleupgrade"></a>Simple Upgrades</h2>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="multipleupgrades"></a>Mutiple version upgrade.</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="weird"></a>Weird or gotchas</h2>
+Weird stuff I experiences or heard of:
+<ul>
+  <li> MMAPv1 storage engine no longer is in the latest versions. However, I worked
+    in a project to explain why Mongo was slower with the new engine and version of
+    MySQL. So I timed the process with the different storage engines and found out a
+    single thread processing a lot of data was faster under MMAPv1 storage engine
+    than WiredTiger. A single process may be slower in WireTiger but WiredTiger handles
+    mutiple processes much better (locking and other). Still they didn't like I didn't
+    make it faster even though I found out why. They just wanted the upgraded version
+    for political reasons. I stay away from politics.
+  <li>In an interview, a person asked how to can get lost data. They were pointing at
+    misharding or putting data in the wrong shard and so it remains invisible. But they
+    there are other ways. If there is a imperfect failover in a replica set some data
+    may be stored in the "rollback" directory. They didn't like I had better answers
+    than they did. Its bad in an interview to correct the interviewer. Its often better
+    to answer that they want to hear than being correct. <p>
+    <br>https://docs.mongodb.com/manual/core/replica-set-rollbacks/#std-label-replica-set-rollback
+</ul>
+
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
