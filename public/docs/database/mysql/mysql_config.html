@@ -43,6 +43,7 @@ https://www.percona.com/blog/2018/07/03/linux-os-tuning-for-mysql-database-perfo
 <li>https://www.percona.com/blog/2014/01/28/10-mysql-performance-tuning-settings-after-installation/
 <li>https://severalnines.com/database-blog/mysql-performance-cheat-sheet
 <li>https://orangematter.solarwinds.com/2017/01/13/solving-mysql-replication-lag-with-logical_clock-and-calibrated-delay/
+<li>https://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
 </ul>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -116,6 +117,8 @@ for other engines later.
     innodb_adaptive_flushing,  slave_compressed_protocol( might help),
     <li> Use multi-threaded replication and maybe slave_parallel_type = LOGICAL_CLOCK;
 <li>Increasing threads for read, write, purge, concurrency. 
+<li>Set  innodb_log_buffer_size to 64M,  innodb_log_file_size to 1G or higher is
+  you have SSD drives.
 </ul>
 
 <h3>Temporary Speed Boost</h3>There are times when you need a speed boost. This can be the master or on a Slave.
@@ -125,8 +128,10 @@ sharding, etc. I might add more variables here in the future.
 
     <p>
       <ul>
-	<li> innodb_flush_log_at_trx_commit=2 for normal use. If you want to speed it up
-	  temporarily you can set it to 0, but that's dangerous. "1" is actually safest. 
+	<li> innodb_flush_log_at_trx_commit=1 is  very normal for use.
+	  If you want to speed it up
+	  temporarily you can set it to 2, which is mostly safe.
+	  "0" is even faster, but dangerous. I wouldn't do "0" on a Master.  
 	<li> sync_binlog is normally 1, set it to 0 to speed a Slave up temporarily.
 	  Setting higher than 1 make it faster, maybe, and it will effect
 	  binlog_group_commit_sync_delay.
@@ -152,6 +157,14 @@ where I had to figure out issues.
   <li> gcache.size=1G  or more to allow downtime and then to reconnect.
     
 <li> You might also want to check out: Parallel Slave Threads,  
+<li> You might want to relax syncs or trx commit values if you can rely on one node
+  being out (innodb_flush_log_at_trx_commit = 1).
+  <li>You might want a 4th node, it doesn't add HA availability, but it might
+    be useful to add the 4th node into the load balance and
+    remove another node for upgrades, to get it becoome stable, or to fix the node.
+    You might want
+    to permanently leave out the 4th node, which could be used for backups
+    most of the time.
 </ul>
 
 
