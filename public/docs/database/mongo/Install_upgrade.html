@@ -86,7 +86,7 @@ mongo --eval "Date()"
   # because I want to. 
 apt-get -y install python2
   </pre>
-<br><hr style="width: 100%; height: 2px;">
+<hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="simpleupgrade"></a>Simple Upgrades</h2>
 
 First remove mongo if installed.
@@ -100,7 +100,6 @@ rm -rvf /etc/mongo*
 </pre>
 <p>
 Now install 4.4
-
 <pre>
 wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
 
@@ -155,8 +154,7 @@ sleep 5
 
 mongo Junk --eval 'db.junk.count() '
 </pre>
-
-<br><hr style="width: 100%; height: 2px;">
+<hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multipleupgrades"></a>Mutiple version upgrade.</h2>
 
 I suggest you read
@@ -168,7 +166,7 @@ and be careful of it. Research how to do it.
 I really don't want to figure this out. Try to figure how to upgrade to 4.4 and then 
 5.0 is much easier. 
 
-<br><hr style="width: 100%; height: 2px;">
+<hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrading Replica Set</h2>
 First, lets setup a cluster. We are also going to some fun unecessary commands. 
 <pre>
@@ -201,10 +199,9 @@ service mongod restart
 sleep 5
 
 mongo --port 3001 --eval "rs.status()" | grep name
-
 </pre>
 
-<br><hr style="width: 100%; height: 2px;">
+<hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrading Shards</h2>
 
 With sharding you do he following which follows mongodb notes on upgrading 
