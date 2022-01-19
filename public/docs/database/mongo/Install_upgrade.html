@@ -96,7 +96,7 @@ apt-get remove  mongodb-database-tools mongodb-mongosh mongodb-org-database \
   mongodb-org-shell mongodb-org-tools mongodb-org
 
 rm -vrf /var/lib/mongodb
-rm -rf /etc/mongo
+rm -rvf /etc/mongo*
 </pre>
 <p>
 Now install 4.4
@@ -111,19 +111,20 @@ apt-get update
 apt-get install -y mongodb-org=4.4.11 mongodb-org-server=4.4.11 \
    mongodb-org-shell=4.4.11 mongodb-org-mongos=4.4.11\
    mongodb-org-tools=4.4.11
-sleep 5
+sleep 2
 
 service mongod restart
 sleep 2
 
-eep 10
+ps auxw | grep mongo
+
 mongo --eval "Date()"
 <pre>
 
 <p>
 Now make some stuff
 <pre>
-mongo Junk --eval 'db.insert( { "junk":1, "junkid" : 1 } ) '
+mongo Junk --eval 'db.junk.insert( { "junk":1, "junkid" : 1 } ) '
 mongo Junk --eval 'db.junk.createIndex(  { "junkid": 1  }, { unique: true, sparse: true  }) '
 mongo Junk --eval 'db.junk.count() '
 </pre>
@@ -131,6 +132,22 @@ mongo Junk --eval 'db.junk.count() '
 <p>
 Now upgrade the standalone server.
 <pre>
+
+  # even though we have 4.4 and 5 in apt, it will upgrade.
+  # It will also restart mongo
+
+   # this did not work. 
+#apt-get install -y mongodb-org
+   # You might have to remove 4.4 from apt and reload. That would work. 
+
+  # did this instead. 
+sudo apt-get install -y mongodb-org=5.0.5 mongodb-org-database=5.0.5 \ 
+  mongodb-org-server=5.0.5 mongodb-org-shell=5.0.5 \ 
+  mongodb-org-mongos=5.0.5 mongodb-org-tools=5.0.5
+
+sleep 5
+
+mongo Junk --eval 'db.junk.count() '
 
 </pre>
 
