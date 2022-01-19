@@ -15,34 +15,114 @@
     <i><b>by Mark Nielsen<br>Copyright August 2021</b></i></center><br><br>
    You can install Mongo from scratch and also upgrade Mong in thie document.
    In general, if you go the upgrade path, you have to be careful to not jump with
-   upgrades to far. Check the version upgrade documentation. 
+   upgrades to far. Check the version upgrade documentation. Also, we are mainly focused
+   on MongoDB 4.4 to MongoDB 5.0.
 <hr>
 <ol>
-  <li><a href="#mozTocId514232">No Links</a></li>
+  <li><a href="#mozTocId514232">Links</a></li>
   <li><a href="#problems">Potential problems upgrading</a></li>
   <li><a href="#install">Simple install. </a></li>
   <li><a href="#simpleuprade">Simple Upgrade</a></li>
   <li><a href="#mutipleupgrades">Mutiple version upgrade. </a></li>
-<li><a href="#weird">Weird stuff or gotchas</a>
+  <li><a href="#set">Replica Set Upgrades</a></li>
+  <li><a href="#shard">Shard upgrades. </a></li>
+  
+  <li><a href="#weird">Weird stuff or gotchas</a>
 </ol>
 
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
 <ul>
 <li>https://docs.mongodb.com/manual/release-notes/
-  </ul>
+<li>https://docs.mongodb.com/manual/installation/
+<li>https://docs.mongodb.com/manual/tutorial/upgrade-revision/
+  
+</ul>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="Problems"></a>Potential problems upgrading</h2>
+You should do complete testing and have each department sign off on upgrades.
+Dev, QA, ETL, application developers, etc. 
+<ul>
+  <li> An engine chnages. Like MMAPv1 is mow depreciated. And unlikely. It
+    could affect the upgrade process, backups, restores, failovers, high availability.
+    The worst is the data was in a storage engine that is now gone. 
+  <li>A configuration is dpreciated. This could affect restarts, upgrades, etc.
+  <li>A command or method or function is now gone. This could affect cronjobs,
+    a procedure, monitoring, etc.
+    <li>A procedure changed. This can affect anything that uses that procedure.
+  </ul>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="install"></a>Simple Install</h2>
+We are installing on Ubuntu.
 
+<p>We will install 5.0 for now. For the upgrade we will remove and install 4.4. 
+<pre>
+  apt-get -y install gnupg
+  wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
+
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu \
+ focal/mongodb-org/5.0 multiverse" \
+ | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+
+apt-get update
+
+#apt-get install -y mongodb-org=5.0.5 mongodb-org-database=5.0.5 \
+#   mongodb-org-server=5.0.5 mongodb-org-shell=5.0.5 \
+#   mongodb-org-mongos=5.0.5 mongodb-org-tools=5.0.5
+
+  # also this would work
+apt-get install -y mongodb-org
+
+sleep 10
+
+# Test some commands
+mongo --eval "printjson(db.serverStatus())"
+mongo --eval "Date()"
+
+  # because I want to. 
+apt-get -y install python2
+  </pre>
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="simpleupgrade"></a>Simple Upgrades</h2>
 
+First remove mongo if installed.
+<pre>
+apt-get remove  mongodb-database-tools mongodb-mongosh mongodb-org-database \
+  mongodb-org-database-tools-extra mongodb-org-mongos mongodb-org-server \
+  mongodb-org-shell mongodb-org-tools mongodb-org
+
+</pre>
+<p>
+Now install 4.4
+
+<pre>
+
+<pre>
+
+<p>
+Now make some stuff
+<pre>
+
+
+</pre>
+<p>
+Now upgrade the standalone server. 
+<pre>
+
+
+</pre>
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="multipleupgrades"></a>Mutiple version upgrade.</h2>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="multipleupgrades"></a>Upgrading Replica Set</h2>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="multipleupgrades"></a>RUpgrding Shards</h2>
+
 
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="weird"></a>Weird or gotchas</h2>
@@ -60,8 +140,9 @@ Weird stuff I experiences or heard of:
     misharding or putting data in the wrong shard and so it remains invisible. But they
     there are other ways. If there is a imperfect failover in a replica set some data
     may be stored in the "rollback" directory. They didn't like I had better answers
-    than they did. Its bad in an interview to correct the interviewer. Its often better
-    to answer that they want to hear than being correct. <p>
+    than they did. Its bad in an interview to correct the interviewer.
+    Its often better
+    to answer what they want to hear than being correct. <p>
     <br>https://docs.mongodb.com/manual/core/replica-set-rollbacks/#std-label-replica-set-rollback
 </ul>
 
