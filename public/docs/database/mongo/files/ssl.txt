@@ -12,7 +12,11 @@ rm -rf  mongo/d1 mongo/d2 mongo/d3 mongo/logs
   # Setup 3 directories:
 mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/logs
 
-openssl req -newkey rsa:2048 -new -x509 -days 365  -nodes -out mongo/mongodb-cert.crt -keyout mongo/mongodb-cert.key $ssl "
+# Make the certificate -- self signed
+cmd="openssl req -newkey rsa:2048 -new -x509 -days 365  -nodes -out mongo/mongodb-cert.crt -keyout mongo/mongodb-cert.key $ssl "
+echo "$cmd" | bash
+
+# Make the pem file
 cat mongo/mongodb-cert.key mongo/mongodb-cert.crt > mongo/mongodb-server.pem
 
 #openssl req -newkey rsa:2048 -new -x509 -days 365  -nodes -out mongo/mongo-cert.crt -keyout mongo/mongo-cert.key
