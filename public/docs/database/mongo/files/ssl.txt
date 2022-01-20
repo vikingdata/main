@@ -1,11 +1,11 @@
 
-mongo_ssl=" --sslMode requireSSL --sslPEMKeyFile mongo/mongodb-server.pem \
+mongo_ssl=" --sslMode requireSSL --tlsPEMKeyFile mongo/mongodb-server.pem \
   --tlsAllowInvalidHostnames  "
 margs=" --oplogSize 100 --wiredTigerCacheSizeGB 0.25 \
     --bind_ip 127.0.0.1 $mongo_ssl "
-hn=`hostname`
+#hn=`hostname`
 ssl=" -subj '/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=$hn'"  
-client=" --ssl  --sslAllowInvalidCertificates --host $hn --quiet "
+client=" --tsl  --tsllAllowInvalidCertificates --hn 127.0.0.1 --quiet "
 
 
   # If restarting, kill the mogo processes and then do 
