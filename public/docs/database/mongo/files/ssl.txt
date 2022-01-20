@@ -1,7 +1,8 @@
 
-
-mongo_ssl=" --sslMode requireSSL --sslPEMKeyFile mongo/mongodb-server.pem   --allowInvalidHostnames  " 
-margs=" --oplogSize 100 --wiredTigerCacheSizeGB 0.25 --oplogSize 50 --bind_ip 127.0.0.1 $mongo_ssl "
+mongo_ssl=" --sslMode requireSSL --sslPEMKeyFile mongo/mongodb-server.pem \
+  --tlsAllowInvalidHostnames  "
+margs=" --oplogSize 100 --wiredTigerCacheSizeGB 0.25 \
+    --bind_ip 127.0.0.1 $mongo_ssl "
 hn=`hostname`
 ssl=" -subj '/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=$hn'"  
 client=" --ssl  --sslAllowInvalidCertificates --host $hn --quiet "
