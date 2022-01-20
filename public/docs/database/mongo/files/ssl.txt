@@ -1,0 +1,140 @@
+
+
+# TODO: Get rid of ALL that self signed ccertificate error. 
+# Please ignore any mongo client errors as long as it works.
+
+
+function printPrimary { 
+  count=`mongo --quiet --port 3001 mongo/functions.js| wc -l`
+  while [ $count -lt 1 ]
+  do
+    echo "No primary yet: $count"
+    sleep 2
+    count=`mongo --quiet --port 3001 mongo/functions.js| wc -l`
+  done
+  port=`mongo --quiet --port 3001 mongo/functions.js | cut -d ':' -f2 `
+  echo "port is on $port"
+}
+
+
+mongo_ssl=" --sslMode requireSSL --sslPEMKeyFile mongo/mongodb-server.pem   --allowInvalidHostnames  " 
+md_options=" --smallfiles --oplogSize 50 --bind_ip 127.0.0.1 $mongo_ssl "
+hn=`hostname`
+ssl=" -subj '/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=$hn'"  
+client=" --ssl  --sslAllowInvalidCertificates --host $hn --quiet "
+
+
+  # If restarting, kill the mogo processes and then do 
+rm -rf  mongo/d1 mongo/d2 mongo/d3 mongo/logs
+  # Setup 3 directories:
+mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/logs
+
+openssl req -newkey rsa:2048 -new -x509 -days 365  -nodes -out mongo/mongodb-cert.crt -keyout mongo/mongodb-cert.key -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=$hn"
+cat mongo/mongodb-cert.key mongo/mongodb-cert.crt > mongo/mongodb-server.pem
+
+#openssl req -newkey rsa:2048 -new -x509 -days 365  -nodes -out mongo/mongo-cert.crt -keyout mongo/mongo-cert.key
+#cat mongo/mongo-cert.key mongo/mongo-cert.crt > mongo/mongo-client.pem
+
+
+# If not AWS,	  ignore.  
+# sudo  -s -- bash -c   '  echo "127.0.0.1 localhost ">> /etc/hosts '
+  # Start once mongo instance
+mongod --dbpath mongo/d1 --port 3001 --replSet r $margs  > mongo/logs/1.log 2>&1  & 
+sleep 5
+  # In  the mongo shell
+mongo $client --port 3001 --eval "rs.initiate( { _id: 'r', version: 1, members: [ {_id :0, host: 'localhost:3001' } ] } )"
+
+sleep 5
+  # Start and add two other replica sets
+mongod --dbpath mongo/d2 --port 3002 --replSet r $margs > mongo/logs/2.log 2>&1  &
+mongod --dbpath mongo/d3 --port 3003 --replSet r $margs > mongo/logs/3.log 2>&1  &
+sleep 10
+mongo $client --port 3001 --eval "rs.add('localhost:3002')"
+sleep 3
+mongo $client --port 3001 --eval "rs.add('localhost:3003')"
+sleep 3
+  # Look at the status
+mongo $client --port 3001 --eval "rs.status()"
+
+  # Lets setup the functions. 
+echo "
+cfg = rs.conf();
+cfg.members[0].priority = 3;
+cfg.members[1].priority = 2;
+cfg.members[2].priority = 1;
+rs.reconfig(cfg);
+" >> mongo/reconfig.js
+
+echo '
+function pcheck() {
+  s = rs.status()
+  s.members.forEach( 
+    function(myDoc) { 
+      if (myDoc.stateStr=="PRIMARY") 
+        { print( myDoc.stateStr + " " + myDoc.name ) }
+      }
+    );
+}
+pcheck()
+' > mongo/functions.js
+
+  # Lets print out the hosts in the replica set
+mongo $client --port 3001 --eval "rs.status()" | grep name
+  # Remove a host
+mongo $client --port 3001 --eval "rs.remove('localhost:3003')"
+sleep 3
+mongo $client --port 3001 --eval "rs.status()" | grep name
+
+  # Add host back in
+mongo $client --port 3001 --eval "rs.add('localhost:3003')"
+sleep 3
+  # Add print out who is primary and secondary
+mongo $client --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+
+  # Redo the prorities, but in practice its no promise for stepdowns.
+cat mongo/reconfig.js | mongo $client --port 3001 
+sleep 5
+mongo $client --port 3001 --eval "rs.conf()" | egrep 'host|priority'
+
+mongo $client --port 3001 --eval "rs.stepDown({secondaryCatchUpPeriodSecs: 10 })"
+sleep 15
+printPrimary
+mongo $client --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+
+new_primary=''
+other=3002
+for p in 3002 3003; do
+   test=`mongo $client --port $p --eval "r=rs.isMaster(); printjson(r['ismaster'])" | grep -v SSL`
+   if [ $test = 'true' ]; then new_primary=$p; fi
+   if [ "$p" = '3002' ]; then other=3003; fi
+done
+
+if [ $new_primary = '' ]; then echo "ERROR: no new primary found."; exit; fi
+
+# Mongo forces a new election so this part is not needed. 
+
+#  # Not let's force it back to the first one --- this is bad in production. 
+#mongo $client --port $new_primary --eval "rs.remove('localhost:$other')"
+#sleep 5
+#printPrimary
+#mongo $client --port $new_primary --eval "rs.remove('localhost:$new_primary')"
+#sleep 5
+#printPrimary
+#mongo $client --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+
+   # Now add them back in
+#mongo $client --port 3001 --eval "rs.add('localhost:3002')"
+#sleep 2
+#mongo $client --port 3001 --eval "rs.add('localhost:3003')"
+#sleep 2
+  # Look at the status
+#mongo $client --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+
+
+
+
+
+
+
+
+

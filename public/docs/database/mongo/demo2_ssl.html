@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Mongo: Demo 2 TLS/SSL</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+   <center> 
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>>Mongo: Demo 2 TLS/SSL</h1>
+    <i><b>by Mark Nielsen<br>Copyright October 2021</b></i></center><br><br>
+   This is not intended to be a complete document on how to do TLS/SSL in mongo.
+   Rather, links and a script is provided. We assum Mongo 5.0 on Ubuntu. An explanation
+   of the steps of the script might be given. This is just a demo. 
+<hr>
+<ol>
+  <li><a href="#mozTocId514232">Links</a></li>
+  <li><a href="#notes">Notes</a></li>
+  <li><a href="#server"> TLS/SSL on the server. </a></li>
+  <li><a href="#client">TLS/SSL on the client </a></li>
+</ol>
+
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+<ul>
+<li>https://docs.mongodb.com/manual/tutorial/configure-ssl/
+<li>https://docs.mongodb.com/manual/release-notes/4.0/#std-label-4.0-disable-tls
+<li>
+  
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="notes"></a>Notes</h2>
+<ul>
+  <li>We assume Mongo 5.0 and Ubuntu.
+  <li>128 key encryption
+    <li>TLS 1.1+ and we want to disable 1.0
+</ul>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="server"></a>Server</h2>
+
+<pre>
+<!--#include virtual="database/mongo/files/ssl.txt" -->
+</pre>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="client"></a>Client</h2>
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
