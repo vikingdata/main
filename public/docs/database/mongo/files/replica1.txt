@@ -100,3 +100,15 @@ sleep 2
   # Look at the status
 mongo --quiet --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
 
+
+  echo "
+  cfg = rs.conf();
+  cfg.members[0].priority = 3;
+  cfg.members[1].priority = 2;
+  cfg.members[2].priority = 1;
+  rs.reconfig(cfg);
+  " > mongo/reconfig.js
+  
+cat mongo/reconfig.js | mongo --port 3001 --quiet
+cat mongo/reconfig.js | mongo --port 3002 --quiet
+cat mongo/reconfig.js | mongo --port 3003 --quiet
