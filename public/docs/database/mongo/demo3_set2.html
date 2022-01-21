@@ -3,7 +3,7 @@
     <!--#include virtual="/include/header.html" -->
     
     <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-    <title>Mongo: Demo 1 Replica Set</title>
+    <title>Mongo: Replica Set Features</title>
     
   </head>
   <body>
@@ -11,7 +11,7 @@
     <!--#include virtual="/include/body_header.html" -->
     
    <center> 
-    <h1><a class="mozTocH1" name="mozTocId909994"></a>Mongo: Demo 1 Replica Set</h1>
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Mongo: Replica Set Features</h1>
     <i><b>by Mark Nielsen<br>Copyright October 2021</b></i></center><br><br>
    This is not intended to be a complete document on how to do TLS/SSL in mongo.
    Rather, links and a script is provided. We assume Mongo 5.0 on Ubuntu. An explanation
@@ -19,28 +19,36 @@
 <hr>
 <ol>
   <li><a href="#mozTocId514232">Links</a></li>
-  <li><a href="#set">Replica SEt</a></li>
+  <li><a href="#set"> Original Set </a></li>
+  <li><a href="#set2">More features </a></li>
 </ol>
 
 <h2><a class="mozTocH2" name="links"></a>Links</h2>
 <ul>
-<li>https://docs.mongodb.com/manual/replication/
-<li>https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
-<li>https://medium.com/nonstopio/setup-mongodb-replication-da22d07e526  
+<li>https://docs.mongodb.com/manual/core/capped-collections/
+<li>
+<li>
   
 </ul>
 
-
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="set"></a>Replica Set</h2>
-
-This example sets up a simple replica set. We do some other things for fun
-like failovers (changing the PRIMARY), changing the weight for elections.
-and setting the replica back to the original PRIMARY. 
+<h2><a class="mozTocH2" name="set"></a>Original set</h2>
+This is the same steps from the other article.
 
 <pre>
 <!--#include virtual="files/replica1.txt" -->
 
+</pre>
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="set2"></a>Replica Set Features</h2>
+
+Like the first, we explore other features such as
+non failover slave, arbiter, and hidden (with slave delay).
+    <p>
+      We will also make a capped collection.
+<pre>
+  <!--#include virtual="files/replica2.txt"> -->
 </pre>
 
 <hr style="width: 100%; height: 2px;">
