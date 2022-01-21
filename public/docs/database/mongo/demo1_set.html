@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Mongo: Demo 1 Replica Set</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+   <center> 
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Mongo: Demo 1 Replica Set</h1>
+    <i><b>by Mark Nielsen<br>Copyright October 2021</b></i></center><br><br>
+   This is not intended to be a complete document on how to do TLS/SSL in mongo.
+   Rather, links and a script is provided. We assume Mongo 5.0 on Ubuntu. An explanation
+   of the steps of the script might be given. This is just a demo. 
+<hr>
+<ol>
+  <li><a href="#mozTocId514232">Links</a></li>
+  <li><a href="#set">Replica SEt</a></li>
+</ol>
+
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+<ul>
+<li>https://docs.mongodb.com/manual/replication/
+<li>
+  
+</ul>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="set"></a>Replica Set</h2>
+
+This example sets up a simple replica set. We do some other things for fun
+like failovers (changing the PRIMARY), changing the weight for elections.
+and setting the replica back to the original PRIMARY. 
+
+<pre>
+<!--#include virtual="files/replica.txt" -->
+
+</pre>
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>

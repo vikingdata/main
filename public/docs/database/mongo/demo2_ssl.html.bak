@@ -11,10 +11,10 @@
     <!--#include virtual="/include/body_header.html" -->
     
    <center> 
-    <h1><a class="mozTocH1" name="mozTocId909994"></a>Mongo: Demo 2 TLS/SSL</h1>
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>>Mongo: Demo 2 TLS/SSL</h1>
     <i><b>by Mark Nielsen<br>Copyright October 2021</b></i></center><br><br>
    This is not intended to be a complete document on how to do TLS/SSL in mongo.
-   Rather, links and a script is provided. We assume Mongo 5.0 on Ubuntu. An explanation
+   Rather, links and a script is provided. We assum Mongo 5.0 on Ubuntu. An explanation
    of the steps of the script might be given. This is just a demo. 
 <hr>
 <ol>
@@ -64,11 +64,6 @@ On the client side, I just added the options
   client=" --tls  --tlsAllowInvalidCertificates --host 127.0.0.1 --quiet "
   mongo $client --port 3001 --eval "Date()" 
 </pre>
-
-But, you can have certificates for clients and the server can required certifciates
-for clients. Eeven though communiction is ecrypted with self-signed cetificates,
-it doesn't stop man in the middle attacks and verify who is connecting is who they
-say they are. 
 
 <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
