@@ -1,0 +1,133 @@
+
+   #Make sure you have Replication_set.txt done a nd 3 mongos are running. 
+   # We are going to make a 6 cluster, with a non failover slave, arbiter, and hidden.
+   # We will also make a capped collection.
+
+# rs.status().members.find(r=>r.state===1).name
+margs=" --oplogSize 100 --wiredTigerCacheSizeGB 0.25 --bind_ip 127.0.0.1  --replSet r "
+
+killall mongod
+
+rm -rf  mongo/d1 mongo/d2 mongo/d3 mongo/logs
+rm -rf  mongo/d4 momgo/d5 mongo/d6
+
+# Setup  directories:
+mkdir -p mongo/d1 mongo/d2 mongo/d3 mongo/logs mongo/d4 mongo/d5 mongo/d6
+
+echo "Starting 3 servers"
+mongod $margs --dbpath mongo/d1 --port 3001 > mongo/logs/1.log 2>&1 &
+mongod $margs --dbpath mongo/d2 --port 3002 > mongo/logs/2.log 2>&1 &
+mongod $margs --dbpath mongo/d3 --port 3003 > mongo/logs/3.log 2>&1 &
+sleep 2
+mongo --port 3001 --eval "rs.initiate( { _id: 'r', version: 1, members: [ {_id :0, host: 'localhost:3001' } ] } )"
+mongo --port 3001 --eval "rs.add('localhost:3002')"
+mongo --port 3001 --eval "rs.add('localhost:3003')"
+sleep 5
+
+echo "Starting other servers"
+mongod --dbpath mongo/d4 --port 3004 $margs > mongo/logs/4.log 2>&1  &
+sleep 1
+mongod --dbpath mongo/d5 --port 3005 $margs > mongo/logs/5.log 2>&1  &
+sleep 2
+mongod --dbpath mongo/d6 --port 3006 $margs > mongo/logs/6.log 2>&1  &
+
+# Setting up replication
+   # Add the non failover secondary, arbiter, and hidden with delay.
+echo "Adding next 3 servers to replication"
+mongo --port 3001 --eval "rs.add({ host: 'localhost:3004', priority: 0})"
+sleep 1
+mongo --port 3001 --eval "rs.addArb('localhost:3005')"
+sleep 1
+mongo --port 3001 --eval "rs.add({ host: 'localhost:3006', hidden: 0, priority: 0, "slaveDelay" : 10 })"
+
+echo "Sleeping 10 seconds to let the other 3 secondaries catch up"
+sleep 10
+mongo --port 3001 --eval "rs.status()" | egrep 'name|stateStr'
+sleep 1
+
+  # Lets setup the functions.
+  echo "
+  cfg = rs.conf();
+  cfg.members[0].priority = 3;
+  cfg.members[1].priority = 2;
+  cfg.members[2].priority = 1;
+  cfg.members[3].priority = 1;
+  cfg.members[4].priority = 1;
+  cfg.members[5].priority = 0;
+rs.reconfig(cfg);
+  " >> mongo/reconfig.js
+cat mongo/reconfig.js | mongo --port 3001  
+
+
+echo "Working with collections"
+  # Lets add some data. 
+echo "
+function fillData() { 
+    db = db.getSiblingDB('test')
+
+    db.no.insert({value: 1});
+    db.no.drop();
+
+    db.capped.insert({value: 1});
+    db.capped.drop();
+    db.createCollection( "capped", { capped: true, size: 100 } )
+	
+
+db.createCollection( "log", { capped: true, size: 100000 } )
+
+    for( var i = 0; i < 1000; i++ ) {
+        db.no.insert( {value: i } );
+    }
+
+    for( var i = 0; i < 1000; i++ ) {
+	db.capped.insert( {value: i } );
+	}
+		     
+
+   db.capped.createIndex({ "value": 1 },  { sparse: true, expireAfterSeconds: 360000 })
+}
+
+fillData()
+" > mongo/fill.js
+
+mongo --port 3001 mongo/fill.js
+
+  # Should be 1000 entries
+mongo  --quiet --port 3001 --eval "db.no.count()" test
+
+  # Make it so we can connect to the secondaries for reads. 
+  # We won't affect 2, will will make it so 3,4 and 6 are readable
+  # 2 should not be readable.
+  # We will issue the same command to the arbiter for fun to see what happens. 
+  # In theory the command will work on the arbiter, but means nothing
+
+  # This should fail
+mongo --quiet --port 3002 --eval "db.no.count()" test
+  # This should work
+mongo --quiet --port 3003 --eval "rs.slaveOk(); db.no.count()" test
+  # This should work
+mongo --quiet --port 3004 --eval "rs.slaveOk(); db.no.count()" test
+  # This should fail
+mongo --quiet --port 3005 --eval "rs.slaveOk(); db.no.count()" test
+
+
+  # Refill the data.
+mongo --quiet --port 3001 --eval "rs.slaveOk(); db.dropDatabase()" test
+sleep 10
+mongo --quiet --port 3001 mongo/fill.js
+  # What there's no data?
+mongo --quiet --port 3006 --eval "rs.slaveOk(); db.no.count()" test
+sleep 11
+  # There it is.
+mongo --quiet --port 3006 --eval "rs.slaveOk(); db.no.count()" test
+
+   #Verify the collection in capped
+   # and list the first and last entry in the collection.
+
+mongo --quiet --port 3001 --eval "rs.slaveOk(); db.capped.isCapped()" test
+
+echo "first entry"
+mongo --quiet --port 3001 --eval "db.capped.find().sort({_id:1}).limit(1);" test
+
+echo "last entry"
+mongo --quiet --port 3001 --eval "db.capped.find().sort({_id:-1}).limit(1);" test
