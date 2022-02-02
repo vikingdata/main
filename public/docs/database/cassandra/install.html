@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+    <!--#include virtual="/include/header.html" -->
+    
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Caassandra: Install</title>
+    
+  </head>
+  <body>
+
+    <!--#include virtual="/include/body_header.html" -->
+    
+   <center> 
+    <h1><a class="mozTocH1" name="mozTocId909994"></a>Cassandra : Install</h1>
+    <i><b>by Mark Nielsen<br>Copyright 2021, 2022</b></i></center><br><br>
+   We will setup a caassandra instance on one computer mainly for testing purposes. 
+<hr>
+<ol>
+  <li><a href="#mozTocId514232">Links</a></li>
+  <li><a href="#Install">Install</a></li>
+</ol>
+
+<h2><a class="mozTocH2" name="links"></a>Links</h2>
+<ul>
+<li>https://cassandra.apache.org/doc/latest/cassandra/getting_started/installing.html
+<li>https://phoenixnap.com/kb/install-cassandra-on-ubuntu
+</ul>
+
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="install"></a>Install</h2>
+Java and python should be fine if installed on latest ubuntu. I went ahead and installed
+java with: apt install openjdk-8-jdk -y
+    <p>
+      Then I installed more stuff. 
+<pre>
+  apt install apt-transport-https
+
+  sh -c 'echo "deb http://www.apache.org/dist/cassandra/debian 40x main" > /etc/apt/sources.list.d/cassandra.list'
+  apt update
+  apt install Cassandra
+
+
+    # Verify with commands
+  nodetool status
+  systemctl status cassandra
+
+  # if needed
+  service cassandra restart
+  
+</pre> 
+
+<hr style="width: 100%; height: 2px;">
+<!--#include virtual="/include/body_footer.html" -->
+
+</body></html>
