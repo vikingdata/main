@@ -79,6 +79,13 @@ This is for MySQL monitoring on premises.
     CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'pass' WITH MAX_USER_CONNECTIONS 10;
     GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
     Register the server for monitoring
+
+    # for me
+
+    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'mark' WITH MAX_USER_CONNECTIONS 10;
+    GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
+    Register the server for monitoring
+    
       </pre>
     <p>
       The last command in bash. Use the same password you registered the service to pmm. 
