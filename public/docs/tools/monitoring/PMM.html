@@ -49,7 +49,7 @@ This is for MySQL monitoring on premises.
   sudo  docker run -d -p 8000:80 -p 443:443 --volumes-from pmm-data --name pmm-server --restart always percona/pmm-server:2
 
   ## Use a browser to go to your pmm interface
-  https://<IP Address or hostname of your Percona Monitoring and Management Server:8000/
+  https://IP Address or hostname of your Percona Monitoring and Management Server:8000/
   </pre>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -67,7 +67,7 @@ This is for MySQL monitoring on premises.
   sudo apt-get install pmm2-client
 
   # Choose a password to register the server. 
-  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:<password>@pmm.example.com
+  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:&lt;password&gt;@pmm.example.com
 </pre>
     <p>
       Add this account to mysql, since it is 5.7, and then issue the last command.
@@ -79,7 +79,7 @@ This is for MySQL monitoring on premises.
     <p>
       The last command in bash. Use the same password you registered the service to pmm. 
       </pre>
-    sudo pmm-admin add mysql --username=pmm --password=<password> --query-source=perfschema
+    sudo pmm-admin add mysql --username=pmm --password=&lt;password&gt; --query-source=perfschema
     
 </PRE>
 
