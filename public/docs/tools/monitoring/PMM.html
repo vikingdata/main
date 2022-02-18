@@ -35,6 +35,20 @@ This is for MySQL monitoring on premises.
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="docker"></a>Install Docker</h2>
 
+<pre>
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl gnupg lsb-release
+
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+  echo  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  sudo apt-get update
+  sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+  sudo docker run hello-world
+  </pre>
+
 <br><hr style="width: 100%; height: 2px;">
 <h2><a class="mozTocH2" name="pmmserver"></a>Install pmm server</h2>
 
@@ -51,7 +65,11 @@ This is for MySQL monitoring on premises.
   ## Use a browser to go to your pmm interface
 #  https://IP Address or hostname of your Percona Monitoring and Management Server:8000/
   # For me
-  https://10.214.159.206:8000/
+  https://10.214.159.206
+
+  # user = admin. password=admin
+  # Change the password. 
+
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
@@ -71,7 +89,7 @@ This is for MySQL monitoring on premises.
   # Choose a password to register the server. 
 #  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:&lt;password&gt;@pmm.example.com
   # for me
-  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:mark@pmm.example.com
+  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:mark1234@10.214.159.206
 </pre>
     <p>
       Add this account to mysql, since it is 5.7, and then issue the last command.
@@ -82,7 +100,7 @@ This is for MySQL monitoring on premises.
 
     # for me
 
-    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'mark' WITH MAX_USER_CONNECTIONS 10;
+    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'mark1234' WITH MAX_USER_CONNECTIONS 10;
     GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
     Register the server for monitoring
     
