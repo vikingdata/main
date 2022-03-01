@@ -16,16 +16,19 @@
     The purpose for this document is to:
     <ul>
       <li>Install server and client on the same computer.
-      <li>Run a command for ansible to do basic commands.
-      <li>Run a very simple playbook.
-	
+      <li> Run a command for ansible to do basic commands.
+      <li>Run ansible to install and configure a new MySQL Master and Slave. It will be configured to stop if any installation exists and report and error. 
+      <li>Other things about Ansible.
 	</ul>
 <hr>
 <ol>
   <li><a href="#mozTocId514232">Links</a></li>
-  <li><a href="#install">Install ansible (Ubuntu)</a></li>
-  <li><a href="#initial">Initial self test</a></li>
-  <li><a href="#playbook">Initial playbook</a></li>
+  <li><a href="#basic">Architecture, Install, and general configuration</a></li>
+  <li><a href="#mysql">Basic commands and configuration</a></li>
+  <li><a href="#custom">Custom installation with MySQL Master and Slave</a></li>
+  <li><a href="#other">Other things about Ansible</a></li>
+  <li><a href="#playboooks">Playbooks: making and downloading</a></li>
+
 </ol>
 
 <h2><a class="mozTocH2" name="mozTocId514232"></a>Links</h2>
@@ -45,12 +48,30 @@
 
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="install">Install ansible</a></h2>
+<h2><a class="mozTocH2" name="install">Architecture, Install, and General Configuration</a></h2>
 Please read:
 <ol>
   <li>https://docs.ansible.com/ansible/latest/dev_guide/overview_architecture.html
   <li>https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-specific-operating-systems
 </ol>
+For architecture, please read the online docs. In general:
+<ol>
+  <li>Inventory : "Names" for groups of servers. Like Database, webserver, etc. Variables
+    for the servers can be defined within the inventory file or in other sub-directories. 
+  <li> Roles : What you define the "Groups" you defined in inventory. For example, the
+    database group in the inventory should have a database role. Based on roles, different
+    modules may be used or behave differently. 
+  <li>Modules
+  <li>Playbooks : The roles define with modules to use and how, then get the list of commands from modules, and apply to the servers in a group from the inventory. 
+  <li>Tasks : Stuff you do on servers. This can be be by applying modules to servers from the
+    roles defined for groups. You can issue commands manually. 
+  <li> Variables : Variables are defined for hosts which can affect how modules do stuff to
+    those servers. 
+  </ol>
+For example you might have db1.server.local and db2.server.local are in a Group called "databases".
+Their roles include : mysql_database, Apache_webserver, ssh. And the modules tell you how those
+roles get executed on those servers. You want you databases to have a database, a webserver,
+ssh, and maybe other stuff like monitoring, backups, etc. 
 
 <h3> Install</h3>
 <pre>
@@ -138,6 +159,70 @@ Verify the initial "self" commands"
     </pre>
   
   
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="basic">Basic commands and configuration</a></h2>
+
+<h3>Configuration</h3>
+<ol>
+  <li>Inventory
+  <li> Roles
+  <li>Modules
+  <li>Playbook
+</ol>
+
+<h3>Commands</h3>
+Read
+<ol>
+  <li>https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html </li>
+<li>https://docs.ansible.com/ansible/latest/network/getting_started/first_playbook.html</li>
+<li>https://www.redhat.com/sysadmin/ansible-updates1</li>
+  <li>https://docs.ansible.com/ansible/latest/reference_appendices/module_utils.html</li>
+  <li>https://docs.ansible.com/ansible/latest/dev_guide/developing_program_flow_modules.html</li>
+<li>https://blog.toast38coza.me/custom-ansible-module-hello-world/<li>
+</ol>
+
+      
+      <h4>Make and Run simple playbook</h4>
+      Make your playbook, very simple. This is The Info Module. 
+      <pre>
+cd /usr/lib/python3/dist-packages/ansible/modules/
+echo "#!/usr/bin/python
+
+from ansible.module_utils.basic import Ansible Module
+
+def run_module():
+# This gets the args for the module.
+# supports_check_mode=True makes sure nothing gets changed.
+    module_args = dict(name=dict(type='str', required=True) , supports_check_mode=True
+
+    
+def main():
+    run_module()
+
+
+if __name__ == '__main__':
+    main()
+
+
+" > TEST1.py
+chmod 755 TEST1.py
+
+      </pre>
+
+      <br>This is your facts module.
+      <pre>
+
+	</pre>
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="custom"></a>MySQL Master and Slave setup</h2>
+<h3>Modules</h3>
+The purpose of the modules is to setup MySQL configuration and setup replication. It also checks
+there is no mysql installation installed on either box, or aborts.
+
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="other"></a>Other things with ansible</h2>
+
+
 
 <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->

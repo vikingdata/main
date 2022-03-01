@@ -29,9 +29,20 @@
 <h2><a class="mozTocH2" name="mysql"></a>MySQL</h2>
 <ul>
   <li>What is the difference between analyze and optimize?
+    <pre>
+      Depends on your version of MySQL and storage engine but in general:
+
+OPTIMIZE TABLE Analyzes table, stores the key distribution for a table, reclaims the unused space and defragments the data file.
+
+      ANALYZE TABLE Only analyzes table and stores the key distribution.
+      </pre>
   <li>With GTID, if Slave1 gets additional transations not from the Master
     and there is a failover to make Slave1 the new master, whats happens
     when Slave2 tries to connect to it?
+    <p>
+      Short answer: the errant transaction has to be fixed.<br>
+      https://scalegrid.io/blog/mysql-replication-errant-transactions-in-gtid-based-replication/
+    <li>How is EC2 versus ESC for mysql compare?
   <li>Many issues upgrading old MySQL to newer MySQL
     <ul>
       <li>The upgrade path may be long if upgrading a very old version to new version.
