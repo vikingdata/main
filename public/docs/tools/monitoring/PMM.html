@@ -65,7 +65,7 @@ This is for MySQL monitoring on premises.
   ## Use a browser to go to your pmm interface
 #  https://IP Address or hostname of your Percona Monitoring and Management Server:8000/
   # For me
-  https://10.214.159.206
+  http://10.214.159.206:8000
 
   # user = admin. password=admin
   # Change the password. 
@@ -73,7 +73,7 @@ This is for MySQL monitoring on premises.
 </pre>
 
 <br><hr style="width: 100%; height: 2px;">
-<h2><a class="mozTocH2" name="pmmclient"></a>Install pmm client</h2>
+<h2><a class="mozTocH2" name="pmmclient"></a>Install pmm client Ubuntu</h2>
 
 <PRE>
   wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
@@ -114,8 +114,24 @@ This is for MySQL monitoring on premises.
  sudo pmm-admin add mysql --username=pmm --password=mark --query-source=perfschema
 </PRE>
 
+<br><hr style="width: 100%; height: 2px;">
+<h2><a class="mozTocH2" name="pmmclient"></a>Install pmm client Centos</h2>
+<pre>
+  sudo yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm
+  sudo yum install pmm2-client
+  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:admin@http://10.214.159.206:8000
+</pre>
+    <p>
+      In mysql
+<pre>
+CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'badpassword' WITH MAX_USER_CONNECTIONS 10;
+GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
+</pre>
+<p>
+<pre>
+sudo pmm-admin add mysql --username=pmm --password=badpassword --query-source=perfschema
 
-
+</pre>
 <hr style="width: 100%; height: 2px;">
 <!--#include virtual="/include/body_footer.html" -->
 
