@@ -67,7 +67,7 @@ This is for MySQL monitoring on premises.
   # For me
   http://10.214.159.206:8000
 
-  # user = admin. password=admin
+  # user = admin. password=mark1234
   # Change the password. 
 
 </pre>
@@ -89,7 +89,7 @@ This is for MySQL monitoring on premises.
   # Choose a password to register the server. 
 #  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:&lt;password&gt;@pmm.example.com
   # for me
-  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:mark1234@10.214.159.206
+  sudo pmm-admin config --server-insecure-tls --server-url=http://admin:mark1234@10.214.159.206
 </pre>
     <p>
       Add this account to mysql, since it is 5.7, and then issue the last command.
@@ -119,7 +119,7 @@ This is for MySQL monitoring on premises.
 <pre>
   sudo yum install https://repo.percona.com/yum/percona-release-latest.noarch.rpm
   sudo yum install pmm2-client
-  sudo pmm-admin config --server-insecure-tls --server-url=https://admin:admin@http://10.214.159.206:8000
+  sudo pmm-admin config --server-insecure-tls --server-url=http://admin:mark1234@10.214.159.206:8000
 </pre>
     <p>
       In mysql
