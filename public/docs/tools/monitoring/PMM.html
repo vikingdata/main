@@ -94,13 +94,13 @@ This is for MySQL monitoring on premises.
     <p>
       Add this account to mysql, since it is 5.7, and then issue the last command.
       <pre>
-    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'pass' WITH MAX_USER_CONNECTIONS 10;
+    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'badpassword' WITH MAX_USER_CONNECTIONS 10;
     GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
     Register the server for monitoring
 
     # for me
 
-    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'mark1234' WITH MAX_USER_CONNECTIONS 10;
+    CREATE USER 'pmm'@'localhost' IDENTIFIED BY 'badpassword' WITH MAX_USER_CONNECTIONS 10;
     GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'pmm'@'localhost';
     Register the server for monitoring
     
