@@ -15,10 +15,27 @@ if ! [ -d "$COPY" ] ;
 fi	
 
 echo "Updating copy of github."
+echo "Change master in checkout and push commands if main branch is not master."
 
 cd $COPY
-git checkout main
+echo "Branches, first one should be main branch."
+git branch
+
+
+echo ""
+git checkout master
+status=$?
+if  ! [ $status -eq 0 ] ; then
+   echo "Could not update copy of it, wrong name for main branch?"
+   exit
+fi
+
 git pull
+status=$?
+if  ! [ $status -eq 0 ] ; then
+   echo "Could not pull git, aborting."
+   exit
+fi
 
 echo "Syncing changes to GITHUB"
 cd $LIVE
@@ -29,12 +46,12 @@ status=""
 b=`git branch --show-current`
 if [ $? == 0 ];
   then
-	git checkout main
+	git checkout master
 	status="ok";
 fi
 if [ $status != "ok" ];
   then
-    if [ $b == "maain" ];
+    if [ $b == "master" ];
       then
         status = "ok";
     fi
@@ -57,4 +74,4 @@ done < $TMPDIR/gitdiff.txt
 # Commit and sync to remote master
 # committing remotely. 
 git commit -m "auto "
-git push origin -u main
+git push origin -u master
