@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Must have an stuff defined.
+
+mkdir -p ~/tmp
+
+COPY=~/GITHUB_COPY/main
+LIVE=~/github/main
+TMPDIR=~/tmp
+
+if ! [ -d "$COPY" ] ;
+  then
+    echo "copy directory doesn't exist"
+    exit
+fi	
+
+echo "Updating copy of github."
+
+cd $COPY
+git checkout main
+git pull
+
+echo "Syncing changes to GITHUB"
+cd $LIVE
+
+# checks if we using master or not defined
+# aborts if we are in another
+status=""
+b=`git branch --show-current`
+if [ $? == 0 ];
+  then
+	git checkout main
+	status="ok";
+fi
+if [ $status != "ok" ];
+  then
+    if [ $b == "maain" ];
+      then
+        status = "ok";
+    fi
+fi
+
+if [ $status == "ok" ]; then echo "git status good"; fi
+
+# We just want the list of file compare to COPY, filter out things we don't want. 
+rsync -nra --out-format="%n"  $LIVE/ $COPY/ --size-only  --exclude=".git" > $TMPDIR/gittmp.txt
+egrep -v "^./" $TMPDIR/gittmp.txt | egrep -v "~$" |egrep -v "/$"  > $TMPDIR/gitdiff.txt
+
+# Force adding each file
+# This can result in some errors if done twice, but if later committed and pushed its okay. 
+echo "adding files"
+while IFS= read -r line; do
+    echo "adding : $line"
+    git add -v "$line"
+done < $TMPDIR/gitdiff.txt
+
+# Commit and sync to remote master
+# committing remotely. 
+git commit -m "auto "
+git push origin -u main
